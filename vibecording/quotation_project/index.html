@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlusX Creative Partner Quotation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="fade-in">
+            <h1>PlusX<br>Creative Partner</h1>
+            <div class="quotation-label">QUOTATION</div>
+        </header>
+
+        <div class="info-container fade-in delay-1">
+            <!-- Project Info -->
+            <section class="project-info">
+                <div class="info-row">
+                    <span class="label">Project Name</span>
+                    <span class="value"><input type="text" value="Project Name" class="text-input"
+                            style="width: 100%;"></span>
+                </div>
+                <div class="info-row">
+                    <span class="label">기간</span>
+                    <span class="value"><input type="text" value="3.5개월" class="text-input"></span>
+                </div>
+                <div class="info-row total-row">
+                    <span class="label">총계 (백만원이하 시사, VAT별도)</span>
+                    <span class="value total-amount" id="grand-total-top">0</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">작성일</span>
+                    <span class="value"><input type="date" value="2025-11-28" class="text-input"></span>
+                </div>
+            </section>
+
+            <!-- Company Info -->
+            <div class="company-info">
+                <p>플러스엑스(주)</p>
+                <p>대표이사 유상원, 이재훈</p>
+                <p>사업자등록번호 211-88-46851</p>
+                <p>서울시 강남구 언주로 149길 17, 4F</p>
+                <p>Tel 02. 518. 7717</p>
+                <p>Fax 02. 518. 7714</p>
+            </div>
+        </div>
+
+        <!-- Main Table -->
+        <table class="main-table slide-up delay-2">
+            <colgroup>
+                <col style="width: 10%">
+                <col style="width: 12%">
+                <col style="width: 10%">
+                <col style="width: 12%">
+                <col style="width: 8%">
+                <col style="width: 12%">
+                <col style="width: 36%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th style="width: 10%">구분</th>
+                    <th style="width: 12%">역할</th>
+                    <th style="width: 10%">등급</th>
+                    <th style="width: 12%">노임단가(1개월)</th>
+                    <th style="width: 8%">기간(월)</th>
+                    <th style="width: 12%">직접인건비(원)</th>
+                    <th style="width: 36%">업무내역</th>
+                </tr>
+            </thead>
+            <tbody id="quotation-body">
+                <!-- PM -->
+                <tr class="role-row">
+                    <td><input type="text" class="text-input" value="PM"
+                            style="font-weight: bold; width: 70%; display: inline-block;">
+                        <div class="row-controls">
+                            <button class="add-row-btn" data-role="PM">+</button>
+                            <button class="remove-row-btn" data-role="PM">-</button>
+                        </div>
+                    </td>
+                    <td><input type="text" class="text-input" value="Director"></td>
+                    <td>
+                        <select class="grade-select">
+                            <option value="특급기술자" selected>특급 기술자</option>
+                            <option value="고급기술자">고급 기술자</option>
+                            <option value="중급기술자">중급 기술자</option>
+                            <option value="초급기술자">초급 기술자</option>
+                        </select>
+                    </td>
+                    <td><input type="number" class="num-input unit-price" value="11347836"></td>
+                    <td><input type="number" class="num-input duration" value="0.5" step="0.1"></td>
+                    <td class="row-total">0</td>
+                    <td><textarea class="desc-input">Project Management
+- 디렉팅 및 메인 커뮤니케이션 담당
+- 핸즈온 업무에 대한 배분 및 리소스 관리</textarea></td>
+                </tr>
+
+                <!-- UX Design -->
+                <tr class="role-row">
+                    <td rowspan="2"><input type="text" class="text-input" value="UX Design"
+                            style="font-weight: bold; width: 70%; display: inline-block;">
+                        <div class="row-controls">
+                            <button class="add-row-btn" data-role="UX Design">+</button>
+                            <button class="remove-row-btn" data-role="UX Design">-</button>
+                        </div>
+                    </td>
+                    <td><input type="text" class="text-input" value="UX Designer"></td>
+                    <td>
+                        <select class="grade-select">
+                            <option value="특급기술자">특급 기술자</option>
+                            <option value="고급기술자" selected>고급 기술자</option>
+                            <option value="중급기술자">중급 기술자</option>
+                            <option value="초급기술자">초급 기술자</option>
+                        </select>
+                    </td>
+                    <td><input type="number" class="num-input unit-price" value="8529768"></td>
+                    <td><input type="number" class="num-input duration" value="1.0" step="0.1"></td>
+                    <td class="row-total">0</td>
+                    <td rowspan="2"><textarea class="desc-input" rows="8">Process
+
+1. Research
+고객 서비스 분석 / 유사 서비스 리서치 / 관련 비즈니스 분석 / 인터뷰 리서치
+직성 / 임직원 인터뷰 또는 인뎁스 인터뷰 진행 / 인터뷰 분석
+
+2. Design Direction
+브랜드 아이덴티티 분석 / 그래픽 모티브 도출 / 사용자 니즈 도출 / 인사이트 도출 / 디자인 키워드 도출 / UI/UX 원칙 정의</textarea></td>
+                </tr>
+                <tr class="role-row">
+                    <td><input type="text" class="text-input" value="UX Designer"></td>
+                    <td>
+                        <select class="grade-select">
+                            <option value="특급기술자">특급 기술자</option>
+                            <option value="고급기술자">고급 기술자</option>
+                            <option value="중급기술자">중급 기술자</option>
+                            <option value="초급기술자" selected>초급 기술자</option>
+                        </select>
+                    </td>
+                    <td><input type="number" class="num-input unit-price" value="6023282"></td>
+                    <td><input type="number" class="num-input duration" value="2.0" step="0.1"></td>
+                    <td class="row-total">0</td>
+                </tr>
+
+                <!-- UI Design -->
+                <tr class="role-row">
+                    <td rowspan="2"><input type="text" class="text-input" value="UI Design"
+                            style="font-weight: bold; width: 70%; display: inline-block;">
+                        <div class="row-controls">
+                            <button class="add-row-btn" data-role="UI Design">+</button>
+                            <button class="remove-row-btn" data-role="UI Design">-</button>
+                        </div>
+                    </td>
+                    <td><input type="text" class="text-input" value="UI Designer"></td>
+                    <td>
+                        <select class="grade-select">
+                            <option value="특급기술자">특급 기술자</option>
+                            <option value="고급기술자" selected>고급 기술자</option>
+                            <option value="중급기술자">중급 기술자</option>
+                            <option value="초급기술자">초급 기술자</option>
+                        </select>
+                    </td>
+                    <td><input type="number" class="num-input unit-price" value="8529768"></td>
+                    <td><input type="number" class="num-input duration" value="2.0" step="0.1"></td>
+                    <td class="row-total">0</td>
+                    <td rowspan="2"><textarea class="desc-input" rows="6">3. Proposal
+주요 화면 디자인, 디자인 제안 (Keynote or Prototype)
+
+4. Development
+전체 화면 디자인 / Front/Back-end 개발 / QA / 최종 산출물 전달
+
+UX/UI Design 업무 내역
+디자인 요소 정의 / 홈 화면 디자인 / 전체 화면 디자인 (Figma) / Figma Component Guide / Design System Guide</textarea></td>
+                </tr>
+                <tr class="role-row">
+                    <td><input type="text" class="text-input" value="UI Designer"></td>
+                    <td>
+                        <select class="grade-select">
+                            <option value="특급기술자">특급 기술자</option>
+                            <option value="고급기술자">고급 기술자</option>
+                            <option value="중급기술자">중급 기술자</option>
+                            <option value="초급기술자" selected>초급 기술자</option>
+                        </select>
+                    </td>
+                    <td><input type="number" class="num-input unit-price" value="6023282"></td>
+                    <td><input type="number" class="num-input duration" value="2.0" step="0.1"></td>
+                    <td class="row-total">0</td>
+                </tr>
+
+                <!-- Developer -->
+                <tr class="role-row">
+                    <td rowspan="3"><input type="text" class="text-input" value="Developer"
+                            style="font-weight: bold; width: 70%; display: inline-block;">
+                        <div class="row-controls">
+                            <button class="add-row-btn" data-role="Developer">+</button>
+                            <button class="remove-row-btn" data-role="Developer">-</button>
+                        </div>
+                    </td>
+                    <td><input type="text" class="text-input" value="FE Developer"></td>
+                    <td>
+                        <select class="grade-select">
+                            <option value="특급기술자">특급 기술자</option>
+                            <option value="고급기술자" selected>고급 기술자</option>
+                            <option value="중급기술자">중급 기술자</option>
+                            <option value="초급기술자">초급 기술자</option>
+                        </select>
+                    </td>
+                    <td><input type="number" class="num-input unit-price" value="8529768"></td>
+                    <td><input type="number" class="num-input duration" value="2.0" step="0.1"></td>
+                    <td class="row-total">0</td>
+                    <td rowspan="3"><textarea class="desc-input" rows="6">Development 업무 내역
+HTML, CSS 마크업 / 프론트 스크립트 개발 / 동적 컨텐츠 및 인터랙션 구현
+웹표준 / 크로스 브라우징 / 반응형 대응 / API 연동 및 개발
+서버 환경 구성 / DB 모델 설계 / CMS 설계 및 개발 / API 설계 및 개발 / 데이터 통계 / 통합 테스트</textarea></td>
+                </tr>
+                <tr class="role-row">
+                    <td><input type="text" class="text-input" value="BE Developer"></td>
+                    <td>
+                        <select class="grade-select">
+                            <option value="특급기술자">특급 기술자</option>
+                            <option value="고급기술자" selected>고급 기술자</option>
+                            <option value="중급기술자">중급 기술자</option>
+                            <option value="초급기술자">초급 기술자</option>
+                        </select>
+                    </td>
+                    <td><input type="number" class="num-input unit-price" value="8529768"></td>
+                    <td><input type="number" class="num-input duration" value="2.0" step="0.1"></td>
+                    <td class="row-total">0</td>
+                </tr>
+                <tr class="role-row">
+                    <td><input type="text" class="text-input" value="BE Developer"></td>
+                    <td>
+                        <select class="grade-select">
+                            <option value="특급기술자">특급 기술자</option>
+                            <option value="고급기술자">고급 기술자</option>
+                            <option value="중급기술자">중급 기술자</option>
+                            <option value="초급기술자" selected>초급 기술자</option>
+                        </select>
+                    </td>
+                    <td><input type="number" class="num-input unit-price" value="6023282"></td>
+                    <td><input type="number" class="num-input duration" value="3.0" step="0.1"></td>
+                    <td class="row-total">0</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" style="text-align: left; font-weight: bold;">합계</td>
+                    <td class="row-total total-highlight" id="direct-labor-total">0</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <!-- Calculation Details -->
+        <div class="calc-details slide-up delay-3">
+            <div class="calc-section">
+                <h4>① 제경비 (산출방식 : 직접인건비 x 제경비율)</h4>
+                <table class="sub-table">
+                    <colgroup>
+                        <col style="width: 33.33%">
+                        <col style="width: 33.33%">
+                        <col style="width: 33.33%">
+                    </colgroup>
+                    <tr>
+                        <th>직접인건비</th>
+                        <th>제경비율</th>
+                        <th>제경비</th>
+                    </tr>
+                    <tr>
+                        <td id="sub-direct-labor">0</td>
+                        <td><input type="number" id="overhead-rate" class="rate-input" value="110"> %</td>
+                        <td id="sub-overhead">0</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="calc-section">
+                <h4>② 기술료 (산출방식 : (직접인건비 + 제경비) x 기술료율)</h4>
+                <table class="sub-table">
+                    <colgroup>
+                        <col style="width: 33.33%">
+                        <col style="width: 33.33%">
+                        <col style="width: 33.33%">
+                    </colgroup>
+                    <tr>
+                        <th>직접인건비+제경비</th>
+                        <th>기술료율</th>
+                        <th>기술료</th>
+                    </tr>
+                    <tr>
+                        <td id="sub-labor-overhead">0</td>
+                        <td><input type="number" id="profit-rate" class="rate-input" value="20"> %</td>
+                        <td id="sub-profit">0</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="calc-section">
+                <h4>③ 총합 (산출방식 : 직접인건비 + 제경비 + 기술료)</h4>
+                <table class="sub-table highlight-table">
+                    <tr>
+                        <th>항목</th>
+                        <th>직접인건비</th>
+                        <th>제경비</th>
+                        <th>기술료</th>
+                        <th>합계</th>
+                    </tr>
+                    <tr>
+                        <td>총 합계</td>
+                        <td id="final-direct-labor">0</td>
+                        <td id="final-overhead">0</td>
+                        <td id="final-profit">0</td>
+                        <td id="final-grand-total">0</td>
+                    </tr>
+                </table>
+            </div>
+
+            <p class="footnote">* 협의된 프로젝트 범위와 일정의 작업이 추가되는 경우 추가 개발 비용이 발생할 수 있습니다.</p>
+
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>견적서 | Quotation</title>
+    <meta name="description" content="프로젝트 견적서 작성 및 PDF 저장 도구" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <!-- ==================== ACTION BAR ==================== -->
+    <div class="document-wrapper">
+        <div class="action-bar no-print" id="actionBar">
+            <button class="btn btn-ghost" id="btnReset" title="초기화">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12a9 9 0 1 1 9 9" />
+                    <path d="M3 12V3" />
+                    <path d="M3 12H12" />
+                </svg>
+                초기화
+            </button>
+            <button class="btn btn-ghost" id="btnSave" title="저장">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                    <polyline points="17 21 17 13 7 13 7 21" />
+                    <polyline points="7 3 7 8 15 8" />
+                </svg>
+                저장
+            </button>
+            <button class="btn btn-primary" id="btnPDF" title="PDF 다운로드">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                PDF 다운로드
+            </button>
+        </div>
+        <div class="document" id="document">
+
+            <!-- HEADER -->
+            <header class="doc-header">
+                <div class="header-left">
+                    <div class="logo-area" id="logoArea">
+                        <div class="logo-placeholder" id="logoPlaceholder">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <rect x="3" y="3" width="18" height="18" rx="2" />
+                                <circle cx="8.5" cy="8.5" r="1.5" />
+                                <path d="M21 15l-5-5L5 21" />
+                            </svg>
+                            <span>로고 업로드</span>
+                        </div>
+                        <img class="logo-image" id="logoImage" src="" alt="Company Logo" style="display:none" />
+                        <input type="file" id="logoInput" accept="image/*" hidden />
+                    </div>
+                    <div class="company-name">
+                        <span class="editable" data-field="companyName" contenteditable="true">PlusX</span>
+                        <span class="editable company-subtitle" data-field="companySubtitle"
+                            contenteditable="true">Creative Partner</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <h1 class="doc-title">QUOTATION</h1>
+                </div>
+            </header>
+
+            <div class="divider-thick"></div>
+
+            <!-- PROJECT INFO -->
+            <section class="project-info">
+                <div class="info-grid">
+                    <div class="info-row">
+                        <span class="info-label">내역</span>
+                        <span class="info-value editable" data-field="projectName" contenteditable="true">프로젝트명</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">기간</span>
+                        <span class="info-value editable" data-field="projectPeriod" contenteditable="true">0개월
+                            (0월-0월)</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">총계</span>
+                        <span class="info-value total-amount" id="grandTotalDisplay">362,000,000 원</span>
+                        <span class="info-note">(십만원이하 절삭, VAT 별도)</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">작성일</span>
+                        <span class="info-value editable" data-field="createdDate" contenteditable="true">2023. 01.
+                            01.</span>
+                    </div>
+                </div>
+                <div class="client-info">
+                    <span class="info-label-sm">수신</span>
+                    <div class="editable client-detail" data-field="clientInfo" contenteditable="true">회사명 / 대표자명 / 회사주소
+                        등</div>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <!-- PERSONNEL TABLE -->
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">인력 투입 계획</h2>
+                    <button class="btn btn-add" id="btnAddRow">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                        인력 추가
+                    </button>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table" id="personnelTable">
+                        <thead>
+                            <tr>
+                                <th class="col-index">#</th>
+                                <th class="col-role">항목</th>
+                                <th class="col-position">역할</th>
+                                <th class="col-grade">등급</th>
+                                <th class="col-rate">노임단가 (월)</th>
+                                <th class="col-months">기간 (월)</th>
+                                <th class="col-subtotal">직접인건비 (원)</th>
+                                <th class="col-desc">업무내역</th>
+                                <th class="col-action no-print"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="personnelBody">
+                            <!-- rows inserted by JS -->
+                        </tbody>
+                        <tfoot>
+                            <tr class="total-row">
+                                <td colspan="5" class="text-right"><strong>합계</strong></td>
+                                <td class="text-center" id="totalMonths">18.0</td>
+                                <td class="text-right" id="totalDirectCost">150,000,000</td>
+                                <td></td>
+                                <td class="no-print"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <!-- COST BREAKDOWN -->
+            <section class="section">
+                <h2 class="section-title">비용 산출</h2>
+
+                <!-- 1. 제경비 -->
+                <div class="cost-block">
+                    <div class="cost-block-header">
+                        <span class="cost-num">1.</span>
+                        <span>제경비</span>
+                        <span class="cost-formula">직접인건비 × 제경비율</span>
+                    </div>
+                    <div class="cost-row">
+                        <div class="cost-item">
+                            <span class="cost-label">직접인건비</span>
+                            <span class="cost-value" id="overheadBase">150,000,000</span>
+                        </div>
+                        <div class="cost-item cost-operator">×</div>
+                        <div class="cost-item">
+                            <span class="cost-label">제경비율</span>
+                            <span class="cost-value">
+                                <input type="number" class="inline-input rate-input" id="overheadRate" value="110"
+                                    min="0" max="999" step="1" />%
+                            </span>
+                        </div>
+                        <div class="cost-item cost-operator">=</div>
+                        <div class="cost-item">
+                            <span class="cost-label">제경비</span>
+                            <span class="cost-value cost-result" id="overheadCost">165,000,000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. 기술료 -->
+                <div class="cost-block">
+                    <div class="cost-block-header">
+                        <span class="cost-num">2.</span>
+                        <span>기술료</span>
+                        <span class="cost-formula">(직접인건비 + 제경비) × 기술료율</span>
+                    </div>
+                    <div class="cost-row">
+                        <div class="cost-item">
+                            <span class="cost-label">직접인건비 + 제경비</span>
+                            <span class="cost-value" id="techBase">315,000,000</span>
+                        </div>
+                        <div class="cost-item cost-operator">×</div>
+                        <div class="cost-item">
+                            <span class="cost-label">기술료율</span>
+                            <span class="cost-value">
+                                <input type="number" class="inline-input rate-input" id="techRate" value="15" min="0"
+                                    max="100" step="1" />%
+                            </span>
+                        </div>
+                        <div class="cost-item cost-operator">=</div>
+                        <div class="cost-item">
+                            <span class="cost-label">기술료</span>
+                            <span class="cost-value cost-result" id="techCost">47,250,000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. 총합 -->
+                <div class="cost-block cost-block-total">
+                    <div class="cost-block-header">
+                        <span class="cost-num">3.</span>
+                        <span>총합</span>
+                        <span class="cost-formula">직접인건비 + 제경비 + 기술료</span>
+                    </div>
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>항목</th>
+                                <th>직접인건비</th>
+                                <th>제경비</th>
+                                <th>기술료</th>
+                                <th>합계</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>견적 비용</td>
+                                <td class="text-right" id="summaryDirect">150,000,000</td>
+                                <td class="text-right" id="summaryOverhead">165,000,000</td>
+                                <td class="text-right" id="summaryTech">47,250,000</td>
+                                <td class="text-right grand-total" id="summaryTotal">362,250,000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <!-- NOTES -->
+            <section class="section notes-section">
+                <h2 class="section-title">참고사항</h2>
+                <ul class="notes-list" id="notesList">
+                    <li class="editable" contenteditable="true" data-field="note1">협의된 프로젝트 범위와 일정 외의 작업이 추가되는 경우 추가 개발
+                        비용이 발생합니다.</li>
+                    <li class="editable" contenteditable="true" data-field="note2">폰트, 이미지, 영상, 일러스트 등 외부 소스 구매 시 추가
+                        라이센스 비용이 발생합니다.</li>
+                </ul>
+            </section>
+
+            <!-- FOOTER -->
+            <footer class="doc-footer">
+                <div class="footer-line"></div>
+                <div class="footer-content editable" data-field="footerInfo" contenteditable="true">
+                    HTTP://WWW.PLUS-EX.COM &nbsp;|&nbsp; TEL. 02 518-7717 &nbsp;|&nbsp; FAX. 02 518-7714<br />
+                    COPYRIGHT 2019 PLUS X CREATIVE PARTNER. ALL RIGHTS RESERVED
+                </div>
+            </footer>
+
+        </div><!-- /document -->
+    </div><!-- /document-wrapper -->
+
+    <!-- Save notification -->
+    <div class="toast" id="toast">저장되었습니다</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

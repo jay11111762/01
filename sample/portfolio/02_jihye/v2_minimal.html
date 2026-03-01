@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Jihye Yoon - Product Planner</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&amp;family=Inter:wght@300;400;500;600&amp;family=Nanum+Myeongjo:wght@400;700;800&amp;family=Pretendard:wght@300;400;500;600&amp;display=swap"
+        rel="stylesheet" />
+
+    <!-- GSAP & Lenis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "mono-black": "#111111",
+                        "mono-white": "#FDFDFD",
+                        "mono-grey": "#F4F4F4",
+                        "mono-dark-grey": "#666666",
+                    },
+                    fontFamily: {
+                        "serif": ["Cormorant Garamond", "Nanum Myeongjo", "serif"],
+                        "sans": ["Inter", "Pretendard", "sans-serif"],
+                    },
+                    spacing: {
+                        '128': '32rem',
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FDFDFD;
+            color: #111111;
+        }
+
+        .hairline {
+            border-top: 0.5px solid #E5E5E5;
+        }
+
+        /* Language Visibility */
+        body.lang-en .ko-content {
+            display: none !important;
+        }
+
+        body.lang-ko .en-content {
+            display: none !important;
+        }
+
+        /* Korean Font Overrides when active */
+        body.lang-ko .font-serif {
+            font-family: 'Nanum Myeongjo', serif;
+        }
+
+        body.lang-ko .font-sans {
+            font-family: 'Pretendard', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        /* Language Toggle Styles */
+        .lang-toggle-btn {
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .lang-active {
+            color: #111111;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+    </style>
+</head>
+
+<body
+    class="font-sans text-mono-black antialiased min-h-screen bg-mono-white selection:bg-mono-black selection:text-mono-white lang-ko">
+
+    <!-- Header -->
+    <header
+        class="w-full px-6 py-6 md:px-16 md:py-10 max-w-[1600px] mx-auto fixed top-0 w-full z-50 bg-mono-white/90 backdrop-blur-sm transition-all duration-300 left-0 right-0">
+        <div class="grid grid-cols-2 md:grid-cols-12 gap-8 items-center md:items-start">
+            <div class="md:col-span-4">
+                <h1 class="font-serif text-2xl md:text-3xl font-normal tracking-tight leading-none mb-1 cursor-pointer"
+                    onclick="window.scrollTo(0,0)">
+                    <span class="en-content">Jihye Yoon</span>
+                    <span class="ko-content">윤지혜</span>
+                </h1>
+                <p class="font-sans text-[10px] uppercase tracking-widest text-mono-dark-grey mt-1">
+                    <span class="en-content">Product Planner / PM</span>
+                    <span class="ko-content">서비스 기획자 / PM</span>
+                </p>
+            </div>
+
+            <nav class="md:col-span-4 md:col-start-9 flex flex-col items-end space-y-2">
+                <!-- Language Toggle -->
+                <div class="font-sans text-[10px] uppercase tracking-widest text-mono-dark-grey mb-2">
+                    <span class="lang-toggle-btn" onclick="setLanguage('ko')" id="btn-ko">KR</span>
+                    <span class="mx-1 opacity-30">|</span>
+                    <span class="lang-toggle-btn" onclick="setLanguage('en')" id="btn-en">EN</span>
+                </div>
+
+                <ul
+                    class="hidden md:flex md:text-right space-x-6 font-sans text-[10px] uppercase tracking-wide font-medium">
+                    <li><a class="hover:underline underline-offset-4 decoration-[0.5px] transition-all"
+                            href="#experience"><span class="en-content">Experience</span><span
+                                class="ko-content">경력</span></a></li>
+                    <li><a class="hover:underline underline-offset-4 decoration-[0.5px] transition-all"
+                            href="#projects"><span class="en-content">Projects</span><span
+                                class="ko-content">프로젝트</span></a></li>
+                    <li><a class="hover:underline underline-offset-4 decoration-[0.5px] transition-all"
+                            href="#writing"><span class="en-content">Activities</span><span
+                                class="ko-content">활동</span></a></li>
+                    <li><a class="hover:underline underline-offset-4 decoration-[0.5px] transition-all"
+                            href="#contact"><span class="en-content">Contact</span><span
+                                class="ko-content">연락처</span></a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-[1600px] mx-auto px-6 md:px-16 pb-32 pt-32">
+
+        <!-- Hero Section -->
+        <section class="mb-32 md:mb-40 pt-12 md:pt-24 min-h-[50vh] flex flex-col justify-center">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+                <div class="md:col-span-10 md:col-start-2 lg:col-span-8 lg:col-start-3">
+                    <p
+                        class="hero-text font-serif text-3xl md:text-5xl lg:text-6xl leading-[1.2] font-light text-mono-black opacity-0 translate-y-10">
+                        <span class="en-content">
+                            Product management is the curation of experience. Like a well-tailored suit, a digital
+                            product must fit the user perfectly, move with them, and elevate their daily existence.
+                        </span>
+                        <span class="ko-content">
+                            기획은 경험을 큐레이션하는 것입니다. 잘 재단된 수트처럼, 디지털 프로덕트는 사용자에게 완벽하게 맞고, 함께 움직이며, 그들의 일상을 고양시켜야 합니다.
+                        </span>
+                    </p>
+                    <div
+                        class="mt-12 flex flex-wrap gap-8 font-sans text-[10px] uppercase tracking-widest opacity-0 bg-reveal text-mono-dark-grey">
+                        <span>Based in Seoul</span>
+                        <span>Est. 2010</span>
+                        <span>Product Planning</span>
+                        <span>Data Driven</span>
+                        <span>UX Strategy</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="hairline w-full mb-16 md:mb-24 scale-x-0 origin-left" id="divider-1"></div>
+
+        <!-- Core Skills Section (New) -->
+        <section class="mb-24 md:mb-32" id="skills">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16">
+                <div class="md:col-span-3">
+                    <h2
+                        class="font-sans text-[10px] font-bold uppercase tracking-widest sticky top-32 text-mono-dark-grey">
+                        <span class="en-content">Core Skills</span>
+                        <span class="ko-content">핵심 역량</span>
+                    </h2>
+                </div>
+                <div class="md:col-span-9 grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div class="opacity-0 translate-y-10 experience-item">
+                        <ul class="space-y-4 font-serif text-lg leading-relaxed text-mono-black">
+                            <li><span class="en-content">Data-Driven Service Planning & A/B Testing</span><span
+                                    class="ko-content">데이터 기반 서비스 기획 및 A/B 테스트 설계</span></li>
+                            <li><span class="en-content">User Research (Interview, Survey, UT)</span><span
+                                    class="ko-content">사용자 리서치(인터뷰, 서베이, UT) 기획 및 실행</span></li>
+                            <li><span class="en-content">Cross-functional Team Leadership</span><span
+                                    class="ko-content">크로스펑셔널 팀 리딩 (디자인, 개발, 마케팅 협업)</span></li>
+                            <li><span class="en-content">PRD Documentation & Sprint Management</span><span
+                                    class="ko-content">PRD/기능명세서 작성 및 스프린트 운영</span></li>
+                        </ul>
+                    </div>
+                    <div class="opacity-0 translate-y-10 experience-item">
+                        <p class="font-sans text-[10px] uppercase tracking-widest text-mono-dark-grey mb-3">Tools</p>
+                        <ul class="space-y-2 font-sans text-sm text-mono-black">
+                            <li>SQL, Amplitude, Mixpanel</li>
+                            <li>Jira, Confluence, Slack</li>
+                            <li>Figma, Sketch</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section class="mb-32" id="experience">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16">
+                <div class="md:col-span-3">
+                    <h2
+                        class="font-sans text-[10px] font-bold uppercase tracking-widest sticky top-32 text-mono-dark-grey">
+                        <span class="en-content">Experience</span>
+                        <span class="ko-content">경력</span>
+                    </h2>
+                </div>
+                <div class="md:col-span-9 space-y-12">
+
+                    <!-- Kakao -->
+                    <article
+                        class="experience-item grid grid-cols-1 md:grid-cols-8 gap-4 border-b border-gray-100 pb-8 last:border-0 opacity-0 translate-y-10">
+                        <div class="md:col-span-2 font-sans text-[10px] text-mono-dark-grey uppercase tracking-wide">
+                            2022 — <span class="en-content">Present</span><span class="ko-content">현재</span>
+                        </div>
+                        <div class="md:col-span-6">
+                            <h3 class="font-serif text-2xl mb-1">
+                                <span class="en-content">Kakao Corp.</span><span class="ko-content">카카오</span>
+                            </h3>
+                            <p class="font-sans text-xs font-medium mb-2 text-mono-dark-grey uppercase tracking-wider">
+                                <span class="en-content">Service Planning Team Lead</span><span
+                                    class="ko-content">서비스기획팀 팀장</span>
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- Toss -->
+                    <article
+                        class="experience-item grid grid-cols-1 md:grid-cols-8 gap-4 border-b border-gray-100 pb-8 last:border-0 opacity-0 translate-y-10">
+                        <div class="md:col-span-2 font-sans text-[10px] text-mono-dark-grey uppercase tracking-wide">
+                            2019 — 2022
+                        </div>
+                        <div class="md:col-span-6">
+                            <h3 class="font-serif text-2xl mb-1">
+                                <span class="en-content">Toss</span><span class="ko-content">토스</span>
+                            </h3>
+                            <p class="font-sans text-xs font-medium mb-2 text-mono-dark-grey uppercase tracking-wider">
+                                Product Manager
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- Naver -->
+                    <article
+                        class="experience-item grid grid-cols-1 md:grid-cols-8 gap-4 border-b border-gray-100 pb-8 last:border-0 opacity-0 translate-y-10">
+                        <div class="md:col-span-2 font-sans text-[10px] text-mono-dark-grey uppercase tracking-wide">
+                            2016 — 2019
+                        </div>
+                        <div class="md:col-span-6">
+                            <h3 class="font-serif text-2xl mb-1">
+                                <span class="en-content">Naver</span><span class="ko-content">네이버</span>
+                            </h3>
+                            <p class="font-sans text-xs font-medium mb-2 text-mono-dark-grey uppercase tracking-wider">
+                                <span class="en-content">Service Planner</span><span class="ko-content">서비스 기획자</span>
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- Woowa Bros -->
+                    <article
+                        class="experience-item grid grid-cols-1 md:grid-cols-8 gap-4 border-b border-gray-100 pb-8 last:border-0 opacity-0 translate-y-10">
+                        <div class="md:col-span-2 font-sans text-[10px] text-mono-dark-grey uppercase tracking-wide">
+                            2014 — 2016
+                        </div>
+                        <div class="md:col-span-6">
+                            <h3 class="font-serif text-2xl mb-1">
+                                <span class="en-content">Woowa Bros (Baemin)</span><span
+                                    class="ko-content">우아한형제들</span>
+                            </h3>
+                            <p class="font-sans text-xs font-medium mb-2 text-mono-dark-grey uppercase tracking-wider">
+                                <span class="en-content">Junior Planner</span><span class="ko-content">주니어 기획자</span>
+                            </p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <div class="hairline w-full mb-16 md:mb-24 scale-x-0 origin-left" id="divider-2"></div>
+
+        <!-- Detailed Projects Section -->
+        <section class="mb-32" id="projects">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16">
+                <div class="md:col-span-3">
+                    <h2
+                        class="font-sans text-[10px] font-bold uppercase tracking-widest sticky top-32 text-mono-dark-grey">
+                        <span class="en-content">Major Projects</span>
+                        <span class="ko-content">주요 프로젝트</span>
+                    </h2>
+                </div>
+                <div class="md:col-span-9 space-y-20">
+
+                    <!-- 2024 -->
+                    <div class="project-year-group opacity-0 translate-y-10">
+                        <h3 class="font-serif text-4xl mb-8 border-b border-black pb-2 inline-block">2024</h3>
+                        <div class="space-y-10">
+                            <div class="project-item">
+                                <h4 class="font-bold text-lg mb-2"><span class="en-content">KakaoTalk Gift
+                                        Personalization System</span><span class="ko-content">카카오톡 선물하기 개인화 추천 시스템
+                                        기획</span></h4>
+                                <ul
+                                    class="list-disc list-inside font-sans text-sm text-mono-dark-grey leading-relaxed space-y-1">
+                                    <li><span class="en-content">Designed purchase history-based recommendation
+                                            algorithm, improved conversion by 23%</span><span class="ko-content">구매 이력
+                                            기반 추천 알고리즘 설계, 전환율 23% 향상</span></li>
+                                    <li><span class="en-content">Established UI branching strategies tailored to user
+                                            segments</span><span class="ko-content">사용자 세그먼트별 UI 분기 전략 수립</span></li>
+                                </ul>
+                            </div>
+                            <div class="project-item">
+                                <h4 class="font-bold text-lg mb-2"><span class="en-content">Kakao Commerce Live Shopping
+                                        Launch</span><span class="ko-content">카카오 커머스 라이브쇼핑 서비스 런칭</span></h4>
+                                <ul
+                                    class="list-disc list-inside font-sans text-sm text-mono-dark-grey leading-relaxed space-y-1">
+                                    <li><span class="en-content">Defined real-time commerce features and designed
+                                            MVP</span><span class="ko-content">실시간 커머스 기능 정의 및 MVP 설계</span></li>
+                                    <li><span class="en-content">Achieved 1.2M MAU within 3 months</span><span
+                                            class="ko-content">3개월 만에 MAU 120만 달성</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2023 -->
+                    <div class="project-year-group opacity-0 translate-y-10">
+                        <h3 class="font-serif text-4xl mb-8 border-b border-black pb-2 inline-block">2023</h3>
+                        <div class="space-y-10">
+                            <div class="project-item">
+                                <h4 class="font-bold text-lg mb-2"><span class="en-content">KakaoTalk Channel Business
+                                        Tool Enhancement</span><span class="ko-content">카카오톡 채널 비즈니스 도구 고도화</span></h4>
+                                <ul
+                                    class="list-disc list-inside font-sans text-sm text-mono-dark-grey leading-relaxed space-y-1">
+                                    <li><span class="en-content">Small business dashboard renewal planning</span><span
+                                            class="ko-content">소상공인 대시보드 리뉴얼 기획</span></li>
+                                    <li><span class="en-content">Conducted usability testing (5 rounds), reduced churn
+                                            by 35%</span><span class="ko-content">사용성 테스트 5회 진행, 이탈률 35% 감소</span></li>
+                                </ul>
+                            </div>
+                            <div class="project-item">
+                                <h4 class="font-bold text-lg mb-2"><span class="en-content">Kakao AI Chatbot Service
+                                        Planning</span><span class="ko-content">카카오 AI 챗봇 서비스 기획</span></h4>
+                                <ul
+                                    class="list-disc list-inside font-sans text-sm text-mono-dark-grey leading-relaxed space-y-1">
+                                    <li><span class="en-content">Authored GPT-based customer service chatbot functional
+                                            specs</span><span class="ko-content">GPT 기반 고객 응대 챗봇 기능 명세 작성</span></li>
+                                    <li><span class="en-content">Reduced CS volume by 40%</span><span
+                                            class="ko-content">CS 인입량 40% 감소 달성</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2022 -->
+                    <div class="project-year-group opacity-0 translate-y-10">
+                        <h3 class="font-serif text-4xl mb-8 border-b border-black pb-2 inline-block">2022</h3>
+                        <div class="space-y-10">
+                            <div class="project-item">
+                                <h4 class="font-bold text-lg mb-2"><span class="en-content">Kakao Melon Playlist
+                                        Curation Update</span><span class="ko-content">카카오 멜론 플레이리스트 큐레이션 개편</span></h4>
+                                <ul
+                                    class="list-disc list-inside font-sans text-sm text-mono-dark-grey leading-relaxed space-y-1">
+                                    <li><span class="en-content">Designed personalization logic based on listening
+                                            patterns</span><span class="ko-content">청취 패턴 분석 기반 개인화 로직 설계</span></li>
+                                    <li><span class="en-content">Increased daily average plays by 18%</span><span
+                                            class="ko-content">일 평균 재생 수 18% 증가</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2021 -->
+                    <div class="project-year-group opacity-0 translate-y-10">
+                        <h3 class="font-serif text-4xl mb-8 border-b border-black pb-2 inline-block">2021</h3>
+                        <div class="space-y-10">
+                            <div class="project-item">
+                                <h4 class="font-bold text-lg mb-2"><span class="en-content">Toss Stock: Novice Investor
+                                        Onboarding</span><span class="ko-content">토스 주식 서비스 초보 투자자 온보딩 설계</span></h4>
+                                <ul
+                                    class="list-disc list-inside font-sans text-sm text-mono-dark-grey leading-relaxed space-y-1">
+                                    <li><span class="en-content">Identified churn points via funnel analysis and
+                                            improved UX</span><span class="ko-content">퍼널 분석으로 이탈 구간 식별 및 UX 개선</span>
+                                    </li>
+                                    <li><span class="en-content">Improved first investment conversion by 31% after
+                                            signup</span><span class="ko-content">신규 가입 후 첫 투자 전환율 31% 향상</span></li>
+                                </ul>
+                            </div>
+                            <div class="project-item">
+                                <h4 class="font-bold text-lg mb-2"><span class="en-content">Toss Insurance Comparison
+                                        MVP</span><span class="ko-content">토스 보험 비교 서비스 MVP 기획</span></h4>
+                                <ul
+                                    class="list-disc list-inside font-sans text-sm text-mono-dark-grey leading-relaxed space-y-1">
+                                    <li><span class="en-content">Designed insurance company API integration
+                                            structure</span><span class="ko-content">보험사 API 연동 구조 설계</span></li>
+                                    <li><span class="en-content">Achieved 150k conversions within 2 months of
+                                            launch</span><span class="ko-content">런칭 2개월 내 가입 전환 15만 건 달성</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2020 -->
+                    <div class="project-year-group opacity-0 translate-y-10">
+                        <h3 class="font-serif text-4xl mb-8 border-b border-black pb-2 inline-block">2020</h3>
+                        <div class="space-y-10">
+                            <div class="project-item">
+                                <h4 class="font-bold text-lg mb-2"><span class="en-content">Toss Remittance UX
+                                        Renewal</span><span class="ko-content">토스 송금 UX 리뉴얼 기획</span></h4>
+                                <ul
+                                    class="list-disc list-inside font-sans text-sm text-mono-dark-grey leading-relaxed space-y-1">
+                                    <li><span class="en-content">Derived pain points from 30 user interviews</span><span
+                                            class="ko-content">사용자 인터뷰 30건 기반 페인포인트 도출</span></li>
+                                    <li><span class="en-content">Reduced average clicks to completion from 5 to
+                                            3</span><span class="ko-content">송금 완료까지 평균 탭 수 5회 → 3회로 단축</span></li>
+                                </ul>
+                            </div>
+                            <div class="project-item">
+                                <h4 class="font-bold text-lg mb-2"><span class="en-content">Toss Ledger
+                                        Auto-Categorization</span><span class="ko-content">토스 가계부 자동 분류 기능 기획</span>
+                                </h4>
+                                <ul
+                                    class="list-disc list-inside font-sans text-sm text-mono-dark-grey leading-relaxed space-y-1">
+                                    <li><span class="en-content">Defined category auto-tagging logic</span><span
+                                            class="ko-content">카테고리 자동 태깅 로직 정의</span></li>
+                                    <li><span class="en-content">Achieved 62% usage rate vs MAU</span><span
+                                            class="ko-content">MAU 대비 기능 사용률 62% 달성</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2019 -->
+                    <div class="project-year-group opacity-0 translate-y-10">
+                        <h3 class="font-serif text-4xl mb-8 border-b border-black pb-2 inline-block">2019</h3>
+                        <div class="space-y-10">
+                            <div class="project-item">
+                                <h4 class="font-bold text-lg mb-2"><span class="en-content">Naver Smart Store Seller
+                                        Center Update</span><span class="ko-content">네이버 스마트스토어 판매자 센터 개편</span></h4>
+                                <ul
+                                    class="list-disc list-inside font-sans text-sm text-mono-dark-grey leading-relaxed space-y-1">
+                                    <li><span class="en-content">Redesigned sales statistics dashboard IA</span><span
+                                            class="ko-content">판매 통계 대시보드 IA 재설계</span></li>
+                                    <li><span class="en-content">Improved seller NPS by +22 points</span><span
+                                            class="ko-content">판매자 NPS 점수 +22점 향상</span></li>
+                                </ul>
+                            </div>
+                            <div class="project-item">
+                                <h4 class="font-bold text-lg mb-2"><span class="en-content">Naver Booking Service
+                                        Renewal</span><span class="ko-content">네이버 예약 서비스 리뉴얼</span></h4>
+                                <ul
+                                    class="list-disc list-inside font-sans text-sm text-mono-dark-grey leading-relaxed space-y-1">
+                                    <li><span class="en-content">Simplified booking flow (7 steps → 4 steps)</span><span
+                                            class="ko-content">예약 플로우 간소화 기획 (7단계 → 4단계)</span></li>
+                                    <li><span class="en-content">Improved booking completion rate by 28%</span><span
+                                            class="ko-content">예약 완료율 28% 향상</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2018-2014 Group (Simplified for length if needed, but keeping full as requested) -->
+                    <div class="project-year-group opacity-0 translate-y-10">
+                        <h3 class="font-serif text-4xl mb-8 border-b border-black pb-2 inline-block">2014-2018</h3>
+                        <div class="space-y-10">
+                            <div class="project-item">
+                                <span
+                                    class="text-xs font-bold bg-gray-200 px-2 py-1 rounded mb-2 inline-block">2018</span>
+                                <h4 class="font-bold text-lg mb-2"><span class="en-content">Naver Blog Editor
+                                        3.0</span><span class="ko-content">네이버 블로그 에디터 3.0 기획 참여</span></h4>
+                                <ul class="list-disc list-inside font-sans text-sm text-mono-dark-grey leading-relaxed">
+                                    <li><span class="en-content">Improved Mobile Writing UX, increased mobile publishing
+                                            to 58%</span><span class="ko-content">모바일 글쓰기 UX 개선, 모바일 발행 비율 45% → 58%
+                                            증가</span></li>
+                                </ul>
+                            </div>
+                            <div class="project-item">
+                                <span
+                                    class="text-xs font-bold bg-gray-200 px-2 py-1 rounded mb-2 inline-block">2017</span>
+                                <h4 class="font-bold text-lg mb-2"><span class="en-content">Naver Q&A (Knowledge iN)
+                                        Flow Improvement</span><span class="ko-content">네이버 지식iN 질문 작성 플로우 개선</span>
+                                </h4>
+                                <ul class="list-disc list-inside font-sans text-sm text-mono-dark-grey leading-relaxed">
+                                    <li><span class="en-content">Auto-category recommendation, +15% completion
+                                            rate</span><span class="ko-content">카테고리 자동 추천 기능 기획, 질문 등록 완료율 15%
+                                            향상</span></li>
+                                </ul>
+                            </div>
+                            <div class="project-item">
+                                <span
+                                    class="text-xs font-bold bg-gray-200 px-2 py-1 rounded mb-2 inline-block">2016</span>
+                                <h4 class="font-bold text-lg mb-2"><span class="en-content">Naver Cafe Mobile App IA
+                                        Redesign</span><span class="ko-content">네이버 카페 모바일 앱 IA 재설계</span></h4>
+                                <ul class="list-disc list-inside font-sans text-sm text-mono-dark-grey leading-relaxed">
+                                    <li><span class="en-content">Restructured information architecture and simplified
+                                            navigation</span><span class="ko-content">정보 구조 개편 및 네비게이션 단순화</span></li>
+                                </ul>
+                            </div>
+                            <div class="project-item">
+                                <span
+                                    class="text-xs font-bold bg-gray-200 px-2 py-1 rounded mb-2 inline-block">2015</span>
+                                <h4 class="font-bold text-lg mb-2"><span class="en-content">Baemin Review System
+                                        Update</span><span class="ko-content">배달의민족 리뷰 시스템 개편 기획</span></h4>
+                                <ul class="list-disc list-inside font-sans text-sm text-mono-dark-grey leading-relaxed">
+                                    <li><span class="en-content">Introduced photo reviews, doubled write
+                                            rate</span><span class="ko-content">포토리뷰 도입 및 리뷰 작성 간소화, 리뷰 작성률 2배 증가</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="project-item">
+                                <span
+                                    class="text-xs font-bold bg-gray-200 px-2 py-1 rounded mb-2 inline-block">2014</span>
+                                <h4 class="font-bold text-lg mb-2"><span class="en-content">Baemin Order Flow
+                                        Optimization</span><span class="ko-content">배달의민족 주문 플로우 최적화</span></h4>
+                                <ul class="list-disc list-inside font-sans text-sm text-mono-dark-grey leading-relaxed">
+                                    <li><span class="en-content">Cart-to-Payment funnel analysis, +12%
+                                            conversion</span><span class="ko-content">장바구니 → 결제 퍼널 분석 및 개선, 주문 전환율 12%
+                                            향상</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <div class="hairline w-full mb-16 md:mb-24 scale-x-0 origin-left" id="divider-3"></div>
+
+        <!-- Writing & Activities Section -->
+        <section class="mb-32" id="writing">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16">
+                <div class="md:col-span-3">
+                    <h2
+                        class="font-sans text-[10px] font-bold uppercase tracking-widest sticky top-32 text-mono-dark-grey">
+                        <span class="en-content">Activities & Speaking</span>
+                        <span class="ko-content">강연 및 활동</span>
+                    </h2>
+                </div>
+                <div class="md:col-span-9">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <article class="writing-item opacity-0 translate-y-10 group cursor-pointer">
+                            <p
+                                class="font-sans text-[10px] text-mono-dark-grey uppercase tracking-wide mb-2 group-hover:text-mono-black transition-colors">
+                                2024</p>
+                            <h4
+                                class="font-serif text-xl md:text-2xl mb-3 decoration-1 underline-offset-4 group-hover:underline">
+                                <span class="en-content">FastCampus "PM Bible" Launch</span>
+                                <span class="ko-content">패스트캠퍼스 "PM 실무 바이블" 런칭</span>
+                            </h4>
+                            <p
+                                class="font-sans text-sm font-light leading-relaxed text-mono-dark-grey group-hover:text-mono-black transition-colors">
+                                <span class="en-content">Online Course Instructor</span>
+                                <span class="ko-content">온라인 강의 강사</span>
+                            </p>
+                        </article>
+
+                        <article class="writing-item opacity-0 translate-y-10 group cursor-pointer">
+                            <p
+                                class="font-sans text-[10px] text-mono-dark-grey uppercase tracking-wide mb-2 group-hover:text-mono-black transition-colors">
+                                2023</p>
+                            <h4
+                                class="font-serif text-xl md:text-2xl mb-3 decoration-1 underline-offset-4 group-hover:underline">
+                                <span class="en-content">Product Camp Seoul Speaker</span>
+                                <span class="ko-content">Product Camp Seoul 연사</span>
+                            </h4>
+                            <p
+                                class="font-sans text-sm font-light leading-relaxed text-mono-dark-grey group-hover:text-mono-black transition-colors">
+                                <span class="en-content">Topic: "Persuading with Data"</span>
+                                <span class="ko-content">주제: "데이터로 설득하는 기획자"</span>
+                            </p>
+                        </article>
+
+                        <article class="writing-item opacity-0 translate-y-10 group cursor-pointer">
+                            <p
+                                class="font-sans text-[10px] text-mono-dark-grey uppercase tracking-wide mb-2 group-hover:text-mono-black transition-colors">
+                                2021</p>
+                            <h4
+                                class="font-serif text-xl md:text-2xl mb-3 decoration-1 underline-offset-4 group-hover:underline">
+                                <span class="en-content">Brunch Popular Writer</span>
+                                <span class="ko-content">브런치 인기 작가 선정</span>
+                            </h4>
+                            <p
+                                class="font-sans text-sm font-light leading-relaxed text-mono-dark-grey group-hover:text-mono-black transition-colors">
+                                <span class="en-content">"Planner's Thinking" Series (8.2k+ subscribers)</span>
+                                <span class="ko-content">"기획자의 생각법" 시리즈 (구독자 8,200명)</span>
+                            </p>
+                        </article>
+
+                        <article class="writing-item opacity-0 translate-y-10 group cursor-pointer">
+                            <p
+                                class="font-sans text-[10px] text-mono-dark-grey uppercase tracking-wide mb-2 group-hover:text-mono-black transition-colors">
+                                2020</p>
+                            <h4
+                                class="font-serif text-xl md:text-2xl mb-3 decoration-1 underline-offset-4 group-hover:underline">
+                                <span class="en-content">Google for Startups Mentor</span>
+                                <span class="ko-content">Google for Startups 멘토</span>
+                            </h4>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <div class="hairline w-full mb-16 md:mb-24 scale-x-0 origin-left" id="divider-4"></div>
+
+        <!-- Visual Portfolio Grid -->
+        <section class="mb-32" id="visual-works">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16">
+                <div class="md:col-span-3">
+                    <h2
+                        class="font-sans text-[10px] font-bold uppercase tracking-widest sticky top-32 text-mono-dark-grey">
+                        <span class="en-content">Visual Works</span>
+                        <span class="ko-content">포트폴리오</span>
+                    </h2>
+                </div>
+                <div class="md:col-span-9">
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
+                        <!-- Item 1 -->
+                        <div class="visual-item group cursor-pointer opacity-0 translate-y-10">
+                            <div class="bg-gray-100 mb-3 overflow-hidden">
+                                <img src="./images/project_thumb_1_1770981568575.png" alt="Data Visualization"
+                                    class="w-full h-auto block transition-transform duration-700 group-hover:scale-105">
+                            </div>
+                            <h4 class="font-serif text-lg leading-none">System Analytics</h4>
+                        </div>
+                        <!-- Item 2 -->
+                        <div class="visual-item group cursor-pointer opacity-0 translate-y-10">
+                            <div class="bg-gray-100 mb-3 overflow-hidden">
+                                <img src="./images/project_thumb_2_1770981583973.png" alt="Mobile App Wireframe"
+                                    class="w-full h-auto block transition-transform duration-700 group-hover:scale-105">
+                            </div>
+                            <h4 class="font-serif text-lg leading-none">Mobile Wireframe</h4>
+                        </div>
+                        <!-- Item 3 -->
+                        <div class="visual-item group cursor-pointer opacity-0 translate-y-10">
+                            <div class="bg-gray-100 mb-3 overflow-hidden">
+                                <img src="./images/project_thumb_3_1770981601808.png" alt="Dashboard UI"
+                                    class="w-full h-auto block transition-transform duration-700 group-hover:scale-105">
+                            </div>
+                            <h4 class="font-serif text-lg leading-none">Admin Dashboard</h4>
+                        </div>
+                        <!-- Item 4 -->
+                        <div class="visual-item group cursor-pointer opacity-0 translate-y-10">
+                            <div class="bg-gray-100 mb-3 overflow-hidden">
+                                <img src="./images/project_thumb_4_1770981619239.png" alt="Process Flow"
+                                    class="w-full h-auto block transition-transform duration-700 group-hover:scale-105">
+                            </div>
+                            <h4 class="font-serif text-lg leading-none">Process Logic</h4>
+                        </div>
+                        <!-- Item 5 (Reusing 1) -->
+                        <div class="visual-item group cursor-pointer opacity-0 translate-y-10">
+                            <div class="bg-gray-100 mb-3 overflow-hidden">
+                                <img src="./images/project_thumb_1_1770981568575.png" alt="Data Visualization"
+                                    class="w-full h-auto block transition-transform duration-700 group-hover:scale-105"
+                                    style="filter: hue-rotate(45deg);">
+                            </div>
+                            <h4 class="font-serif text-lg leading-none">Market Analysis</h4>
+                        </div>
+                        <!-- Item 6 (Reusing 2) -->
+                        <div class="visual-item group cursor-pointer opacity-0 translate-y-10">
+                            <div class="bg-gray-100 mb-3 overflow-hidden">
+                                <img src="./images/project_thumb_2_1770981583973.png" alt="Mobile App Wireframe"
+                                    class="w-full h-auto block transition-transform duration-700 group-hover:scale-105"
+                                    style="filter: contrast(1.2);">
+                            </div>
+                            <h4 class="font-serif text-lg leading-none">User Journey</h4>
+                        </div>
+                    </div>
+                    style="filter: contrast(1.2);">
+                </div>
+                <h4 class="font-serif text-lg leading-none">User Journey</h4>
+            </div>
+            </div>
+            </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-mono-grey pt-16 pb-16 px-6 md:px-16 -mx-6 md:-mx-16 mb-[-100px]" id="contact">
+            <div class="max-w-[1600px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-12">
+                <div class="md:col-span-4">
+                    <h5
+                        class="font-sans text-[10px] font-bold uppercase tracking-widest mb-6 border-b border-gray-300 pb-2">
+                        <span class="en-content">Education</span><span class="ko-content">학력</span>
+                    </h5>
+                    <div class="flex justify-between items-baseline mb-1">
+                        <span class="font-serif text-lg">
+                            <span class="en-content">Hanyang University</span><span class="ko-content">한양대학교</span>
+                        </span>
+                        <span class="font-sans text-xs text-mono-dark-grey">2010 ~ 2014</span>
+                    </div>
+                    <p class="font-sans text-sm font-light text-mono-dark-grey">
+                        <span class="en-content">B.A. Media & Communication</span><span
+                            class="ko-content">미디어커뮤니케이션학과</span>
+                    </p>
+                </div>
+                <div class="md:col-span-4">
+                    <h5
+                        class="font-sans text-[10px] font-bold uppercase tracking-widest mb-6 border-b border-gray-300 pb-2">
+                        <span class="en-content">Certifications</span><span class="ko-content">자격 및 교육</span>
+                    </h5>
+                    <ul class="font-sans text-sm font-light leading-relaxed space-y-1">
+                        <li>CSPO (Certified Scrum Product Owner)</li>
+                        <li>Google UX Design Certificate</li>
+                        <li><span class="en-content">Advanced SQL (K-Data)</span><span class="ko-content">SQL 고급 활용
+                                (한국데이터산업진흥원)</span></li>
+                        <li>Amplitude Analytics Certificate</li>
+                    </ul>
+                </div>
+                <div class="md:col-span-4">
+                    <h5
+                        class="font-sans text-[10px] font-bold uppercase tracking-widest mb-6 border-b border-gray-300 pb-2">
+                        <span class="en-content">Contact</span><span class="ko-content">연락처</span>
+                    </h5>
+                    <div class="flex flex-col space-y-2 font-serif text-xl">
+                        <a class="hover:text-mono-dark-grey transition-colors"
+                            href="https://linkedin.com/in/jihyeyoon-pm" target="_blank">LinkedIn ↗</a>
+                        <a class="hover:text-mono-dark-grey transition-colors" href="mailto:jihye.yoon@gmail.com">Email
+                            ↗</a>
+                        <a class="hover:text-mono-dark-grey transition-colors" href="https://brunch.co.kr/@jihye-plan"
+                            target="_blank">Brunch ↗</a>
+                    </div>
+                    <p class="font-mono text-xs text-mono-dark-grey mt-4">jihye.yoon@gmail.com</p>
+                    <p class="font-mono text-xs text-mono-dark-grey">010-9172-3385</p>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        // Language Toggle Logic
+        function setLanguage(lang) {
+            document.body.classList.remove('lang-en', 'lang-ko');
+            document.body.classList.add('lang-' + lang);
+
+            // Update Toggle Button Styles
+            document.getElementById('btn-ko').classList.toggle('lang-active', lang === 'ko');
+            document.getElementById('btn-ko').classList.toggle('opacity-30', lang !== 'ko');
+
+            document.getElementById('btn-en').classList.toggle('lang-active', lang === 'en');
+            document.getElementById('btn-en').classList.toggle('opacity-30', lang !== 'en');
+
+            // Save preference
+            localStorage.setItem('preferredLanguage_v2', lang);
+
+            // Refresh ScrollTrigger to adjust for height changes
+            setTimeout(() => {
+                ScrollTrigger.refresh();
+            }, 100);
+        }
+
+        // Initialize based on saved preference or default to Korean
+        const savedLang = localStorage.getItem('preferredLanguage_v2') || 'ko';
+        setLanguage(savedLang);
+
+        // Initialize Lenis for smooth scroll
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+
+        // Register ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Animations
+        window.addEventListener('load', () => {
+
+            // Hero Reveal
+            const tl = gsap.timeline();
+            tl.to('.hero-text', {
+                opacity: 1,
+                y: 0,
+                duration: 1.2,
+                ease: 'power3.out',
+                delay: 0.2
+            })
+                .to('.bg-reveal', {
+                    opacity: 1,
+                    duration: 1,
+                    ease: 'power2.out'
+                }, '-=0.8')
+                .to('#divider-1', {
+                    scaleX: 1,
+                    duration: 1.5,
+                    ease: 'expo.out'
+                }, '-=0.5');
+
+            // Experience Items Reveal
+            gsap.utils.toArray('.experience-item').forEach((item, i) => {
+                gsap.to(item, {
+                    scrollTrigger: {
+                        trigger: item,
+                        start: 'top 90%',
+                    },
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    ease: 'power2.out'
+                });
+            });
+
+            // Dividers Reveal
+            gsap.utils.toArray('[id^="divider-"]').forEach((divider) => {
+                if (divider.id === 'divider-1') return; // Already handled
+                gsap.to(divider, {
+                    scrollTrigger: {
+                        trigger: divider,
+                        start: 'top 90%',
+                    },
+                    scaleX: 1,
+                    duration: 1.5,
+                    ease: 'expo.out'
+                });
+            });
+
+            // Project Groups Reveal
+            gsap.utils.toArray('.project-year-group').forEach((group, i) => {
+                gsap.to(group, {
+                    scrollTrigger: {
+                        trigger: group,
+                        start: 'top 85%',
+                    },
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    ease: 'power3.out'
+                });
+            });
+
+            // Writing Items Reveal
+            gsap.utils.toArray('.writing-item').forEach((item, i) => {
+                gsap.to(item, {
+                    scrollTrigger: {
+                        trigger: item,
+                        start: 'top 90%',
+                    },
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    ease: 'power2.out',
+                });
+            });
+
+            // Visual Items Reveal
+            gsap.utils.toArray('.visual-item').forEach((item, i) => {
+                gsap.to(item, {
+                    scrollTrigger: {
+                        trigger: item,
+                        start: 'top 90%',
+                    },
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    ease: 'power2.out',
+                    delay: (i % 3) * 0.1 // Stagger based on column index
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

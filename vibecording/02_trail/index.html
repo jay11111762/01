@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMAGE TRAIL — SABUM BYUN</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #050505;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #fff;
+        }
+
+        canvas {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .description-container {
+            position: absolute;
+            left: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 280px;
+            color: #ffffff;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 11px;
+            line-height: 1.5;
+            text-align: left;
+            pointer-events: none;
+            mix-blend-mode: difference;
+            white-space: pre-wrap;
+            z-index: 999;
+        }
+
+        .desc-title {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+
+        .desc-body {
+            display: block;
+            color: #ccc;
+        }
+
+        .mode-indicator {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            pointer-events: none;
+            z-index: 999;
+        }
+    </style>
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sabum.me/03_Playground/lab_trail.html">
+    <meta property="og:title" content="IMAGE TRAIL — SABUM BYUN - SABUM Lab">
+    <meta property="og:description" content="Interactive visual experiment by SABUM">
+    <meta property="og:image" content="https://sabum.me/assets/og-lab.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="IMAGE TRAIL — SABUM BYUN - SABUM Lab">
+    <meta name="twitter:description" content="Interactive visual experiment by SABUM">
+    <meta name="twitter:image" content="https://sabum.me/assets/og-lab.png">
+</head>
+
+<body>
+
+    <div id="description-container" class="description-container">
+        <span id="desc-title" class="desc-title"></span>
+        <span id="desc-body" class="desc-body"></span>
+    </div>
+
+    <div id="mode-indicator" class="mode-indicator">CLICK TO TOGGLE MODE</div>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        // ============ Text Scramble ============
+        class TextScramble {
+            constructor(el) {
+                this.el = el;
+                this.chars = '!<>-_\\/[]{}—=+*^?#';
+                this.update = this.update.bind(this);
+            }
+            setText(newText) {
+                const oldText = this.el.innerText;
+                const length = Math.max(oldText.length, newText.length);
+                const promise = new Promise((resolve) => this.resolve = resolve);
+                this.queue = [];
+                for (let i = 0; i < length; i++) {
+                    const from = oldText[i] || '';
+                    const to = newText[i] || '';
+                    const start = Math.floor(Math.random() * 40);
+                    const end = start + Math.floor(Math.random() * 40);
+                    this.queue.push({ from, to, start, end });
+                }
+                cancelAnimationFrame(this.frameRequest);
+                this.frame = 0;
+                this.update();
+                return promise;
+            }
+            update() {
+                let output = '';
+                let complete = 0;
+                for (let i = 0, n = this.queue.length; i < n; i++) {
+                    let { from, to, start, end, char } = this.queue[i];
+                    if (this.frame >= end) { complete++; output += to; }
+                    else if (this.frame >= start) {
+                        if (!char || Math.random() < 0.28) { char = this.chars[Math.floor(Math.random() * this.chars.length)]; this.queue[i].char = char; }
+                        output += `<span class="dud">${char}</span>`;
+                    } else { output += from; }
+                }
+                this.el.innerHTML = output;
+                if (complete === this.queue.length) { this.resolve(); }
+                else { this.frameRequest = requestAnimationFrame(this.update); this.frame++; }
+            }
+        }
+
+        // ============ Configuration ============
+        const CONFIG = {
+            MAX_TRAIL_VISIBLE: 14,
+            IMAGE_SIZE: 0.15, // 15% of screen
+            SPAWN_DISTANCE: 80
+        };
+
+        // ============ State ============
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let imagePool = [];
+        let trailImages = [];
+        let trailCursor = 0;
+        let lastTrailX = 0;
+        let lastTrailY = 0;
+        let mode = 'trail'; // 'trail' or 'grid'
+        let mouse = { x: null, y: null };
+
+        // ============ TrailImage Class ============
+        class TrailImage {
+            constructor(img, x, y) {
+                this.img = img;
+                this.x = x;
+                this.y = y;
+                this.rotation = (Math.random() - 0.5) * 0.4;
+                this.scale = 0;
+                this.targetScale = 1;
+                this.alpha = 0;
+                this.targetAlpha = 1;
+                this.isFading = false;
+                this.flashAlpha = 1.0;
+
+                // Grid mode properties
+                this.gridX = 0;
+                this.gridY = 0;
+                this.gridRotation = (Math.random() - 0.5) * 0.5;
+                this.gridScale = 0.8 + Math.random() * 0.4;
+            }
+
+            render() {
+                if (this.alpha < 0.001) return;
+
+                const baseSize = Math.min(canvas.width, canvas.height) * CONFIG.IMAGE_SIZE;
+                const aspect = this.img.width / this.img.height;
+                const w = baseSize;
+                const h = baseSize / aspect;
+
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                ctx.scale(this.scale, this.scale);
+
+                // 1. Premium Shadow
+                ctx.save();
+                ctx.globalAlpha = this.alpha * 0.5;
+                ctx.shadowColor = 'rgba(0,0,0,0.8)';
+                ctx.shadowBlur = 30;
+                ctx.shadowOffsetY = 15;
+                ctx.fillStyle = '#000';
+                ctx.fillRect(-w / 2, -h / 2, w, h);
+                ctx.restore();
+
+                // 2. Main Image
+                ctx.globalAlpha = this.alpha;
+                ctx.drawImage(this.img, -w / 2, -h / 2, w, h);
+
+                // 3. White Flash Overlay
+                if (this.flashAlpha > 0.01) {
+                    ctx.globalAlpha = this.alpha * this.flashAlpha;
+                    ctx.fillStyle = 'white';
+                    ctx.fillRect(-w / 2, -h / 2, w, h);
+                }
+
+                // 4. Subtle Border
+                ctx.globalAlpha = this.alpha;
+                ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(-w / 2, -h / 2, w, h);
+
+                ctx.restore();
+            }
+
+            update(targetX, targetY, index) {
+                const ease = 0.18 - (index * 0.008);
+                this.x += (targetX - this.x) * Math.max(0.02, ease);
+                this.y += (targetY - this.y) * Math.max(0.02, ease);
+
+                this.alpha += (this.targetAlpha - this.alpha) * 0.3;
+                this.scale += (this.targetScale - this.scale) * 0.3;
+
+                this.flashAlpha *= 0.88;
+                this.rotation += Math.sin(Date.now() * 0.002 + index) * 0.001;
+            }
+
+            fadeOut() {
+                this.isFading = true;
+                this.targetAlpha = 0;
+                this.targetScale = 0.2;
+            }
+        }
+
+        // ============ Grid Calculation ============
+        function calculateGrid() {
+            if (trailImages.length === 0) return;
+
+            const centerX = mouse.x || canvas.width / 2;
+            const centerY = mouse.y || canvas.height / 2;
+            const count = trailImages.length;
+            const baseRadius = 160;
+            const radiusStep = 150;
+
+            for (let i = 0; i < trailImages.length; i++) {
+                const angle = (i / count) * Math.PI * 2 * 3;
+                const ringIndex = Math.floor(i / 6);
+                const radius = baseRadius + ringIndex * radiusStep;
+
+                const baseX = centerX + Math.cos(angle + ringIndex * 0.5) * radius;
+                const baseY = centerY + Math.sin(angle + ringIndex * 0.5) * radius;
+
+                const offsetX = (Math.random() - 0.5) * 50;
+                const offsetY = (Math.random() - 0.5) * 40;
+
+                trailImages[i].gridX = Math.max(80, Math.min(canvas.width - 80, baseX + offsetX));
+                trailImages[i].gridY = Math.max(80, Math.min(canvas.height - 80, baseY + offsetY));
+                trailImages[i].gridRotation = (Math.random() - 0.5) * 0.5;
+                trailImages[i].gridScale = 0.8 + Math.random() * 0.4;
+            }
+        }
+
+        // ============ Animation Loop ============
+        function animate() {
+            requestAnimationFrame(animate);
+
+            ctx.fillStyle = '#050505';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            if (mode === 'trail') {
+                // Trail Mode
+                if (mouse.x !== null) {
+                    const dx = mouse.x - lastTrailX;
+                    const dy = mouse.y - lastTrailY;
+                    const distMoved = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distMoved > CONFIG.SPAWN_DISTANCE) {
+                        lastTrailX = mouse.x;
+                        lastTrailY = mouse.y;
+
+                        const nextImg = imagePool[trailCursor % imagePool.length];
+                        const newHead = new TrailImage(nextImg, mouse.x, mouse.y);
+                        trailImages.unshift(newHead);
+                        trailCursor++;
+
+                        const visibleCount = trailImages.filter(img => !img.isFading).length;
+                        if (visibleCount > CONFIG.MAX_TRAIL_VISIBLE) {
+                            for (let i = trailImages.length - 1; i >= 0; i--) {
+                                if (!trailImages[i].isFading) {
+                                    trailImages[i].fadeOut();
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    for (let i = 0; i < trailImages.length; i++) {
+                        const img = trailImages[i];
+                        const targetX = (i === 0) ? mouse.x : trailImages[i - 1].x;
+                        const targetY = (i === 0) ? mouse.y : trailImages[i - 1].y;
+                        img.update(targetX, targetY, i);
+                    }
+
+                    trailImages = trailImages.filter(img => img.alpha > 0.01 || !img.isFading);
+                }
+            } else {
+                // Grid Mode
+                for (let i = 0; i < trailImages.length; i++) {
+                    const img = trailImages[i];
+                    const ease = 0.08;
+                    img.x += (img.gridX - img.x) * ease;
+                    img.y += (img.gridY - img.y) * ease;
+                    img.rotation += (img.gridRotation - img.rotation) * ease;
+                    img.scale += (img.gridScale - img.scale) * ease;
+                    img.alpha += (1 - img.alpha) * 0.1;
+                    img.flashAlpha *= 0.88;
+                }
+            }
+
+            // Render (Tail to Head)
+            for (let i = trailImages.length - 1; i >= 0; i--) {
+                trailImages[i].render();
+            }
+        }
+
+        // ============ Init ============
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        // ============ Events ============
+        canvas.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        // 터치 이벤트 추가
+        canvas.addEventListener('touchmove', (e) => {
+            if (e.touches.length) {
+                mouse.x = e.touches[0].clientX;
+                mouse.y = e.touches[0].clientY;
+            }
+        }, { passive: true });
+
+        canvas.addEventListener('touchstart', (e) => {
+            if (e.touches.length) {
+                mouse.x = e.touches[0].clientX;
+                mouse.y = e.touches[0].clientY;
+            }
+        }, { passive: true });
+
+        canvas.addEventListener('click', () => {
+            if (trailImages.length > 0) {
+                if (mode === 'trail') {
+                    mode = 'grid';
+                    calculateGrid();
+                } else {
+                    mode = 'trail';
+                }
+                document.getElementById('mode-indicator').textContent =
+                    mode === 'trail' ? 'TRAIL MODE — CLICK TO TOGGLE' : 'GRID MODE — CLICK TO TOGGLE';
+            }
+        });
+
+        window.addEventListener('resize', init);
+
+        // ============ Generate Images (self-contained) ============
+        const palettes = [
+            ['#FF6B6B', '#FFA07A'], ['#4ECDC4', '#2C3E50'], ['#F7DC6F', '#F39C12'],
+            ['#BB8FCE', '#6C3483'], ['#5DADE2', '#1B4F72'], ['#58D68D', '#1E8449'],
+            ['#EC7063', '#922B21'], ['#AED6F1', '#2E86C1'], ['#F0B27A', '#CA6F1E'],
+            ['#D7BDE2', '#7D3C98'], ['#82E0AA', '#239B56'], ['#F1948A', '#C0392B'],
+            ['#85C1E9', '#2874A6'], ['#FAD7A0', '#E67E22']
+        ];
+        for (let i = 0; i < 14; i++) {
+            const offCanvas = document.createElement('canvas');
+            offCanvas.width = 400; offCanvas.height = 300;
+            const offCtx = offCanvas.getContext('2d');
+            const [c1, c2] = palettes[i];
+            const angle = Math.random() * Math.PI * 2;
+            const grad = offCtx.createLinearGradient(
+                200 + Math.cos(angle) * 200, 150 + Math.sin(angle) * 150,
+                200 - Math.cos(angle) * 200, 150 - Math.sin(angle) * 150
+            );
+            grad.addColorStop(0, c1); grad.addColorStop(1, c2);
+            offCtx.fillStyle = grad;
+            offCtx.fillRect(0, 0, 400, 300);
+            // Add subtle noise texture
+            for (let n = 0; n < 800; n++) {
+                offCtx.fillStyle = `rgba(255,255,255,${Math.random() * 0.08})`;
+                offCtx.fillRect(Math.random() * 400, Math.random() * 300, 2, 2);
+            }
+            const img = new Image();
+            img.src = offCanvas.toDataURL();
+            imagePool.push(img);
+        }
+        // Description Animation
+        const titleEl = document.getElementById('desc-title');
+        const bodyEl = document.getElementById('desc-body');
+        if (titleEl && bodyEl) {
+            const fxTitle = new TextScramble(titleEl);
+            const fxBody = new TextScramble(bodyEl);
+            setTimeout(() => {
+                fxTitle.setText('IMAGE TRAIL').then(() => {
+                    setTimeout(() => {
+                        fxBody.setText(`
+Sequential frames follow cursor trajectory,
+creating serpentine patterns.
+
+Click to toggle between
+TRAIL and GRID layouts.
+
+Move your mouse to spawn images.`);
+                    }, 500);
+                });
+            }, 500);
+        }
+
+        // Start
+        init();
+        animate();
+    </script>
+</body>
+
+</html>

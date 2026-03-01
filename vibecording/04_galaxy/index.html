@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" type="image/png" href="../Assets/favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxy Scroll - Lab</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            overflow: hidden;
+            height: 100vh;
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .description-container {
+            position: fixed;
+            left: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 280px;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            line-height: 1.6;
+            pointer-events: none;
+            mix-blend-mode: difference;
+            white-space: pre-wrap;
+            z-index: 999;
+        }
+
+        .desc-title {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+
+        .desc-body {
+            display: block;
+            color: #ccc;
+        }
+
+        .dud {
+            color: #757575;
+        }
+
+        /* 모바일 최적화 */
+        @media (max-width: 768px) {
+            .description-container {
+                display: none;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sabum.me/03_Playground/lab_galaxy.html">
+    <meta property="og:title" content="Galaxy Scroll - SABUM Lab">
+    <meta property="og:description" content="Interactive visual experiment by SABUM">
+    <meta property="og:image" content="https://sabum.me/assets/og-lab.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Galaxy Scroll - SABUM Lab">
+    <meta name="twitter:description" content="Interactive visual experiment by SABUM">
+    <meta name="twitter:image" content="https://sabum.me/assets/og-lab.png">
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="description-container">
+        <span id="desc-title" class="desc-title"></span>
+        <span id="desc-body" class="desc-body"></span>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        let galaxyChars = [];
+        let charCache = {};
+        let galaxyScrollY = 0;
+        let galaxyLastScrollY = 0;
+        let galaxyScrollSpeed = 0;
+        const GALAXY_SCROLL_RANGE = 3000;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', () => { resizeCanvas(); init(); });
+
+        class GalaxyChar {
+            constructor(char, targetX, targetY, size, index, totalChars) {
+                this.char = char;
+                this.targetX = targetX;
+                this.targetY = targetY;
+                this.size = size;
+                this.index = index;
+                this.totalChars = totalChars;
+                this.arrivalOffset = (index / totalChars) * 0.6;
+
+                const angle = Math.random() * Math.PI * 2;
+                const dist = 100 + Math.random() * Math.max(canvas.width, canvas.height) * 0.6;
+                this.scatterX = canvas.width / 2 + Math.cos(angle) * dist;
+                this.scatterY = canvas.height / 2 + Math.sin(angle) * dist;
+                this.x = this.scatterX;
+                this.y = this.scatterY;
+
+                this.orbitAngle = angle;
+                this.orbitSpeed = 0.0003 + Math.random() * 0.0003;
+                this.orbitRadius = dist;
+                this.rotation = Math.random() * Math.PI * 2;
+                this.targetRotation = 0;
+                this.spinSpeed = (Math.random() - 0.5) * 0.02;
+                this.vx = 0;
+                this.vy = 0;
+
+                this.scatterOutOffset = Math.random() * 0.7;
+                this.scatterOutX = 100 + Math.random() * (canvas.width - 200);
+                this.scatterOutY = -300 - Math.random() * 400;
+
+                const midOutX = (this.targetX + this.scatterOutX) / 2;
+                const midOutY = (this.targetY + this.scatterOutY) / 2;
+                const outCpOffset = 100 + Math.random() * 200;
+                const outCpAngle = Math.random() * Math.PI * 2;
+                this.outControlX = midOutX + Math.cos(outCpAngle) * outCpOffset;
+                this.outControlY = midOutY + Math.sin(outCpAngle) * outCpOffset;
+
+                this.trail = [];
+                this.pathType = Math.floor(Math.random() * 3);
+
+                const midX = (this.scatterX + this.targetX) / 2;
+                const midY = (this.scatterY + this.targetY) / 2;
+                const cpOffset = 100 + Math.random() * 200;
+                const cpAngle = Math.random() * Math.PI * 2;
+                this.controlX = midX + Math.cos(cpAngle) * cpOffset;
+                this.controlY = midY + Math.sin(cpAngle) * cpOffset;
+
+                this.sineAmplitude = 30 + Math.random() * 50;
+                this.sineFrequency = 2 + Math.random() * 3;
+                this.getBitmap();
+            }
+
+            getBitmap(useRed = false, renderSize = null) {
+                const sz = renderSize || this.size;
+                const colorKey = useRed ? 'red' : 'white';
+                const key = `galaxy-${this.char}-${Math.round(sz)}-${colorKey}`;
+                if (!charCache[key]) {
+                    const padding = 4;
+                    const c = document.createElement('canvas');
+                    c.width = sz + padding * 2;
+                    c.height = sz + padding * 2;
+                    const cctx = c.getContext('2d');
+                    cctx.fillStyle = useRed ? '#ff3333' : '#ffffff';
+                    cctx.font = `700 ${sz}px "Inter", -apple-system, sans-serif`;
+                    cctx.textAlign = 'center';
+                    cctx.textBaseline = 'middle';
+                    cctx.fillText(this.char, c.width / 2, c.height / 2);
+                    charCache[key] = c;
+                }
+                return charCache[key];
+            }
+
+            update(progress, scrollSpeed) {
+                const scrollY = progress * 3000;
+                const p1 = Math.min(1, scrollY / 1500);
+                const WORD_TRAVEL_TIME = 0.3;
+                const arrivalProgress = Math.max(0, Math.min(1, (p1 - this.arrivalOffset) / WORD_TRAVEL_TIME));
+                const easing1 = arrivalProgress * arrivalProgress * (3 - 2 * arrivalProgress);
+
+                const pExit = Math.min(1, Math.max(0, (scrollY - 1500) / 1500));
+                const exitEasing = pExit * pExit * (3 - 2 * pExit);
+                const driftY = -200 * exitEasing;
+
+                const SCATTER_OUT_TIME = 0.4;
+                const scatterOutP = Math.max(0, Math.min(1, (pExit - this.scatterOutOffset) / SCATTER_OUT_TIME));
+                const easingOut = scatterOutP * scatterOutP * (3 - 2 * scatterOutP);
+
+                let goalX, goalY;
+                const speedFactor = 1 + Math.abs(scrollSpeed) * 0.01;
+
+                if (scrollY <= 1500) {
+                    if (arrivalProgress < 0.1) {
+                        this.orbitAngle += this.orbitSpeed;
+                        this.scatterX = canvas.width / 2 + Math.cos(this.orbitAngle) * this.orbitRadius;
+                        this.scatterY = canvas.height / 2 + Math.sin(this.orbitAngle) * this.orbitRadius;
+                    }
+
+                    const t = easing1;
+                    if (this.pathType === 0) {
+                        goalX = this.scatterX + (this.targetX - this.scatterX) * t;
+                        goalY = this.scatterY + (this.targetY - this.scatterY) * t;
+                    } else if (this.pathType === 1) {
+                        const mt = 1 - t;
+                        goalX = mt * mt * this.scatterX + 2 * mt * t * this.controlX + t * t * this.targetX;
+                        goalY = mt * mt * this.scatterY + 2 * mt * t * this.controlY + t * t * this.targetY;
+                    } else {
+                        const baseX = this.scatterX + (this.targetX - this.scatterX) * t;
+                        const baseY = this.scatterY + (this.targetY - this.scatterY) * t;
+                        const dx = this.targetX - this.scatterX;
+                        const dy = this.targetY - this.scatterY;
+                        const len = Math.sqrt(dx * dx + dy * dy) || 1;
+                        const perpX = -dy / len;
+                        const perpY = dx / len;
+                        const wave = Math.sin(t * Math.PI * this.sineFrequency) * this.sineAmplitude * (1 - t);
+                        goalX = baseX + perpX * wave;
+                        goalY = baseY + perpY * wave;
+                    }
+
+                    if (arrivalProgress >= 1) {
+                        this.x = this.targetX;
+                        this.y = this.targetY;
+                        this.vx = 0;
+                        this.vy = 0;
+                        this.rotation = 0;
+                    } else {
+                        this.vx = (goalX - this.x) * 0.15 * speedFactor;
+                        this.vy = (goalY - this.y) * 0.15 * speedFactor;
+                        this.x += this.vx;
+                        this.y += this.vy;
+
+                        if (arrivalProgress < 0.1) this.rotation += this.spinSpeed;
+                        else this.rotation += (this.targetRotation - this.rotation) * 0.08;
+                    }
+                } else {
+                    const currentTargetY = this.targetY + driftY;
+                    const t = easingOut;
+
+                    if (this.pathType === 0) {
+                        goalX = this.targetX + (this.scatterOutX - this.targetX) * t;
+                        goalY = currentTargetY + (this.scatterOutY - currentTargetY) * t;
+                    } else if (this.pathType === 1) {
+                        const mt = 1 - t;
+                        goalX = mt * mt * this.targetX + 2 * mt * t * this.outControlX + t * t * this.scatterOutX;
+                        goalY = mt * mt * currentTargetY + 2 * mt * t * this.outControlY + t * t * this.scatterOutY;
+                    } else {
+                        const baseX = this.targetX + (this.scatterOutX - this.targetX) * t;
+                        const baseY = currentTargetY + (this.scatterOutY - currentTargetY) * t;
+                        const dx = this.scatterOutX - this.targetX;
+                        const dy = this.scatterOutY - currentTargetY;
+                        const len = Math.sqrt(dx * dx + dy * dy) || 1;
+                        const perpX = -dy / len;
+                        const perpY = dx / len;
+                        const wave = Math.sin(t * Math.PI * this.sineFrequency) * this.sineAmplitude * t;
+                        goalX = baseX + perpX * wave;
+                        goalY = baseY + perpY * wave;
+                    }
+
+                    this.vx = (goalX - this.x) * 0.15 * speedFactor;
+                    this.vy = (goalY - this.y) * 0.15 * speedFactor;
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.rotation += this.spinSpeed * (1 + t * 5);
+                }
+
+                if (Math.abs(this.vx) > 0.2 || Math.abs(this.vy) > 0.2) {
+                    this.trail.push({ x: this.x, y: this.y });
+                    if (this.trail.length > 15) this.trail.shift();
+                } else {
+                    if (this.trail.length > 0) this.trail.shift();
+                }
+            }
+
+            render(progress = 0) {
+                const scrollY = progress * 3000;
+                let alpha = 1;
+                if (scrollY > 1500) {
+                    const pExit = (scrollY - 1500) / 1500;
+                    const scatterOutP = Math.max(0, Math.min(1, (pExit - this.scatterOutOffset) / 0.4));
+                    alpha = 1 - scatterOutP;
+                }
+                if (alpha <= 0) return;
+
+                if (this.x < -100 || this.x > canvas.width + 100 || this.y < -100 || this.y > canvas.height + 100) return;
+
+                if (this.trail.length > 1) {
+                    ctx.save();
+                    ctx.globalAlpha = alpha * 0.25;
+                    ctx.strokeStyle = this.isRed ? '#ff3232' : '#ffffff';
+                    ctx.lineWidth = 1;
+                    ctx.setLineDash([2, 4]);
+                    ctx.beginPath();
+                    ctx.moveTo(this.trail[0].x, this.trail[0].y);
+                    for (let i = 1; i < this.trail.length; i++) ctx.lineTo(this.trail[i].x, this.trail[i].y);
+                    ctx.lineTo(this.x, this.y);
+                    ctx.stroke();
+                    ctx.restore();
+                }
+
+                const p1 = Math.min(1, scrollY / 1500);
+                const arrivalP = Math.max(0, Math.min(1, (p1 - this.arrivalOffset) / 0.3));
+                const renderSize = this.size + (17 - this.size) * arrivalP;
+
+                const bmp = this.getBitmap(this.isRed, renderSize);
+                ctx.save();
+                ctx.globalAlpha = alpha;
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                ctx.drawImage(bmp, -bmp.width / 2, -bmp.height / 2);
+                ctx.restore();
+            }
+        }
+
+        function handleGalaxyScroll(e) {
+            galaxyScrollY = Math.max(0, Math.min(GALAXY_SCROLL_RANGE, galaxyScrollY + e.deltaY));
+        }
+
+        function handleGalaxyTouchMove(e) {
+            if (!e.touches.length) return;
+            const touch = e.touches[0];
+            const deltaY = (touch.clientY - (window.lastTouchY || touch.clientY)) * -2;
+            window.lastTouchY = touch.clientY;
+            galaxyScrollY = Math.max(0, Math.min(GALAXY_SCROLL_RANGE, galaxyScrollY + deltaY));
+        }
+
+        function init() {
+            galaxyChars = [];
+            charCache = {};
+            galaxyScrollY = 0;
+            galaxyLastScrollY = 0;
+            galaxyScrollSpeed = 0;
+
+            // 모바일 감지
+            const isMobile = window.innerWidth < 768;
+
+            // 원본 텍스트 (Sentence case로 변환)
+            const rawQuote = "Scattered like stars in the cosmos, these letters drift aimlessly through digital space. As you scroll, gravity pulls them together. Chaos becomes order. Randomness transforms into meaning. Watch as entropy reverses and words emerge from the void. In the beginning there was only noise. Fragments of thought floating in an endless expanse. But with intention comes structure. With motion comes purpose. Each letter finds its place. Each word completes the whole. This is the dance of creation unfolding before your eyes.";
+            const quote = rawQuote;
+
+            const allWords = quote.replace(/[.,]/g, '').split(' ').filter(w => w.length > 0);
+            const wordCount = allWords.length;
+
+            const wordOrder = allWords.map((_, i) => i);
+            for (let i = wordOrder.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [wordOrder[i], wordOrder[j]] = [wordOrder[j], wordOrder[i]];
+            }
+
+            const arrivalOrder = {};
+            wordOrder.forEach((originalIdx, arrivalIdx) => { arrivalOrder[originalIdx] = arrivalIdx; });
+
+            // 모바일: 폰트 축소
+            const baseFontSize = isMobile ? 14 : 18;
+            ctx.font = `700 ${baseFontSize}px "Inter", -apple-system, system-ui, sans-serif`;
+
+            // 줄 폭 축소 (더 많은 줄바꿈)
+            const maxLineWidth = isMobile ? canvas.width - 60 : canvas.width * 0.5;
+            const words = quote.split(' ');
+            const lines = [];
+            let currentLine = '';
+
+            words.forEach(word => {
+                const testLine = currentLine ? currentLine + ' ' + word : word;
+                const testWidth = ctx.measureText(testLine).width;
+                if (testWidth > maxLineWidth && currentLine) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    currentLine = testLine;
+                }
+            });
+            if (currentLine) lines.push(currentLine);
+
+            const lineHeight = baseFontSize * (isMobile ? 1.8 : 1.6);
+            const totalHeight = lines.length * lineHeight;
+            let startY = (canvas.height - totalHeight) / 2 + baseFontSize;
+
+            let globalWordIdx = 0;
+
+            lines.forEach((line, lineIdx) => {
+                const lineWidth = ctx.measureText(line).width;
+                let currentX = (canvas.width - lineWidth) / 2;
+                const lineWords = line.split(' ');
+
+                lineWords.forEach((word) => {
+                    const charFontSize = isMobile ? (6 + Math.random() * 6) : (8 + Math.random() * 9);
+                    const wordArrivalIdx = arrivalOrder[globalWordIdx] || 0;
+                    const wordArrivalOffset = 0.01 + (wordArrivalIdx / wordCount) * 0.69;
+
+                    for (let char of word) {
+                        if (char === ' ' || char === ',') { currentX += ctx.measureText(char).width; continue; }
+                        const charWidth = ctx.measureText(char).width;
+                        const isPeriod = (char === '.');
+                        const gChar = new GalaxyChar(char, currentX + charWidth / 2, startY + lineIdx * lineHeight, charFontSize, 0, 1);
+                        gChar.arrivalOffset = wordArrivalOffset;
+                        gChar.targetSize = baseFontSize;
+                        gChar.isRed = isPeriod;
+                        galaxyChars.push(gChar);
+                        currentX += charWidth;
+                    }
+                    currentX += ctx.measureText(' ').width;
+                    globalWordIdx++;
+                });
+            });
+        }
+
+        function animate() {
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            galaxyScrollSpeed = galaxyScrollY - galaxyLastScrollY;
+            galaxyLastScrollY = galaxyScrollY;
+
+            const progress = galaxyScrollY / GALAXY_SCROLL_RANGE;
+            const time = Date.now() * 0.001;
+
+            // Background stars
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+            for (let i = 0; i < 320; i++) {
+                const seed = i * 137.508;
+                const sx = (Math.sin(seed) * 0.5 + 0.5) * canvas.width;
+                const sy = (Math.cos(seed * 1.3) * 0.5 + 0.5) * canvas.height;
+                const size = 0.5 + (i % 3);
+                const twinkle = 0.3 + Math.sin(time + seed) * 0.2;
+                ctx.globalAlpha = twinkle * Math.max(0, 1 - progress);
+                ctx.beginPath();
+                ctx.arc(sx, sy, size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i < 40; i++) {
+                const seed = (i + 500) * 97.3;
+                const sx = (Math.sin(seed) * 0.5 + 0.5) * canvas.width;
+                const sy = (Math.cos(seed * 1.7) * 0.5 + 0.5) * canvas.height;
+                const size = 3 + (i % 5);
+                const twinkle = 0.2 + Math.sin(time * 0.5 + seed) * 0.15;
+                ctx.globalAlpha = twinkle * Math.max(0, 1 - progress);
+                ctx.beginPath();
+                ctx.arc(sx, sy, size, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+            ctx.globalAlpha = 1;
+
+            for (let i = 0; i < galaxyChars.length; i++) {
+                galaxyChars[i].update(progress, galaxyScrollSpeed);
+                galaxyChars[i].render(progress);
+            }
+
+            // Scroll indicator
+            if (progress < 1) {
+                ctx.save();
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                ctx.font = '14px "Inter", sans-serif';
+                ctx.textAlign = 'center';
+                const arrowY = canvas.height - 60 + Math.sin(Date.now() * 0.003) * 5;
+                ctx.fillText('↓', canvas.width / 2, arrowY);
+                ctx.fillText('SCROLL', canvas.width / 2, arrowY + 18);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.fillRect(canvas.width / 2 - 50, canvas.height - 20, 100, 2);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+                ctx.fillRect(canvas.width / 2 - 50, canvas.height - 20, 100 * progress, 2);
+                ctx.restore();
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        class TextScramble {
+            constructor(el) { this.el = el; this.chars = '!<>-_\\/[]{}—=+*^?#'; this.update = this.update.bind(this); }
+            setText(newText) {
+                const oldText = this.el.innerText, length = Math.max(oldText.length, newText.length);
+                const promise = new Promise(resolve => this.resolve = resolve);
+                this.queue = [];
+                for (let i = 0; i < length; i++) this.queue.push({ from: oldText[i] || '', to: newText[i] || '', start: Math.floor(Math.random() * 40), end: Math.floor(Math.random() * 40) + 40 });
+                cancelAnimationFrame(this.frameRequest); this.frame = 0; this.update(); return promise;
+            }
+            update() {
+                let output = '', complete = 0;
+                this.queue.forEach(q => {
+                    if (this.frame >= q.end) { complete++; output += q.to; }
+                    else if (this.frame >= q.start) { if (!q.char || Math.random() < 0.28) q.char = this.chars[Math.floor(Math.random() * this.chars.length)]; output += `<span class="dud">${q.char}</span>`; }
+                    else output += q.from;
+                });
+                this.el.innerHTML = output;
+                if (complete === this.queue.length) this.resolve(); else { this.frameRequest = requestAnimationFrame(this.update); this.frame++; }
+            }
+        }
+
+        window.addEventListener('wheel', handleGalaxyScroll, { passive: true });
+        window.addEventListener('touchmove', handleGalaxyTouchMove, { passive: true });
+        window.addEventListener('touchstart', (e) => { if (e.touches.length) window.lastTouchY = e.touches[0].clientY; });
+
+        document.fonts.ready.then(() => {
+            resizeCanvas();
+            init();
+            animate();
+
+            setTimeout(() => {
+                const fxTitle = new TextScramble(document.getElementById('desc-title'));
+                const fxBody = new TextScramble(document.getElementById('desc-body'));
+                fxTitle.setText('GALACTIC VORTEX').then(() => {
+                    setTimeout(() => {
+                        fxBody.setText(`Particles orbit an invisible
+mass, spiraling inward.
+
+A simulation of gravitational
+accumulation on a cosmic scale.
+
+Scroll to assemble letters.
+Continue to scatter them.
+
+Three phases: Chaos,
+Order, and Dissolution.`);
+                    }, 500);
+                });
+            }, 1000);
+        });
+    </script>
+</body>
+
+</html>

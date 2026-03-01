@@ -1,0 +1,749 @@
+<!--
+    © 2025 SABUM. All rights reserved.
+    Floating Clock - Free-floating 3D typography with physics collision
+-->
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <link rel="icon" type="image/png" href="../Assets/favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Floating Clock</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        /* 왼쪽 설명 컴포넌트 */
+        .description-container {
+            position: absolute;
+            left: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 280px;
+            color: #ffffff;
+            font-size: 12px;
+            line-height: 1.6;
+            z-index: 10;
+            mix-blend-mode: difference;
+        }
+
+        @media (max-width: 768px) {
+            .description-container {
+                display: none;
+            }
+        }
+
+        .title {
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            color: #ff0000;
+            transition: color 0.1s ease;
+        }
+
+        .description {
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 8px;
+        }
+
+        .time-display {
+            font-size: 14px;
+            letter-spacing: 4px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 16px;
+        }
+    </style>
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sabum.me/03_Playground/lab_floating_clock.html">
+    <meta property="og:title" content="FLOATING CLOCK - SABUM Lab">
+    <meta property="og:description" content="FLOATING CLOCK">
+    <meta property="og:image" content="https://sabum.me/assets/og-lab.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="FLOATING CLOCK - SABUM Lab">
+    <meta name="twitter:description" content="FLOATING CLOCK">
+    <meta name="twitter:image" content="https://sabum.me/assets/og-lab.png">
+</head>
+
+<body>
+    <div class="description-container">
+        <div class="title">FLOATING CLOCK</div>
+        <p class="description">
+            Free-floating 3D typography.<br>
+            Physics-based collision with<br>
+            Fresnel rim lighting effect.
+        </p>
+        <div class="time-display" id="timeDisplay">000000</div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/FontLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/geometries/TextGeometry.js"></script>
+    <script>
+        // === SETUP ===
+        let scene, camera, renderer;
+        let digitMeshes = [null, null, null, null, null, null];
+        let digitShaders = [null, null, null, null, null, null];
+        let shapeMeshes = [null, null, null, null];
+        let shapeShaders = [null, null, null, null];
+        let loadedFont = null;
+        let currentDigits = ['0', '0', '0', '0', '0', '0'];
+
+        const TOTAL_OBJECTS = 10; // 6 digits + 4 shapes
+
+        const FONT_URL = 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/fonts/helvetiker_bold.typeface.json';
+
+        // === 반응형 스케일 시스템 ===
+        const BASE_WIDTH = 1920;
+        let scaleFactor = 1.0;
+        function updateScaleFactor() {
+            const w = window.innerWidth;
+            // 768px 이하: 0.4 ~ 0.6, 그 외: 화면 비율
+            if (w < 768) {
+                scaleFactor = 0.4 + (w / 768) * 0.2;
+            } else {
+                scaleFactor = Math.min(w / BASE_WIDTH, 1.0);
+            }
+        }
+        updateScaleFactor();
+
+        // === 물리 시스템 ===
+        let positions = [];     // [x, y] 월드 좌표
+        let velocities = [];    // [vx, vy] 속도
+        let radii = [];         // 충돌 반경
+
+        // 물리 상수
+        const FRICTION = 0.999;         // 마찰 (속도 감쇠)
+        const RESTITUTION = 0.85;       // 반발 계수
+        const REPULSION_FORCE = 0.0005; // 숫자 간 반발력
+        const MIN_DISTANCE = 2.5;       // 최소 거리
+        const WALL_MARGIN = 0.5;        // 벽 마진
+
+        // XY 회전
+        let rotationX = [];
+        let rotationY = [];
+        let rotationSpeedX = [];
+        let rotationSpeedY = [];
+
+        // 초기화 (6 digits + 4 shapes = 10 objects)
+        for (let i = 0; i < TOTAL_OBJECTS; i++) {
+            // 랜덤 초기 위치 (화면 중앙 근처)
+            positions.push([
+                (Math.random() - 0.5) * 10,
+                (Math.random() - 0.5) * 6
+            ]);
+            // 랜덤 초기 속도
+            velocities.push([
+                (Math.random() - 0.5) * 0.03,
+                (Math.random() - 0.5) * 0.03
+            ]);
+            // 도형은 조금 더 작은 충돌 반경 (스케일 적용)
+            radii.push((i < 6 ? 1.2 : 0.9) * scaleFactor);
+
+            // 회전
+            rotationX.push((Math.random() - 0.5) * Math.PI * 0.5);
+            rotationY.push((Math.random() - 0.5) * Math.PI * 0.5);
+            rotationSpeedX.push((Math.random() - 0.5) * 0.06);
+            rotationSpeedY.push((Math.random() - 0.5) * 0.08);
+        }
+
+        // === 컬러 테마 시스템 ===
+        const colorThemes = [
+            { name: 'RED', base: [0.1, 0.0, 0.0], rim: [1.0, 0.0, 0.0], beam: [1.0, 0.2, 0.2], ui: '#ff0000' },
+            { name: 'ORANGE', base: [0.1, 0.05, 0.0], rim: [1.0, 0.5, 0.0], beam: [1.0, 0.6, 0.2], ui: '#ff8800' },
+            { name: 'YELLOW', base: [0.1, 0.1, 0.0], rim: [1.0, 1.0, 0.0], beam: [1.0, 1.0, 0.3], ui: '#ffdd00' },
+            { name: 'GREEN', base: [0.0, 0.08, 0.02], rim: [0.0, 1.0, 0.4], beam: [0.2, 1.0, 0.5], ui: '#00ff88' },
+            { name: 'CYAN', base: [0.0, 0.08, 0.1], rim: [0.0, 1.0, 1.0], beam: [0.2, 1.0, 1.0], ui: '#00ffff' },
+            { name: 'BLUE', base: [0.0, 0.0, 0.1], rim: [0.0, 0.4, 1.0], beam: [0.3, 0.5, 1.0], ui: '#0088ff' },
+            { name: 'VIOLET', base: [0.05, 0.0, 0.1], rim: [0.6, 0.0, 1.0], beam: [0.7, 0.3, 1.0], ui: '#aa44ff' },
+            { name: 'MAGENTA', base: [0.1, 0.0, 0.08], rim: [1.0, 0.0, 0.8], beam: [1.0, 0.3, 0.9], ui: '#ff44dd' },
+            { name: 'PINK', base: [0.1, 0.03, 0.05], rim: [1.0, 0.4, 0.6], beam: [1.0, 0.5, 0.7], ui: '#ff88aa' },
+            { name: 'WHITE', base: [0.08, 0.08, 0.08], rim: [1.0, 1.0, 1.0], beam: [1.0, 1.0, 1.0], ui: '#ffffff' }
+        ];
+
+        let currentThemeIndex = 0;
+        let targetThemeIndex = 0;
+        let themeTransitionProgress = 1.0;
+        const THEME_TRANSITION_DURATION = 2.0;
+        let lastThemeChangeTime = 0;
+        const THEME_CHANGE_INTERVAL = 5;
+
+        function lerpColor(a, b, t) {
+            return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+        }
+
+        function easeInOutCubic(t) {
+            return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+
+        function startThemeTransition(nextIndex) {
+            if (themeTransitionProgress < 1.0) currentThemeIndex = targetThemeIndex;
+            targetThemeIndex = nextIndex % colorThemes.length;
+            themeTransitionProgress = 0.0;
+            lastThemeChangeTime = Date.now() / 1000;
+        }
+
+        function jumpToNextTheme() {
+            let nextIndex;
+            do { nextIndex = Math.floor(Math.random() * colorThemes.length); }
+            while (nextIndex === targetThemeIndex && colorThemes.length > 1);
+            startThemeTransition(nextIndex);
+        }
+
+        function updateThemeColors(deltaTime) {
+            const currentTime = Date.now() / 1000;
+            if (themeTransitionProgress >= 1.0 && currentTime - lastThemeChangeTime >= THEME_CHANGE_INTERVAL) {
+                jumpToNextTheme();
+            }
+            if (themeTransitionProgress < 1.0) {
+                themeTransitionProgress += deltaTime / THEME_TRANSITION_DURATION;
+                themeTransitionProgress = Math.min(1.0, themeTransitionProgress);
+            }
+
+            const easedT = easeInOutCubic(themeTransitionProgress);
+            const fromTheme = colorThemes[currentThemeIndex];
+            const toTheme = colorThemes[targetThemeIndex];
+            const currentBase = lerpColor(fromTheme.base, toTheme.base, easedT);
+            const currentRim = lerpColor(fromTheme.rim, toTheme.rim, easedT);
+            const currentBeam = lerpColor(fromTheme.beam, toTheme.beam, easedT);
+
+            // 숫자 셰이더 업데이트
+            for (let i = 0; i < 6; i++) {
+                if (digitShaders[i]) {
+                    digitShaders[i].uniforms.uBaseColor.value.setRGB(currentBase[0], currentBase[1], currentBase[2]);
+                    digitShaders[i].uniforms.uRimColor.value.setRGB(currentRim[0], currentRim[1], currentRim[2]);
+                    digitShaders[i].uniforms.uBeamColor.value.setRGB(currentBeam[0], currentBeam[1], currentBeam[2]);
+                }
+            }
+            // 도형 셰이더 업데이트
+            for (let i = 0; i < 4; i++) {
+                if (shapeShaders[i]) {
+                    shapeShaders[i].uniforms.uBaseColor.value.setRGB(currentBase[0], currentBase[1], currentBase[2]);
+                    shapeShaders[i].uniforms.uRimColor.value.setRGB(currentRim[0], currentRim[1], currentRim[2]);
+                    shapeShaders[i].uniforms.uBeamColor.value.setRGB(currentBeam[0], currentBeam[1], currentBeam[2]);
+                }
+            }
+
+            // UI 색상 보간
+            const titleElement = document.querySelector('.title');
+            if (titleElement) {
+                const r1 = parseInt(fromTheme.ui.slice(1, 3), 16);
+                const g1 = parseInt(fromTheme.ui.slice(3, 5), 16);
+                const b1 = parseInt(fromTheme.ui.slice(5, 7), 16);
+                const r2 = parseInt(toTheme.ui.slice(1, 3), 16);
+                const g2 = parseInt(toTheme.ui.slice(3, 5), 16);
+                const b2 = parseInt(toTheme.ui.slice(5, 7), 16);
+                const r = Math.round(r1 + (r2 - r1) * easedT);
+                const g = Math.round(g1 + (g2 - g1) * easedT);
+                const b = Math.round(b1 + (b2 - b1) * easedT);
+                titleElement.style.color = `rgb(${r}, ${g}, ${b})`;
+            }
+
+            if (themeTransitionProgress >= 1.0 && currentThemeIndex !== targetThemeIndex) {
+                currentThemeIndex = targetThemeIndex;
+            }
+        }
+
+        document.addEventListener('click', jumpToNextTheme);
+        document.addEventListener('touchend', jumpToNextTheme, { passive: true });
+
+        // === 물리 시뮬레이션 ===
+        function updatePhysics() {
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+
+            // 카메라 기반 월드 경계 계산
+            const fov = 45 * Math.PI / 180;
+            const camZ = camera ? camera.position.z : 10;
+            const worldHeight = 2 * Math.tan(fov / 2) * camZ;
+            const worldWidth = worldHeight * (w / h);
+            const halfW = worldWidth / 2 - WALL_MARGIN;
+            const halfH = worldHeight / 2 - WALL_MARGIN;
+
+            // 1. 속도로 위치 업데이트 (모든 오브젝트)
+            for (let i = 0; i < TOTAL_OBJECTS; i++) {
+                positions[i][0] += velocities[i][0];
+                positions[i][1] += velocities[i][1];
+
+                // 마찰 적용
+                velocities[i][0] *= FRICTION;
+                velocities[i][1] *= FRICTION;
+            }
+
+            // 2. 벽 충돌 (모든 오브젝트)
+            for (let i = 0; i < TOTAL_OBJECTS; i++) {
+                const r = radii[i];
+                // 좌우 벽
+                if (positions[i][0] - r < -halfW) {
+                    positions[i][0] = -halfW + r;
+                    velocities[i][0] = Math.abs(velocities[i][0]) * RESTITUTION;
+                }
+                if (positions[i][0] + r > halfW) {
+                    positions[i][0] = halfW - r;
+                    velocities[i][0] = -Math.abs(velocities[i][0]) * RESTITUTION;
+                }
+                // 상하 벽
+                if (positions[i][1] - r < -halfH) {
+                    positions[i][1] = -halfH + r;
+                    velocities[i][1] = Math.abs(velocities[i][1]) * RESTITUTION;
+                }
+                if (positions[i][1] + r > halfH) {
+                    positions[i][1] = halfH - r;
+                    velocities[i][1] = -Math.abs(velocities[i][1]) * RESTITUTION;
+                }
+            }
+
+            // 3. 오브젝트 간 충돌 (모든 오브젝트)
+            for (let i = 0; i < TOTAL_OBJECTS; i++) {
+                for (let j = i + 1; j < TOTAL_OBJECTS; j++) {
+                    const dx = positions[j][0] - positions[i][0];
+                    const dy = positions[j][1] - positions[i][1];
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const minDist = radii[i] + radii[j];
+
+                    if (dist < minDist && dist > 0.01) {
+                        // 정규화된 방향 벡터
+                        const nx = dx / dist;
+                        const ny = dy / dist;
+
+                        // 겹침 해소 (위치 보정)
+                        const overlap = (minDist - dist) / 2;
+                        positions[i][0] -= nx * overlap;
+                        positions[i][1] -= ny * overlap;
+                        positions[j][0] += nx * overlap;
+                        positions[j][1] += ny * overlap;
+
+                        // 탄성 충돌 (속도 교환)
+                        const dvx = velocities[i][0] - velocities[j][0];
+                        const dvy = velocities[i][1] - velocities[j][1];
+                        const dvDotN = dvx * nx + dvy * ny;
+
+                        if (dvDotN > 0) {
+                            velocities[i][0] -= dvDotN * nx * RESTITUTION;
+                            velocities[i][1] -= dvDotN * ny * RESTITUTION;
+                            velocities[j][0] += dvDotN * nx * RESTITUTION;
+                            velocities[j][1] += dvDotN * ny * RESTITUTION;
+                        }
+                    }
+
+                    // 반발력 (가까우면 밀어냄)
+                    if (dist < MIN_DISTANCE && dist > 0.01) {
+                        const force = REPULSION_FORCE * (1 - dist / MIN_DISTANCE);
+                        const nx = dx / dist;
+                        const ny = dy / dist;
+                        velocities[i][0] -= nx * force;
+                        velocities[i][1] -= ny * force;
+                        velocities[j][0] += nx * force;
+                        velocities[j][1] += ny * force;
+                    }
+                }
+            }
+
+            for (let i = 0; i < 6; i++) {
+                if (digitMeshes[i]) {
+                    digitMeshes[i].position.x = positions[i][0];
+                    digitMeshes[i].position.y = positions[i][1];
+                }
+            }
+            // 도형 위치 업데이트
+            for (let i = 0; i < 4; i++) {
+                if (shapeMeshes[i]) {
+                    shapeMeshes[i].position.x = positions[6 + i][0];
+                    shapeMeshes[i].position.y = positions[6 + i][1];
+                }
+            }
+        }
+
+        // === 스캐닝 빔 ===
+        const LOOP_DURATION = 1.5;
+        const SCAN_RANGE = 4.0;
+        const isMobile = window.innerWidth < 768;
+
+        function init() {
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x000000);
+
+            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 0, isMobile ? 12 : 10);
+            camera.lookAt(0, 0, 0);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            document.body.appendChild(renderer.domElement);
+
+            const fontLoader = new THREE.FontLoader();
+            fontLoader.load(FONT_URL, function (font) {
+                loadedFont = font;
+                createClock();
+                lastThemeChangeTime = Date.now() / 1000;
+                animate();
+            });
+
+            window.addEventListener('resize', onWindowResize);
+        }
+
+        function createScanningMaterial() {
+            return new THREE.ShaderMaterial({
+                uniforms: {
+                    uTime: { value: 0.0 },
+                    uLightY: { value: 3.0 },
+                    uBaseColor: { value: new THREE.Color(0.1, 0.0, 0.0) },
+                    uRimColor: { value: new THREE.Color(1.0, 0.0, 0.0) },
+                    uBeamColor: { value: new THREE.Color(1.0, 0.2, 0.2) },
+                    uOpacity: { value: 1.0 }
+                },
+                vertexShader: `
+                    varying vec3 vWorldPos;
+                    varying vec3 vNormal;
+                    varying vec3 vViewDir;
+                    varying float vY;
+                    void main() {
+                        vec4 worldPos = modelMatrix * vec4(position, 1.0);
+                        vWorldPos = worldPos.xyz;
+                        vNormal = normalize(normalMatrix * normal);
+                        vViewDir = normalize(cameraPosition - worldPos.xyz);
+                        vY = position.y;
+                        gl_Position = projectionMatrix * viewMatrix * worldPos;
+                    }
+                `,
+                fragmentShader: `
+                    uniform float uTime;
+                    uniform float uLightY;
+                    uniform vec3 uBaseColor;
+                    uniform vec3 uRimColor;
+                    uniform vec3 uBeamColor;
+                    uniform float uOpacity;
+                    varying vec3 vWorldPos;
+                    varying vec3 vNormal;
+                    varying vec3 vViewDir;
+                    varying float vY;
+                    void main() {
+                        vec3 normal = normalize(vNormal);
+                        vec3 viewDir = normalize(vViewDir);
+                        float distY = vY - uLightY;
+                        float beam = exp(-distY * distY * 2.0);
+                        float tail = smoothstep(1.5, -0.5, distY) * smoothstep(-1.5, 0.5, distY);
+                        float intensity = beam * 1.5 + tail * 0.2;
+                        float fresnel = 1.0 - max(0.0, dot(viewDir, normal));
+                        fresnel = pow(fresnel, 2.5);
+                        float verticalProgress = smoothstep(1.0, -1.0, uLightY);
+                        vec3 colWhite = vec3(1.0, 1.0, 1.0);
+                        vec3 colDarkRed = uBaseColor;
+                        vec3 colBrightRed = uBeamColor;
+                        vec3 dynamicBeam;
+                        if (verticalProgress < 0.3) dynamicBeam = colWhite;
+                        else if (verticalProgress < 0.4) dynamicBeam = mix(colWhite, colDarkRed, (verticalProgress - 0.3) / 0.1);
+                        else if (verticalProgress < 0.8) dynamicBeam = colDarkRed;
+                        else if (verticalProgress < 0.9) dynamicBeam = mix(colDarkRed, colBrightRed, (verticalProgress - 0.8) / 0.1);
+                        else dynamicBeam = colBrightRed;
+                        vec3 base = uBaseColor * intensity;
+                        vec3 rim = uRimColor * fresnel * (intensity + 0.1);
+                        vec3 beamColor = dynamicBeam * beam * 0.8;
+                        vec3 finalColor = base + rim + beamColor;
+                        gl_FragColor = vec4(finalColor, uOpacity);
+                    }
+                `,
+                side: THREE.FrontSide,
+                transparent: true,
+                depthWrite: true
+            });
+        }
+
+        function createTextMesh(text, material) {
+            const segments = isMobile ? 16 : 32;
+            const bevelSegs = isMobile ? 4 : 8;
+            const scaledSize = 2.0 * scaleFactor;
+            const scaledHeight = 0.5 * scaleFactor;
+            const scaledBevel = 0.08 * scaleFactor;
+            const geometry = new THREE.TextGeometry(text, {
+                font: loadedFont,
+                size: scaledSize,
+                height: scaledHeight,
+                curveSegments: segments,
+                bevelEnabled: true,
+                bevelThickness: scaledBevel,
+                bevelSize: scaledBevel,
+                bevelSegments: bevelSegs
+            });
+            geometry.computeBoundingBox();
+            const center = new THREE.Vector3();
+            geometry.boundingBox.getCenter(center);
+            geometry.translate(-center.x, -center.y, -center.z);
+            return new THREE.Mesh(geometry, material);
+        }
+
+        function createClock() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            currentDigits = [h[0], h[1], m[0], m[1], s[0], s[1]];
+
+            for (let i = 0; i < 6; i++) {
+                digitShaders[i] = createScanningMaterial();
+                digitMeshes[i] = createTextMesh(currentDigits[i], digitShaders[i]);
+                digitMeshes[i].position.x = positions[i][0];
+                digitMeshes[i].position.y = positions[i][1];
+                scene.add(digitMeshes[i]);
+            }
+
+            // 4개 도형 생성
+            createShapes();
+            updateTimeDisplay();
+        }
+
+        // 도형 생성 함수
+        function createShapes() {
+            const s = scaleFactor; // 스케일 팩터 적용
+
+            for (let i = 0; i < 4; i++) {
+                shapeShaders[i] = createScanningMaterial();
+                let mesh;
+
+                if (i === 1) {
+                    // 팔면체 → 와이어프레임 스타일
+                    mesh = createWireframePolyhedron(new THREE.OctahedronGeometry(0.9 * s), 0.05 * s, shapeShaders[i]);
+                } else if (i === 3) {
+                    // 정이십면체 → 와이어프레임 스타일
+                    mesh = createWireframePolyhedron(new THREE.IcosahedronGeometry(0.8 * s), 0.04 * s, shapeShaders[i]);
+                } else {
+                    // 다른 도형들은 기존 방식
+                    let geometry;
+                    if (i === 0) geometry = new THREE.SphereGeometry(0.8 * s, 32, 32);
+                    else if (i === 2) geometry = new THREE.TorusGeometry(0.6 * s, 0.25 * s, 16, 48);
+
+                    geometry.computeBoundingBox();
+                    const center = new THREE.Vector3();
+                    geometry.boundingBox.getCenter(center);
+                    geometry.translate(-center.x, -center.y, -center.z);
+                    mesh = new THREE.Mesh(geometry, shapeShaders[i]);
+                }
+
+                mesh.position.x = positions[6 + i][0];
+                mesh.position.y = positions[6 + i][1];
+                shapeMeshes[i] = mesh;
+                scene.add(mesh);
+            }
+        }
+
+        // 와이어프레임 다면체 생성 (두꺼운 튜브) - 범용
+        function createWireframePolyhedron(geometry, tubeRadius, material) {
+            const group = new THREE.Group();
+            const posAttr = geometry.getAttribute('position');
+
+            // 모든 edge 수집 (중복 제거)
+            const edgeSet = new Set();
+            const edges = [];
+            const vertices = [];
+
+            // 정점 추출 (중복 제거)
+            const vertexMap = new Map();
+            for (let i = 0; i < posAttr.count; i++) {
+                const x = posAttr.getX(i);
+                const y = posAttr.getY(i);
+                const z = posAttr.getZ(i);
+                const key = `${x.toFixed(5)},${y.toFixed(5)},${z.toFixed(5)}`;
+                if (!vertexMap.has(key)) {
+                    vertexMap.set(key, vertices.length);
+                    vertices.push(new THREE.Vector3(x, y, z));
+                }
+            }
+
+            // 삼각형에서 edge 추출
+            for (let i = 0; i < posAttr.count; i += 3) {
+                const getVertexIndex = (idx) => {
+                    const x = posAttr.getX(idx);
+                    const y = posAttr.getY(idx);
+                    const z = posAttr.getZ(idx);
+                    const key = `${x.toFixed(5)},${y.toFixed(5)},${z.toFixed(5)}`;
+                    return vertexMap.get(key);
+                };
+
+                const a = getVertexIndex(i);
+                const b = getVertexIndex(i + 1);
+                const c = getVertexIndex(i + 2);
+
+                const addEdge = (v1, v2) => {
+                    const key = v1 < v2 ? `${v1}-${v2}` : `${v2}-${v1}`;
+                    if (!edgeSet.has(key)) {
+                        edgeSet.add(key);
+                        edges.push([v1, v2]);
+                    }
+                };
+                addEdge(a, b);
+                addEdge(b, c);
+                addEdge(c, a);
+            }
+
+            // 각 edge를 실린더로 변환
+            edges.forEach(([v1, v2]) => {
+                const p1 = vertices[v1];
+                const p2 = vertices[v2];
+
+                const direction = new THREE.Vector3().subVectors(p2, p1);
+                const length = direction.length();
+                const midpoint = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
+
+                const cylGeom = new THREE.CylinderGeometry(tubeRadius, tubeRadius, length, 8);
+                const cylinder = new THREE.Mesh(cylGeom, material);
+
+                cylinder.position.copy(midpoint);
+                cylinder.quaternion.setFromUnitVectors(
+                    new THREE.Vector3(0, 1, 0),
+                    direction.clone().normalize()
+                );
+
+                group.add(cylinder);
+            });
+
+            // 꼭짓점에 구 추가 (부드러운 연결)
+            vertices.forEach(pos => {
+                const sphereGeom = new THREE.SphereGeometry(tubeRadius * 1.2, 8, 8);
+                const sphere = new THREE.Mesh(sphereGeom, material);
+                sphere.position.copy(pos);
+                group.add(sphere);
+            });
+
+            geometry.dispose();
+            return group;
+        }
+
+        function updateTimeDisplay() {
+            const display = document.getElementById('timeDisplay');
+            if (display) display.textContent = currentDigits.join('');
+        }
+
+        function updateTimeText() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            const newDigits = [h[0], h[1], m[0], m[1], s[0], s[1]];
+
+            for (let i = 0; i < 6; i++) {
+                if (newDigits[i] !== currentDigits[i]) {
+                    updateDigitMesh(i, newDigits[i]);
+                    currentDigits[i] = newDigits[i];
+                }
+            }
+            updateTimeDisplay();
+        }
+
+        function updateDigitMesh(index, digit) {
+            const oldMesh = digitMeshes[index];
+            const position = oldMesh.position.clone();
+            const rotation = oldMesh.rotation.clone();
+            const scale = oldMesh.scale.clone();
+            scene.remove(oldMesh);
+            if (oldMesh.geometry) oldMesh.geometry.dispose();
+
+            const newMesh = createTextMesh(digit, digitShaders[index]);
+            newMesh.position.copy(position);
+            newMesh.rotation.copy(rotation);
+            newMesh.scale.copy(scale);
+            digitMeshes[index] = newMesh;
+            scene.add(newMesh);
+        }
+
+        let startTime = Date.now();
+        let lastFrameTime = Date.now();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const now = Date.now();
+            const deltaTime = (now - lastFrameTime) / 1000;
+            lastFrameTime = now;
+            const time = (now - startTime) / 1000;
+
+            updateThemeColors(deltaTime);
+            updatePhysics();
+            updateTimeText();
+
+            // 스캐닝 빔 + 회전 (숫자)
+            for (let i = 0; i < 6; i++) {
+                if (!digitShaders[i] || !digitMeshes[i]) continue;
+
+                const offset = i * 0.08;
+                let t = ((time + offset) % LOOP_DURATION) / LOOP_DURATION;
+                t = 1.0 - Math.pow(1.0 - t, 4.0);
+                const lightY = SCAN_RANGE - (t * SCAN_RANGE * 2);
+
+                digitShaders[i].uniforms.uTime.value = time;
+                digitShaders[i].uniforms.uLightY.value = lightY;
+
+                // 회전 업데이트
+                rotationX[i] += rotationSpeedX[i] * 0.016;
+                rotationY[i] += rotationSpeedY[i] * 0.016;
+                digitMeshes[i].rotation.x = rotationX[i];
+                digitMeshes[i].rotation.y = rotationY[i];
+                digitMeshes[i].rotation.z = Math.sin(time * 0.3 + i * 0.3) * 0.03;
+            }
+
+            // 스캐닝 빔 + 회전 (도형)
+            for (let i = 0; i < 4; i++) {
+                if (!shapeShaders[i] || !shapeMeshes[i]) continue;
+
+                const offset = (6 + i) * 0.12;
+                let t = ((time + offset) % LOOP_DURATION) / LOOP_DURATION;
+                t = 1.0 - Math.pow(1.0 - t, 4.0);
+                const lightY = SCAN_RANGE - (t * SCAN_RANGE * 2);
+
+                shapeShaders[i].uniforms.uTime.value = time;
+                shapeShaders[i].uniforms.uLightY.value = lightY;
+
+                // 회전 업데이트 (도형)
+                const idx = 6 + i;
+                rotationX[idx] += rotationSpeedX[idx] * 0.016;
+                rotationY[idx] += rotationSpeedY[idx] * 0.016;
+                shapeMeshes[i].rotation.x = rotationX[idx];
+                shapeMeshes[i].rotation.y = rotationY[idx];
+                shapeMeshes[i].rotation.z = Math.sin(time * 0.5 + i * 0.5) * 0.1;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            // 스케일 팩터 업데이트
+            const oldScale = scaleFactor;
+            updateScaleFactor();
+
+            // 충돌 반경 업데이트
+            for (let i = 0; i < TOTAL_OBJECTS; i++) {
+                radii[i] = (radii[i] / oldScale) * scaleFactor;
+            }
+
+            // 카메라 거리 조정
+            const nowMobile = window.innerWidth < 768;
+            camera.position.z = nowMobile ? 12 : 10;
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

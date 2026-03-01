@@ -1,0 +1,508 @@
+/* Base Styles using System Fonts */
+:root {
+    --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --bg-color: #000;
+    --text-color: #fff;
+    --border-color: #fff;
+    --input-hover: #333;
+    --highlight-bg: #222;
+    --table-line-color: #666;
+}
+
+body {
+    font-family: var(--font-stack);
+    margin: 0;
+    padding: 60px 40px;
+    color: var(--text-color);
+    line-height: 1.5;
+    background-color: var(--bg-color);
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    max-width: 1280px;
+    /* Increased max-width for better spacing */
+    margin: 0 auto;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 80px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 20px;
+}
+
+header h1 {
+    font-size: 42px;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.1;
+    letter-spacing: -1px;
+}
+
+.quotation-label {
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Info Container (Project + Company) */
+.info-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 60px;
+    gap: 0;
+    /* Removing gap to control widths directly */
+}
+
+/* Project Info */
+.project-info {
+    width: 60%;
+    /* Matches the first 6 columns (approx) */
+    border-top: 2px solid var(--border-color);
+    /* Spacing */
+    box-sizing: border-box;
+}
+
+.info-row {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    padding: 16px 0;
+    align-items: center;
+}
+
+.info-row.total-row {
+    border-bottom: 2px solid var(--border-color);
+    font-weight: 700;
+}
+
+.info-row .label {
+    width: 200px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.info-row .value {
+    flex: 1;
+    font-size: 15px;
+}
+
+.total-amount {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* Company Info */
+.company-info {
+    width: 36%;
+    /* Matches the "Work Details" column (36%) */
+    text-align: left;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #ccc;
+    padding-top: 10px;
+    box-sizing: border-box;
+    padding-left: 0px;
+    /* Align with table cell padding */
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 60px;
+    font-size: 14px;
+}
+
+th {
+    border-top: 2px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    padding: 15px 5px;
+    text-align: left;
+    font-weight: 500;
+    white-space: nowrap;
+    color: #ccc;
+}
+
+td {
+    border-bottom: 1px solid var(--table-line-color);
+    padding: 20px 5px;
+    vertical-align: top;
+    /* Ensure vertical alignment matches headers */
+}
+
+.main-table td {
+    vertical-align: middle;
+}
+
+.main-table textarea {
+    vertical-align: top;
+    color: #ccc;
+}
+
+/* Inputs */
+input,
+textarea,
+select {
+    font-family: var(--font-stack);
+    border: 1px solid transparent;
+    background: transparent;
+    width: 100%;
+    padding: 6px;
+    font-size: inherit;
+    color: var(--text-color);
+    transition: all 0.2s ease;
+    border-radius: 4px;
+    box-sizing: border-box;
+    /* Ensure padding doesn't affect width */
+}
+
+input:hover,
+textarea:hover,
+select:hover {
+    background-color: var(--input-hover);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    background-color: var(--highlight-bg);
+    border-color: #555;
+}
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 12px;
+    padding-right: 24px;
+}
+
+.num-input {
+    text-align: right;
+    width: 90%;
+}
+
+.rate-input {
+    width: 60px;
+    text-align: right;
+    display: inline-block;
+}
+
+.desc-input {
+    resize: vertical;
+    width: 100%;
+    line-height: 1.6;
+    min-height: 80px;
+}
+
+/* Row Controls */
+.row-controls {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 4px;
+    vertical-align: middle;
+    margin-left: 8px;
+}
+
+/* Add/Remove Row Buttons */
+.add-row-btn,
+.remove-row-btn {
+    background: none;
+    border: 1px solid #666;
+    color: #666;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.add-row-btn:hover,
+.remove-row-btn:hover {
+    border-color: #fff;
+    color: #fff;
+    background-color: #333;
+}
+
+@media print {
+    .row-controls {
+        display: none !important;
+    }
+}
+
+/* Calculation Sections */
+.calc-details {
+    color: #ccc;
+}
+
+.calc-details h4 {
+    font-size: 14px;
+    margin: 40px 0 15px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.sub-table th,
+.sub-table td {
+    border: 1px solid var(--table-line-color);
+    padding: 12px;
+    text-align: left;
+}
+
+.sub-table th {
+    background-color: #111;
+    color: #fff;
+    border-color: #444;
+}
+
+.highlight-table th,
+.highlight-table td {
+    background-color: #111;
+    border-color: #444;
+}
+
+.highlight-table td:last-child {
+    font-weight: 700;
+    color: #fff;
+}
+
+.footnote {
+    margin-top: 40px;
+    font-size: 12px;
+    color: #666;
+}
+
+
+
+/* Animations */
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 1.0s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.slide-up {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: slideUp 1.0s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.delay-1 {
+    animation-delay: 0.2s;
+}
+
+.delay-2 {
+    animation-delay: 0.4s;
+}
+
+.delay-3 {
+    animation-delay: 0.6s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+/* Print Styles */
+@media print {
+    @page {
+        size: A4;
+        margin: 0;
+    }
+
+    html,
+    body {
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        padding: 0;
+        background-color: #fff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding-top: 20px;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 1000px;
+        /* Base width to scale down from */
+        padding: 40px;
+        box-sizing: border-box;
+        /* Scale content to fit A4 width if needed, but usually better to let it flow naturally 
+           or use a fixed width that fits. A4 printable width is approx 190mm (~718px at 96dpi).
+           Our container is max-width 1200px in web. We need to scale it down.
+        */
+        transform: scale(0.75);
+        /* Scale down to fit A4 */
+        transform-origin: top center;
+        margin: 0 auto;
+    }
+
+    /* Hide UI elements */
+    /* .pdf-download-container and .lang-toggle removed */
+
+    /* Adjust colors for print */
+    :root {
+        --bg-color: #fff;
+        --text-color: #000;
+        --border-color: #000;
+        --table-line-color: #ccc;
+    }
+
+    /* Header adjustments */
+    header {
+        margin-bottom: 40px;
+        border-bottom-color: #000;
+    }
+
+    header h1 {
+        color: #000;
+    }
+
+    .quotation-label {
+        color: #000;
+    }
+
+    /* Info Container */
+    .info-container {
+        margin-bottom: 40px;
+        gap: 40px;
+    }
+
+    .info-row {
+        border-bottom-color: #ccc;
+    }
+
+    .info-row.total-row {
+        border-bottom-color: #000;
+    }
+
+    .company-info {
+        color: #666;
+    }
+
+    /* Tables */
+    table {
+        margin-bottom: 40px;
+    }
+
+    th {
+        border-top-color: #000;
+        border-bottom-color: #000;
+        color: #000;
+    }
+
+    td {
+        border-bottom-color: #ccc;
+        color: #000;
+    }
+
+    /* Inputs & Textareas */
+    input,
+    textarea,
+    select {
+        color: #000 !important;
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+        width: auto;
+        max-width: 100%;
+        resize: none;
+        overflow: visible;
+    }
+
+    /* Specific input tweaks */
+    .text-input {
+        width: 100% !important;
+    }
+
+    .num-input {
+        text-align: right;
+    }
+
+    /* Remove select arrow */
+    select {
+        appearance: none;
+        background-image: none !important;
+        padding-right: 0;
+    }
+
+    /* Calculation Section */
+    .calc-details h4 {
+        color: #000;
+        margin-top: 20px;
+    }
+
+    .sub-table th {
+        background-color: #f0f0f0 !important;
+        color: #000 !important;
+        border-color: #000;
+    }
+
+    .sub-table td {
+        border-color: #000;
+    }
+
+    .highlight-table th,
+    .highlight-table td {
+        background-color: transparent !important;
+        border-color: #000;
+    }
+
+    .highlight-table td:last-child {
+        color: #000;
+    }
+
+    .footnote {
+        color: #666;
+        margin-top: 20px;
+    }
+
+    /* Ensure animations don't hide content */
+    .fade-in,
+    .slide-up {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+    }
+}

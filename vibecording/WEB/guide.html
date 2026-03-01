@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Portfolio Shift — 완전 가이드</title>
+    <meta name="description" content="PDF 포트폴리오를 웹으로 전환하는 완전 가이드. AI와 GitHub Pages로 나만의 URL을 만든다.">
+    <meta property="og:title" content="The Portfolio Shift — 완전 가이드">
+    <meta property="og:description" content="문서에서 웹으로">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        rel="stylesheet">
+    <link rel="stylesheet" href="guide.css">
+</head>
+
+<body>
+
+    <!-- ===== Sticky Header ===== -->
+    <header class="g-header">
+        <a href="#hero" class="g-logo">
+            <span class="g-logo-mark">&#9679;</span>
+            <span class="g-logo-text">The Portfolio Shift</span>
+        </a>
+        <nav class="g-nav">
+            <a href="#why" class="g-nav-link" data-section="why">WHY</a>
+            <a href="#ch1" class="g-nav-link" data-section="ch1">DATA</a>
+            <a href="#ch2" class="g-nav-link" data-section="ch2">REFERENCE</a>
+            <a href="#ch3" class="g-nav-link" data-section="ch3">STRUCTURE</a>
+            <a href="#ch4" class="g-nav-link" data-section="ch4">VIBE CODE</a>
+            <a href="#ch5" class="g-nav-link" data-section="ch5">PUBLISH</a>
+        </nav>
+        <div class="g-header-right">
+            <a href="index.html" class="g-btn-outline">발표용 보기 <span class="g-btn-arrow">&nearr;</span></a>
+        </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="g-progress">
+        <div class="g-progress-bar"></div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 1: HERO                                              -->
+    <!-- ============================================================ -->
+    <section class="g-hero" id="hero">
+        <div class="g-hero-bg">
+            <video class="g-bg-video" autoplay muted loop playsinline>
+                <source src="img/bg_01_title.mp4" type="video/mp4">
+            </video>
+            <div class="g-bg-overlay"></div>
+            <div class="g-hero-grain"></div>
+            <div class="g-hero-glow g-hero-glow--1"></div>
+            <div class="g-hero-glow g-hero-glow--2"></div>
+        </div>
+
+        <div class="g-hero-content">
+            <p class="g-hero-eyebrow reveal">AI 시대의 포트폴리오 완전 가이드</p>
+            <div class="g-hero-title-wrap">
+                <!-- Morphing Geo Shape + Clone Spread -->
+                <div class="g-geo-elements">
+                    <div class="g-geo-circle--hero"></div>
+                    <div class="g-geo-spread" style="--i:-2; --o:0.3;">
+                        <div class="g-geo-clone"></div>
+                    </div>
+                    <div class="g-geo-spread" style="--i:-1; --o:0.5;">
+                        <div class="g-geo-clone"></div>
+                    </div>
+                    <div class="g-geo-spread" style="--i:1; --o:0.5;">
+                        <div class="g-geo-clone"></div>
+                    </div>
+                    <div class="g-geo-spread" style="--i:2; --o:0.3;">
+                        <div class="g-geo-clone"></div>
+                    </div>
+                </div>
+                <h1 class="g-hero-title reveal reveal--delay-1" data-chars>THE<br>PORTFOLIO<br><span
+                        class="g-text-yellow">SHIFT</span></h1>
+            </div>
+            <p class="g-hero-sub reveal reveal--delay-2">
+                문서에서 웹으로
+            </p>
+            <div class="g-hero-meta reveal reveal--delay-3">
+                <span class="g-tag">바이브코딩</span>
+                <span class="g-tag">GitHub Pages</span>
+                <span class="g-tag">AI 포트폴리오</span>
+                <span class="g-tag">무료 배포</span>
+            </div>
+        </div>
+
+        <!-- Chapter Preview Cards -->
+        <div class="g-hero-chapters reveal reveal--delay-4">
+            <a href="#ch1" class="g-chapter-card">
+                <span class="g-chapter-num">01</span>
+                <span class="g-chapter-name">DATA FIRST</span>
+                <span class="g-chapter-desc">폴더를 열고, 재료부터 정리</span>
+            </a>
+            <a href="#ch2" class="g-chapter-card">
+                <span class="g-chapter-num">02</span>
+                <span class="g-chapter-name">REFERENCE</span>
+                <span class="g-chapter-desc">레퍼런스 먼저 찾기</span>
+            </a>
+            <a href="#ch3" class="g-chapter-card">
+                <span class="g-chapter-num">03</span>
+                <span class="g-chapter-name">STRUCTURE</span>
+                <span class="g-chapter-desc">구조부터 잡는다</span>
+            </a>
+            <a href="#ch4" class="g-chapter-card">
+                <span class="g-chapter-num">04</span>
+                <span class="g-chapter-name">VIBE CODING</span>
+                <span class="g-chapter-desc">코드 대신 대화로 만든다</span>
+            </a>
+            <a href="#ch5" class="g-chapter-card">
+                <span class="g-chapter-num">05</span>
+                <span class="g-chapter-name">PUBLISH</span>
+                <span class="g-chapter-desc">만들었으면 배포한다</span>
+            </a>
+        </div>
+
+        <div class="g-hero-scroll reveal reveal--delay-5">
+            <span>스크롤하여 시작</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M10 4v12M4 10l6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 2: WHY — 왜 웹 포트폴리오인가                         -->
+    <!-- ============================================================ -->
+    <section class="g-section" id="why">
+
+        <!-- Section Hero -->
+        <div class="g-section-hero">
+            <video class="g-bg-video" autoplay muted loop playsinline>
+                <source src="img/bg_04_antigravity.mp4" type="video/mp4">
+            </video>
+            <div class="g-bg-overlay"></div>
+            <div class="g-section-hero-inner">
+                <p class="g-section-eyebrow reveal">INTRODUCTION</p>
+                <h2 class="g-section-title reveal reveal--delay-1" data-chars>WHY <span class="g-text-yellow">WEB</span>
+                    PORTFOLIO</h2>
+                <p class="g-section-desc reveal reveal--delay-2">
+                    PDF보다 URL이 편하다.<br>
+                    URL 하나면 누구나 바로 볼 수 있다.
+                </p>
+            </div>
+        </div>
+
+        <!-- Before / After Comparison -->
+        <div class="g-container">
+            <div class="g-compare reveal">
+                <div class="g-compare-col g-compare-before">
+                    <div class="g-compare-badge">BEFORE</div>
+                    <h3 class="g-compare-title">sabum profile.pdf</h3>
+                    <ul class="g-compare-list">
+                        <li>
+                            <span class="g-icon-x">&#10005;</span>
+                            <div>
+                                <strong>50MB · 메일 첨부 불가</strong>
+                                <p>클라우드 링크 공유는 번거롭고 만료됨</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="g-icon-x">&#10005;</span>
+                            <div>
+                                <strong>고정된 페이지 순서</strong>
+                                <p>보는 사람이 순서를 바꿀 수 없음</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="g-icon-x">&#10005;</span>
+                            <div>
+                                <strong>인터랙션 없음</strong>
+                                <p>정적 이미지만 가능, 영상/애니메이션 불가</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="g-icon-x">&#10005;</span>
+                            <div>
+                                <strong>다운로드 후 열기</strong>
+                                <p>파일을 받아야만 볼 수 있음. 모바일 불편</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="g-compare-divider">
+                    <span class="g-compare-vs">VS</span>
+                </div>
+                <div class="g-compare-col g-compare-after">
+                    <div class="g-compare-badge g-compare-badge--active">AFTER</div>
+                    <h3 class="g-compare-title">sabum.kr</h3>
+                    <ul class="g-compare-list">
+                        <li>
+                            <span class="g-icon-check">&#10003;</span>
+                            <div>
+                                <strong>URL 공유 · 즉시 접속</strong>
+                                <p>링크 하나로 전 세계 누구나 접근. 만료 없음</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="g-icon-check">&#10003;</span>
+                            <div>
+                                <strong>인터랙션 · 다크모드 · 다국어</strong>
+                                <p>스크롤 애니메이션, 테마 전환, 언어 전환 가능</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="g-icon-check">&#10003;</span>
+                            <div>
+                                <strong>실시간 업데이트</strong>
+                                <p>Git으로 버전 관리. 수정하면 바로 반영</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="g-icon-check">&#10003;</span>
+                            <div>
+                                <strong>모바일 · PC · 어디서든</strong>
+                                <p>반응형 레이아웃. 어떤 기기에서든 최적화</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="g-container">
+            <div class="g-stats reveal">
+                <div class="g-stat">
+                    <span class="g-stat-number" data-target="73">0</span><span class="g-stat-unit">%</span>
+                    <p class="g-stat-label">채용담당자가<br>링크 기반 포트폴리오 선호</p>
+                </div>
+                <div class="g-stat">
+                    <span class="g-stat-number" data-target="2.4">0</span><span class="g-stat-unit">배</span>
+                    <p class="g-stat-label">웹 포트폴리오 보유자의<br>면접 전환율</p>
+                </div>
+                <div class="g-stat">
+                    <span class="g-stat-number" data-target="0">0</span><span class="g-stat-unit">원</span>
+                    <p class="g-stat-label">GitHub Pages<br>호스팅 비용</p>
+                </div>
+                <p class="g-stat-source">Recruiterflow 2025 · Fueler 채용 트렌드 리포트</p>
+            </div>
+        </div>
+
+        <!-- Design Reference Sites -->
+        <div class="g-container">
+            <div class="g-subtitle-group reveal">
+                <h3 class="g-subtitle">Design Reference Sites</h3>
+                <p class="g-subtitle-sub">디자인 영감을 얻을 수 있는 사이트</p>
+            </div>
+            <div class="g-ref-list reveal">
+                <a href="https://www.awwwards.com" target="_blank" rel="noopener" class="g-ref-item">
+                    <div class="g-ref-name">Awwwards</div>
+                    <div class="g-ref-desc">크리에이티브 웹 디자인의 글로벌 기준. 수상작 중심의 하이엔드 포트폴리오 레퍼런스</div>
+                    <span class="g-ref-arrow">&nearr;</span>
+                </a>
+                <a href="https://godly.website" target="_blank" rel="noopener" class="g-ref-item">
+                    <div class="g-ref-name">Godly</div>
+                    <div class="g-ref-desc">최신 웹 디자인 트렌드 큐레이션. 인터랙션과 비주얼이 뛰어난 사이트 모음</div>
+                    <span class="g-ref-arrow">&nearr;</span>
+                </a>
+                <a href="https://www.siteinspire.com" target="_blank" rel="noopener" class="g-ref-item">
+                    <div class="g-ref-name">SiteInspire</div>
+                    <div class="g-ref-desc">미니멀하고 세련된 웹 디자인 아카이브. 스타일·타입별 필터링 가능</div>
+                    <span class="g-ref-arrow">&nearr;</span>
+                </a>
+                <a href="https://www.behance.net" target="_blank" rel="noopener" class="g-ref-item">
+                    <div class="g-ref-name">Behance</div>
+                    <div class="g-ref-desc">Adobe 기반 글로벌 크리에이티브 플랫폼. UI/UX, 브랜딩 등 다양한 분야 참고</div>
+                    <span class="g-ref-arrow">&nearr;</span>
+                </a>
+                <a href="https://dribbble.com" target="_blank" rel="noopener" class="g-ref-item">
+                    <div class="g-ref-name">Dribbble</div>
+                    <div class="g-ref-desc">UI/UX 디자이너 커뮤니티. 컴포넌트·인터랙션 트렌드 파악에 유용</div>
+                    <span class="g-ref-arrow">&nearr;</span>
+                </a>
+                <a href="https://onepagelove.com" target="_blank" rel="noopener" class="g-ref-item">
+                    <div class="g-ref-name">One Page Love</div>
+                    <div class="g-ref-desc">원페이지 웹사이트 전문 갤러리. 포트폴리오 랜딩페이지 구성 참고</div>
+                    <span class="g-ref-arrow">&nearr;</span>
+                </a>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 3: CHAPTER 01 — DATA FIRST                           -->
+    <!-- ============================================================ -->
+    <section class="g-section g-section--alt" id="ch1">
+
+        <!-- Chapter Hero -->
+        <div class="g-chapter-hero">
+            <video class="g-bg-video" autoplay muted loop playsinline>
+                <source src="img/bg_12_datafirst.mp4" type="video/mp4">
+            </video>
+            <div class="g-bg-overlay"></div>
+            <div class="g-chapter-hero-inner">
+                <p class="g-chapter-label reveal">CHAPTER 01</p>
+                <h2 class="g-chapter-title reveal reveal--delay-1" data-chars>DATA<br><span
+                        class="g-text-yellow">FIRST</span></h2>
+                <p class="g-chapter-sub reveal reveal--delay-2">
+                    디자인보다 내용이 먼저다.<br>
+                    폴더부터 정리하자.
+                </p>
+            </div>
+        </div>
+
+        <!-- Content: 2-Column Layout -->
+        <div class="g-container">
+            <div class="g-two-col">
+
+                <!-- Left: Sticky Explanation -->
+                <div class="g-col-sticky">
+                    <div class="g-sticky-block reveal">
+                        <h3 class="g-content-title">왜 데이터가 먼저인가</h3>
+                        <p class="g-content-text">
+                            대부분의 사람들이 포트폴리오를 만들 때 디자인부터 시작한다.
+                            하지만 <strong>내용 없이 디자인부터 시작하면 나중에 다시 고쳐야 한다.</strong>
+                        </p>
+                        <p class="g-content-text">
+                            먼저 폴더를 만들고, 여기에 자기소개, 프로젝트 이미지,
+                            설명 텍스트, 레퍼런스를 정리하면 된다. 이 데이터가 포트폴리오의
+                            기본이 된다.
+                        </p>
+                        <div class="g-callout">
+                            <p>폴더를 잘 정리하면 사이트도 정리된다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Folder Structure Code Block -->
+                <div class="g-col-scroll">
+                    <div class="g-code-block reveal">
+                        <div class="g-code-header">
+                            <div class="g-code-dots">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <span class="g-code-filename">portfolio/</span>
+                            <button class="g-code-copy" onclick="copyCode(this)">복사</button>
+                        </div>
+                        <pre class="g-code"><code>portfolio/
+├── 📁 images/
+│   ├── hero-photo.jpg          <span class="g-code-comment"># 프로필 사진</span>
+│   ├── project-01/
+│   │   ├── thumbnail.jpg       <span class="g-code-comment"># 썸네일 (16:9)</span>
+│   │   ├── detail-01.jpg       <span class="g-code-comment"># 상세 이미지</span>
+│   │   └── detail-02.jpg
+│   └── project-02/
+│       └── ...
+│
+├── 📁 content/
+│   ├── about.md                <span class="g-code-comment"># 자기소개</span>
+│   ├── projects.json           <span class="g-code-comment"># 프로젝트 데이터</span>
+│   └── contact.md              <span class="g-code-comment"># 연락처</span>
+│
+├── 📁 reference/
+│   ├── layout-inspiration/     <span class="g-code-comment"># 레이아웃 참고</span>
+│   ├── color-palette/          <span class="g-code-comment"># 컬러 참고</span>
+│   └── typography/             <span class="g-code-comment"># 서체 참고</span>
+│
+└── 📄 README.md                <span class="g-code-comment"># 프로젝트 설명</span></code></pre>
+                    </div>
+
+                    <!-- Checklist -->
+                    <div class="g-checklist reveal">
+                        <h4 class="g-checklist-title">데이터 준비 체크리스트</h4>
+                        <div class="g-check-item" data-expandable>
+                            <div class="g-check-header">
+                                <span class="g-checkbox"></span>
+                                <strong>자기소개</strong>
+                                <span class="g-expand-icon">+</span>
+                            </div>
+                            <div class="g-check-detail">
+                                <p>이름, 직함(또는 되고 싶은 직함), 한 줄 소개, 2-3줄 자기소개.</p>
+                                <div class="g-code-inline">
+                                    <code>"안녕하세요, UX 디자이너 김철수입니다. 사용자의 문제를 데이터로 풀어가는 디자이너입니다."</code>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="g-check-item" data-expandable>
+                            <div class="g-check-header">
+                                <span class="g-checkbox"></span>
+                                <strong>프로젝트 이미지</strong>
+                                <span class="g-expand-icon">+</span>
+                            </div>
+                            <div class="g-check-detail">
+                                <p>최소 3개 프로젝트. 프로젝트당 썸네일 1장 + 상세 이미지 2-4장.</p>
+                                <ul>
+                                    <li>썸네일: <code>1200×675px</code> (16:9 비율)</li>
+                                    <li>상세: <code>1600px</code> 이상 폭, <code>1MB</code> 이하</li>
+                                    <li>포맷: WebP 또는 최적화된 JPG</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="g-check-item" data-expandable>
+                            <div class="g-check-header">
+                                <span class="g-checkbox"></span>
+                                <strong>프로젝트 설명 텍스트</strong>
+                                <span class="g-expand-icon">+</span>
+                            </div>
+                            <div class="g-check-detail">
+                                <p>각 프로젝트마다: 제목, 기간, 역할, 사용 도구, 한 줄 요약, 상세 설명.</p>
+                                <div class="g-code-block g-code-block--small">
+                                    <div class="g-code-header">
+                                        <span class="g-code-filename">projects.json (예시)</span>
+                                    </div>
+                                    <pre class="g-code"><code>{
+  "title": "커피숍 브랜딩",
+  "period": "2024.09 - 2024.11",
+  "role": "Brand Designer",
+  "tools": ["Figma", "Illustrator"],
+  "summary": "로컬 커피숍의 브랜드 아이덴티티 리디자인",
+  "link": "https://www.behance.net/..."
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="g-check-item" data-expandable>
+                            <div class="g-check-header">
+                                <span class="g-checkbox"></span>
+                                <strong>스킬 / 도구 목록</strong>
+                                <span class="g-expand-icon">+</span>
+                            </div>
+                            <div class="g-check-detail">
+                                <p>능숙한 도구와 기술 스택. 숙련도를 표시하면 더 좋다.</p>
+                                <div class="g-skill-tags">
+                                    <span class="g-skill-tag">Figma</span>
+                                    <span class="g-skill-tag">Photoshop</span>
+                                    <span class="g-skill-tag">Illustrator</span>
+                                    <span class="g-skill-tag">HTML/CSS</span>
+                                    <span class="g-skill-tag">Notion</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="g-check-item" data-expandable>
+                            <div class="g-check-header">
+                                <span class="g-checkbox"></span>
+                                <strong>SNS / 연락처 링크</strong>
+                                <span class="g-expand-icon">+</span>
+                            </div>
+                            <div class="g-check-detail">
+                                <p>이메일, LinkedIn, Behance, Dribbble, GitHub 등 — 실제 URL을 미리 정리하세요.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Next Chapter Link -->
+                    <div class="g-next-chapter reveal">
+                        <p class="g-next-label">다음 챕터</p>
+                        <a href="#ch2" class="g-next-link">
+                            <span class="g-next-num">02</span>
+                            <span class="g-next-name">REFERENCE — 레퍼런스 먼저 찾기</span>
+                            <span class="g-next-arrow">&rarr;</span>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 4: CHAPTER 02 — REFERENCE                          -->
+    <!-- ============================================================ -->
+    <section class="g-section" id="ch2">
+
+        <!-- Chapter Hero -->
+        <div class="g-chapter-hero">
+            <video class="g-bg-video" autoplay muted loop playsinline>
+                <source src="img/bg_06_reference.mp4" type="video/mp4">
+            </video>
+            <div class="g-bg-overlay"></div>
+            <div class="g-chapter-hero-inner">
+                <p class="g-chapter-label reveal">CHAPTER 02</p>
+                <h2 class="g-chapter-title reveal reveal--delay-1" data-chars>VISUAL<br><span
+                        class="g-text-yellow">REFERENCE</span></h2>
+                <p class="g-chapter-sub reveal reveal--delay-2">
+                    "모던하게 해줘"만으로는 부족하다.<br>
+                    레퍼런스가 필요하다.
+                </p>
+            </div>
+        </div>
+
+        <!-- Content: 2-Column Layout -->
+        <div class="g-container">
+            <div class="g-two-col">
+
+                <!-- Left: Sticky Explanation -->
+                <div class="g-col-sticky">
+                    <div class="g-sticky-block reveal">
+                        <h3 class="g-content-title">왜 레퍼런스가 먼저인가</h3>
+                        <p class="g-content-text">
+                            "깔끔하게", "모던하게"는 수백 가지로 해석된다.
+                            <strong>레퍼런스 없이 시작하면, 작업 방향이 매번 흔들린다.</strong>
+                        </p>
+                        <p class="g-content-text">
+                            좋은 포트폴리오를 5개만 모아도 방향이 잡힌다.
+                            컬러, 레이아웃, 타이포그래피 — 구체적인 기준이 생긴다.
+                        </p>
+                        <div class="g-callout">
+                            <p>레퍼런스는 따라하기가 아니라, 방향을 잡는 것이다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Scrollable Content -->
+                <div class="g-col-scroll">
+
+                    <!-- Reference Sites -->
+                    <div class="g-content-block reveal">
+                        <h4 class="g-block-title">레퍼런스 수집 사이트</h4>
+                        <div class="g-ref-grid">
+                            <a href="https://www.pinterest.com" target="_blank" rel="noopener" class="g-ref-card">
+                                <strong>Pinterest</strong>
+                                <p>무드보드 & 영감</p>
+                            </a>
+                            <a href="https://dribbble.com" target="_blank" rel="noopener" class="g-ref-card">
+                                <strong>Dribbble</strong>
+                                <p>UI/UX 트렌드</p>
+                            </a>
+                            <a href="https://www.behance.net" target="_blank" rel="noopener" class="g-ref-card">
+                                <strong>Behance</strong>
+                                <p>케이스 스터디</p>
+                            </a>
+                            <a href="https://www.awwwards.com" target="_blank" rel="noopener" class="g-ref-card">
+                                <strong>Awwwards</strong>
+                                <p>웹 디자인 어워드</p>
+                            </a>
+                            <a href="https://mobbin.com" target="_blank" rel="noopener" class="g-ref-card">
+                                <strong>Mobbin</strong>
+                                <p>모바일 앱 UI</p>
+                            </a>
+                            <a href="https://www.figma.com/community" target="_blank" rel="noopener" class="g-ref-card">
+                                <strong>Figma</strong>
+                                <p>커뮤니티 템플릿</p>
+                            </a>
+                            <a href="https://unsplash.com" target="_blank" rel="noopener" class="g-ref-card">
+                                <strong>Unsplash</strong>
+                                <p>고퀄리티 이미지</p>
+                            </a>
+                            <a href="https://collectui.com" target="_blank" rel="noopener" class="g-ref-card">
+                                <strong>Collect UI</strong>
+                                <p>일일 UI 컬렉션</p>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- How to Use Reference: 4-Step Process -->
+                    <div class="g-content-block reveal">
+                        <h4 class="g-block-title">레퍼런스 활용법</h4>
+                        <p class="g-content-text">
+                            레퍼런스를 그냥 모으기만 하면 소용이 없다.<br>
+                            <strong>분석하고, 추출하고, AI에게 전달하는 것</strong>까지가 하나의 프로세스다.
+                        </p>
+                        <div class="g-process-steps">
+                            <div class="g-process-step">
+                                <span class="g-process-num">01</span>
+                                <div class="g-process-content">
+                                    <strong>컬러 팔레트 추출</strong>
+                                    <p>레퍼런스에서 주요 컬러 3-5개를 뽑아낸다. 배경색, 강조색, 텍스트 컬러를 구분한다.</p>
+                                </div>
+                            </div>
+                            <div class="g-process-step">
+                                <span class="g-process-num">02</span>
+                                <div class="g-process-content">
+                                    <strong>레이아웃 구조 분석</strong>
+                                    <p>섹션 구성, 그리드, 여백 비율을 관찰한다. 어떤 순서로 정보를 배치했는지 파악한다.</p>
+                                </div>
+                            </div>
+                            <div class="g-process-step">
+                                <span class="g-process-num">03</span>
+                                <div class="g-process-content">
+                                    <strong>타이포그래피 조합</strong>
+                                    <p>제목과 본문의 서체 조합, 사이즈 위계, 자간/행간을 분석한다.</p>
+                                </div>
+                            </div>
+                            <div class="g-process-step">
+                                <span class="g-process-num">04</span>
+                                <div class="g-process-content">
+                                    <strong>AI에게 이미지로 전달</strong>
+                                    <p>분석한 레퍼런스 이미지를 AI에게 보여주며 "이 스타일로 만들어줘"라고 대화한다.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Practical Tips Code Block -->
+                    <div class="g-code-block reveal">
+                        <div class="g-code-header">
+                            <div class="g-code-dots">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <span class="g-code-filename">AI 프롬프트 예시</span>
+                            <button class="g-code-copy" onclick="copyCode(this)">복사</button>
+                        </div>
+                        <pre class="g-code"><code><span class="g-code-comment"># 레퍼런스 이미지와 함께 전달하는 프롬프트</span>
+
+이 웹사이트의 디자인 스타일을 참고해서
+포트폴리오 사이트를 만들어줘.
+
+<span class="g-code-comment"># 구체적으로 지정할 요소들:</span>
+- 컬러: 다크 배경 + 옐로우 포인트
+- 레이아웃: 풀스크린 히어로 + 카드 그리드
+- 서체: 영문 산세리프 + 한글 프리텐다드
+- 톤: 미니멀, 모던, 타이포 중심
+
+<span class="g-code-comment"># 이렇게 하면 안 된다:</span>
+- ❌ "깔끔하게 만들어줘"
+- ❌ "트렌디한 느낌으로"
+- ✅ "첨부한 이미지처럼 만들어줘"</code></pre>
+                    </div>
+
+                    <!-- Next Chapter Link -->
+                    <div class="g-next-chapter reveal">
+                        <p class="g-next-label">다음 챕터</p>
+                        <a href="#ch3" class="g-next-link">
+                            <span class="g-next-num">03</span>
+                            <span class="g-next-name">STRUCTURE — 구조부터 잡기</span>
+                            <span class="g-next-arrow">&rarr;</span>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 5: CHAPTER 03 — STRUCTURE                          -->
+    <!-- ============================================================ -->
+    <section class="g-section g-section--alt" id="ch3">
+
+        <!-- Chapter Hero -->
+        <div class="g-chapter-hero">
+            <video class="g-bg-video" autoplay muted loop playsinline>
+                <source src="img/bg_07_structure.mp4" type="video/mp4">
+            </video>
+            <div class="g-bg-overlay"></div>
+            <div class="g-chapter-hero-inner">
+                <p class="g-chapter-label reveal">CHAPTER 03</p>
+                <h2 class="g-chapter-title reveal reveal--delay-1" data-chars><span
+                        class="g-text-yellow">STRUC</span><br>TURE</h2>
+                <p class="g-chapter-sub reveal reveal--delay-2">
+                    구조부터 잡는다.
+                </p>
+            </div>
+        </div>
+
+        <!-- Content: 2-Column Layout -->
+        <div class="g-container">
+            <div class="g-two-col">
+
+                <!-- Left: Sticky Explanation -->
+                <div class="g-col-sticky">
+                    <div class="g-sticky-block reveal">
+                        <h3 class="g-content-title">포트폴리오 구조</h3>
+                        <p class="g-content-text">
+                            어떤 포트폴리오 사이트든 결국 같은 구조 위에 있다.
+                            <strong>5개 섹션만 기억하면 된다.</strong>
+                        </p>
+                        <p class="g-content-text">
+                            이 구조 위에 자신만의 콘텐츠를 채우면 된다.
+                            구조가 먼저, 디자인은 그 다음이다.
+                        </p>
+                        <div class="g-callout">
+                            <p>대부분의 포트폴리오가 따르는 구조다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Scrollable Content -->
+                <div class="g-col-scroll">
+
+                    <!-- Portfolio Anatomy -->
+                    <div class="g-content-block reveal">
+                        <h4 class="g-block-title">Portfolio Anatomy</h4>
+                        <div class="g-anatomy">
+                            <div class="g-anatomy-row">
+                                <span class="g-anatomy-num">01</span>
+                                <span class="g-anatomy-name">HERO</span>
+                                <span class="g-anatomy-detail">첫인상 · 이름 · 한 줄 소개</span>
+                            </div>
+                            <div class="g-anatomy-row">
+                                <span class="g-anatomy-num">02</span>
+                                <span class="g-anatomy-name">ABOUT</span>
+                                <span class="g-anatomy-detail">나는 누구인가 · 어떤 가치를 추구하는가</span>
+                            </div>
+                            <div class="g-anatomy-row">
+                                <span class="g-anatomy-num">03</span>
+                                <span class="g-anatomy-name">PROJECTS</span>
+                                <span class="g-anatomy-detail">대표 작업물 3~6개 · 썸네일 + 설명</span>
+                            </div>
+                            <div class="g-anatomy-row">
+                                <span class="g-anatomy-num">04</span>
+                                <span class="g-anatomy-name">SKILLS</span>
+                                <span class="g-anatomy-detail">사용 도구 · 역량 시각화</span>
+                            </div>
+                            <div class="g-anatomy-row">
+                                <span class="g-anatomy-num">05</span>
+                                <span class="g-anatomy-name">CONTACT</span>
+                                <span class="g-anatomy-detail">연락처 · SNS · 이메일</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section Detail -->
+                    <div class="g-content-block reveal">
+                        <h4 class="g-block-title">각 섹션 상세 가이드</h4>
+                        <div class="g-process-steps">
+                            <div class="g-process-step">
+                                <span class="g-process-num">01</span>
+                                <div class="g-process-content">
+                                    <strong>HERO — 첨 화면에 핵심 정보를</strong>
+                                    <p>방문자가 가장 먼저 보는 화면. 풀스크린 이미지 또는 타이포그래피로 강한 첫인상을 만든다. 이름 + 직함 + 한 줄 소개만 있으면 충분하다.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="g-process-step">
+                                <span class="g-process-num">02</span>
+                                <div class="g-process-content">
+                                    <strong>ABOUT — 짧은 자기소개</strong>
+                                    <p>나는 어떤 문제를 풀고 싶은 사람인가. 경력보다 가치관과 관점이 더 중요하다. 프로필 사진 + 2~3줄 소개면 된다.</p>
+                                </div>
+                            </div>
+                            <div class="g-process-step">
+                                <span class="g-process-num">03</span>
+                                <div class="g-process-content">
+                                    <strong>PROJECTS — 대표작 3~6개</strong>
+                                    <p>카드 그리드 레이아웃으로 대표 프로젝트를 보여준다. 썸네일 + 프로젝트명 + 역할 + 한 줄 설명. 클릭하면 상세 페이지로.</p>
+                                </div>
+                            </div>
+                            <div class="g-process-step">
+                                <span class="g-process-num">04</span>
+                                <div class="g-process-content">
+                                    <strong>SKILLS — 사용 도구 정리</strong>
+                                    <p>Figma, Photoshop 같은 도구 나열보다 "어떤 문제를 풀 수 있는가"가 핵심이다. 아이콘 + 태그로 간결하게.</p>
+                                </div>
+                            </div>
+                            <div class="g-process-step">
+                                <span class="g-process-num">05</span>
+                                <div class="g-process-content">
+                                    <strong>CONTACT — 연락처와 링크</strong>
+                                    <p>이메일, LinkedIn, Behance 링크를 명확히 배치한다. CTA 버튼("함께 일해요") 하나면 충분하다.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- HTML Structure Code Block -->
+                    <div class="g-code-block reveal">
+                        <div class="g-code-header">
+                            <div class="g-code-dots">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <span class="g-code-filename">index.html</span>
+                            <button class="g-code-copy" onclick="copyCode(this)">복사</button>
+                        </div>
+                        <pre class="g-code"><code><span class="g-code-comment">&lt;!-- 포트폴리오 기본 구조 --&gt;</span>
+
+&lt;section id="hero"&gt;
+  &lt;h1&gt;김철수&lt;/h1&gt;
+  &lt;p&gt;UX Designer&lt;/p&gt;
+&lt;/section&gt;
+
+&lt;section id="about"&gt;
+  &lt;img src="profile.jpg" /&gt;
+  &lt;p&gt;사용자 문제를 데이터로 풀어가는...&lt;/p&gt;
+&lt;/section&gt;
+
+&lt;section id="projects"&gt;
+  &lt;div class="project-grid"&gt;
+    &lt;div class="card"&gt;...&lt;/div&gt;  <span class="g-code-comment">&lt;!-- 프로젝트 1 --&gt;</span>
+    &lt;div class="card"&gt;...&lt;/div&gt;  <span class="g-code-comment">&lt;!-- 프로젝트 2 --&gt;</span>
+    &lt;div class="card"&gt;...&lt;/div&gt;  <span class="g-code-comment">&lt;!-- 프로젝트 3 --&gt;</span>
+  &lt;/div&gt;
+&lt;/section&gt;
+
+&lt;section id="skills"&gt;
+  &lt;div class="skill-tags"&gt;...&lt;/div&gt;
+&lt;/section&gt;
+
+&lt;section id="contact"&gt;
+  &lt;a href="mailto:hello@me.com"&gt;이메일&lt;/a&gt;
+  &lt;a href="https://linkedin.com/..."&gt;LinkedIn&lt;/a&gt;
+&lt;/section&gt;</code></pre>
+                    </div>
+
+                    <!-- Code & Template Resources -->
+                    <div class="g-content-block reveal">
+                        <h4 class="g-block-title">Hero &amp; UI 코드 리소스</h4>
+                        <p class="g-block-desc">코드를 복사해서 바로 쓸 수 있는 사이트들. 화려한 Hero 섹션부터 UI 컴포넌트까지.</p>
+
+                        <div class="g-resource-grid">
+                            <a href="https://ui.aceternity.com" target="_blank" rel="noopener" class="g-resource-card">
+                                <span class="g-resource-name">Aceternity UI</span>
+                                <span class="g-resource-desc">React + Tailwind 화려한 애니메이션 Hero 컴포넌트</span>
+                            </a>
+                            <a href="https://www.hover.dev/components/heros" target="_blank" rel="noopener"
+                                class="g-resource-card">
+                                <span class="g-resource-name">Hover.dev</span>
+                                <span class="g-resource-desc">인터랙티브 Hero 섹션 · Framer Motion 기반</span>
+                            </a>
+                            <a href="https://magicui.design" target="_blank" rel="noopener" class="g-resource-card">
+                                <span class="g-resource-name">Magic UI</span>
+                                <span class="g-resource-desc">오픈소스 애니메이션 컴포넌트 50개+</span>
+                            </a>
+                            <a href="https://ui.shadcn.com" target="_blank" rel="noopener" class="g-resource-card">
+                                <span class="g-resource-name">shadcn/ui</span>
+                                <span class="g-resource-desc">React 컴포넌트 복사/붙여넣기 · 10만+ Stars</span>
+                            </a>
+                            <a href="https://uiverse.io" target="_blank" rel="noopener" class="g-resource-card">
+                                <span class="g-resource-name">UIverse</span>
+                                <span class="g-resource-desc">4,200+ 오픈소스 CSS/HTML UI 요소</span>
+                            </a>
+                            <a href="https://codemyui.com/tag/hero-section/" target="_blank" rel="noopener"
+                                class="g-resource-card">
+                                <span class="g-resource-name">CodeMyUI</span>
+                                <span class="g-resource-desc">Hero 섹션 코드 스니펫 + GIF 미리보기</span>
+                            </a>
+                            <a href="https://html5up.net" target="_blank" rel="noopener" class="g-resource-card">
+                                <span class="g-resource-name">HTML5 UP</span>
+                                <span class="g-resource-desc">반응형 HTML/CSS 포트폴리오 템플릿</span>
+                            </a>
+                            <a href="https://codepen.io/tag/portfolio" target="_blank" rel="noopener"
+                                class="g-resource-card">
+                                <span class="g-resource-name">CodePen</span>
+                                <span class="g-resource-desc">라이브 코드 에디터 · 포트폴리오 예제 탐색</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Next Chapter Link -->
+                    <div class="g-next-chapter reveal">
+                        <p class="g-next-label">다음 챕터</p>
+                        <a href="#ch4" class="g-next-link">
+                            <span class="g-next-num">04</span>
+                            <span class="g-next-name">VIBE CODING — 대화로 만든다</span>
+                            <span class="g-next-arrow">&rarr;</span>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 6: CHAPTER 04 — VIBE CODING                        -->
+    <!-- ============================================================ -->
+    <section class="g-section" id="ch4">
+
+        <!-- Chapter Hero -->
+        <div class="g-chapter-hero">
+            <video class="g-bg-video" autoplay muted loop playsinline>
+                <source src="img/bg_08_vibecoding.mp4" type="video/mp4">
+            </video>
+            <div class="g-bg-overlay"></div>
+            <div class="g-chapter-hero-inner">
+                <p class="g-chapter-label reveal">CHAPTER 04</p>
+                <h2 class="g-chapter-title reveal reveal--delay-1" data-chars>VIBE<br><span
+                        class="g-text-yellow">CODING</span></h2>
+                <p class="g-chapter-sub reveal reveal--delay-2">
+                    코드 대신 말로 만든다.
+                </p>
+            </div>
+        </div>
+
+        <!-- Content: 2-Column Layout -->
+        <div class="g-container">
+            <div class="g-two-col">
+
+                <!-- Left: Sticky Explanation -->
+                <div class="g-col-sticky">
+                    <div class="g-sticky-block reveal">
+                        <h3 class="g-content-title">대화로 만드는 웹사이트</h3>
+                        <p class="g-content-text">
+                            HTML을 외울 필요 없다. CSS를 공부할 필요 없다.
+                            <strong>AI에게 말하면 코드가 나온다.</strong>
+                        </p>
+                        <p class="g-content-text">
+                            도구는 달라도 방법은 같다 — 대화.
+                            설치 3분, 첫 사이트 10분이면 충분하다.
+                        </p>
+                        <div class="g-callout">
+                            <p>구체적으로 말하면 결과가 정확해진다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Scrollable Content -->
+                <div class="g-col-scroll">
+
+                    <!-- Tools -->
+                    <div class="g-content-block reveal">
+                        <h4 class="g-block-title">Your Tools</h4>
+                        <div class="g-ref-grid g-ref-grid--2col">
+                            <a href="https://www.cursor.com" target="_blank" rel="noopener" class="g-ref-card">
+                                <strong>Cursor</strong>
+                                <p>AI 코드 에디터</p>
+                            </a>
+                            <a href="https://claude.ai/code" target="_blank" rel="noopener" class="g-ref-card">
+                                <strong>Claude Code</strong>
+                                <p>터미널 기반 AI 코딩 도구</p>
+                            </a>
+                            <a href="https://antigravity.so" target="_blank" rel="noopener" class="g-ref-card">
+                                <strong>Antigravity</strong>
+                                <p>대화만으로 웹사이트 완성</p>
+                            </a>
+                            <a href="https://sabum.kr/03_playground/antigravity-journal" target="_blank" rel="noopener" class="g-ref-card">
+                                <strong>Antigravity Journal</strong>
+                                <p>실제 작업 예시 보기</p>
+                            </a>
+                            <a href="https://code.visualstudio.com" target="_blank" rel="noopener" class="g-ref-card">
+                                <strong>VS Code</strong>
+                                <p>무료 코드 에디터</p>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Process Flow -->
+                    <div class="g-content-block reveal">
+                        <h4 class="g-block-title">프로세스</h4>
+                        <p class="g-block-desc">설치 3분, 첫 사이트 10분</p>
+                        <div class="g-process-flow">
+                            <div class="g-flow-step">
+                                <span class="g-flow-num">01</span>
+                                <span class="g-flow-text">설치</span>
+                            </div>
+                            <span class="g-flow-arrow">&rarr;</span>
+                            <div class="g-flow-step">
+                                <span class="g-flow-num">02</span>
+                                <span class="g-flow-text">폴더 열기</span>
+                            </div>
+                            <span class="g-flow-arrow">&rarr;</span>
+                            <div class="g-flow-step">
+                                <span class="g-flow-num">03</span>
+                                <span class="g-flow-text">대화 시작</span>
+                            </div>
+                            <span class="g-flow-arrow">&rarr;</span>
+                            <div class="g-flow-step">
+                                <span class="g-flow-num">04</span>
+                                <span class="g-flow-text">결과 확인</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Plan First / PRD -->
+                    <div class="g-content-block reveal">
+                        <h4 class="g-block-title">Plan First — PRD 작성법</h4>
+                        <p class="g-block-desc">계획이 있으면 AI가 더 정확하다</p>
+                        <div class="g-code-block">
+                            <div class="g-code-header">
+                                <div class="g-code-dots">
+                                    <span></span><span></span><span></span>
+                                </div>
+                                <span class="g-code-filename">PRD.md</span>
+                                <button class="g-code-copy" onclick="copyCode(this)">복사</button>
+                            </div>
+                            <pre class="g-code"><code><span class="g-code-comment"># 포트폴리오 사이트</span>
+
+<span class="g-code-comment">## 목표</span>
+나를 소개하는 웹사이트
+
+<span class="g-code-comment">## 구조</span>
+Hero &rarr; 프로젝트 &rarr; 연락처
+
+<span class="g-code-comment">## 디자인</span>
+- 어두운 배경
+- 큰 세리프 타이틀
+- 프로젝트 카드 그리드
+
+<span class="g-code-comment">## 기술</span>
+HTML + CSS + 바이브코딩</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Prompt Comparison -->
+                    <div class="g-content-block reveal">
+                        <h4 class="g-block-title">프롬프트 비교</h4>
+                        <div class="g-prompt-compare">
+                            <div class="g-prompt-col g-prompt-col--bad">
+                                <span class="g-prompt-badge">BAD</span>
+                                <ul class="g-prompt-list">
+                                    <li>"웹사이트 만들어줘"</li>
+                                    <li>"예쁘게 해줘"</li>
+                                    <li>"이거 이상해"</li>
+                                </ul>
+                            </div>
+                            <div class="g-prompt-col g-prompt-col--good">
+                                <span class="g-prompt-badge g-prompt-badge--good">GOOD</span>
+                                <ul class="g-prompt-list">
+                                    <li>"포트폴리오 사이트, 어두운 배경, 큰 세리프 타이틀, 프로젝트 3열 그리드"</li>
+                                    <li>"Hero에 Kinetic Typography로 이름 등장, 스크롤 시 작업물 페이드인"</li>
+                                    <li>"헤더가 스크롤 시 사라짐 → 상단 고정으로 변경"</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Image -->
+                    <div class="g-content-block reveal">
+                        <h4 class="g-block-title">AI 이미지 생성</h4>
+                        <p class="g-block-desc">포트폴리오에 필요한 이미지, AI가 만든다</p>
+                        <div class="g-ref-grid g-ref-grid--2col">
+                            <div class="g-ref-card">
+                                <strong>Gemini</strong>
+                                <p>Google의 이미지 생성</p>
+                            </div>
+                            <div class="g-ref-card">
+                                <strong>DALL-E</strong>
+                                <p>OpenAI의 이미지 생성</p>
+                            </div>
+                            <div class="g-ref-card">
+                                <strong>Midjourney</strong>
+                                <p>아트 디렉션의 정석</p>
+                            </div>
+                            <div class="g-ref-card">
+                                <strong>활용</strong>
+                                <p>Hero 배경 · 아이콘 · OG 이미지</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Watch Out -->
+                    <div class="g-content-block reveal">
+                        <h4 class="g-block-title">Watch Out</h4>
+                        <p class="g-block-desc">자주 하는 실수들</p>
+                        <div class="g-watchout-list">
+                            <div class="g-watchout-item">
+                                <span class="g-watchout-x">&times;</span>
+                                <div class="g-watchout-content">
+                                    <strong>파일명에 한글/공백</strong>
+                                    <p>영문 소문자, 하이픈만 사용하라</p>
+                                </div>
+                            </div>
+                            <div class="g-watchout-item">
+                                <span class="g-watchout-x">&times;</span>
+                                <div class="g-watchout-content">
+                                    <strong>이미지 원본 그대로</strong>
+                                    <p>1MB 이하로 압축하라</p>
+                                </div>
+                            </div>
+                            <div class="g-watchout-item">
+                                <span class="g-watchout-x">&times;</span>
+                                <div class="g-watchout-content">
+                                    <strong>모바일 확인 안 함</strong>
+                                    <p>반드시 실기기 테스트하라</p>
+                                </div>
+                            </div>
+                            <div class="g-watchout-item">
+                                <span class="g-watchout-x">&times;</span>
+                                <div class="g-watchout-content">
+                                    <strong>커밋 없이 작업</strong>
+                                    <p>수시로 저장, 수시로 커밋하라</p>
+                                </div>
+                            </div>
+                            <div class="g-watchout-item">
+                                <span class="g-watchout-x">&times;</span>
+                                <div class="g-watchout-content">
+                                    <strong>완벽주의</strong>
+                                    <p>일단 배포, 그다음 개선하라</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Next Chapter Link -->
+                    <div class="g-next-chapter reveal">
+                        <p class="g-next-label">다음 챕터</p>
+                        <a href="#ch5" class="g-next-link">
+                            <span class="g-next-num">05</span>
+                            <span class="g-next-name">PUBLISH — 배포하기</span>
+                            <span class="g-next-arrow">&rarr;</span>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 7: CHAPTER 05 — PUBLISH                           -->
+    <!-- ============================================================ -->
+    <section class="g-section g-section--alt" id="ch5">
+
+        <!-- Chapter Hero -->
+        <div class="g-chapter-hero">
+            <video class="g-bg-video" autoplay muted loop playsinline>
+                <source src="img/bg_09_publish.mp4" type="video/mp4">
+            </video>
+            <div class="g-bg-overlay"></div>
+            <div class="g-chapter-hero-inner">
+                <p class="g-chapter-label reveal">CHAPTER 05</p>
+                <h2 class="g-chapter-title reveal reveal--delay-1" data-chars>PUB<br><span
+                        class="g-text-yellow">LISH</span></h2>
+                <p class="g-chapter-sub reveal reveal--delay-2">
+                    만들었으면 배포한다.
+                </p>
+            </div>
+        </div>
+
+        <!-- Content: 2-Column Layout -->
+        <div class="g-container">
+            <div class="g-two-col">
+
+                <!-- Left: Sticky Explanation -->
+                <div class="g-col-sticky">
+                    <div class="g-sticky-block reveal">
+                        <h3 class="g-content-title">GitHub Pages로 무료 배포</h3>
+                        <p class="g-content-text">
+                            코드를 완성했으면 배포한다.
+                            <strong>GitHub Pages는 무료 호스팅</strong>이다.
+                        </p>
+                        <p class="g-content-text">
+                            username.github.io — 이 주소가 당신의 포트폴리오 도메인이 된다.
+                        </p>
+                        <div class="g-callout">
+                            <p>먼저 배포하고, 조금씩 고쳐나가면 된다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Scrollable Content -->
+                <div class="g-col-scroll">
+
+                    <!-- Git & GitHub -->
+                    <div class="g-content-block reveal">
+                        <h4 class="g-block-title">Git &amp; GitHub</h4>
+                        <div class="g-git-compare">
+                            <div class="g-git-col">
+                                <span class="g-git-badge">Git</span>
+                                <strong class="g-git-title">버전 기록 도구</strong>
+                                <p class="g-git-desc">작업을 저장하고 언제든 되돌릴 수 있는 버전 관리 시스템</p>
+                            </div>
+                            <div class="g-git-col g-git-col--highlight">
+                                <span class="g-git-badge g-git-badge--yellow">GitHub</span>
+                                <strong class="g-git-title">코드 저장 + 무료 배포</strong>
+                                <p class="g-git-desc">코드를 올리면 사이트가 열린다</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Deploy 3 Steps -->
+                    <div class="g-content-block reveal">
+                        <h4 class="g-block-title">Deploy 3 Steps</h4>
+                        <p class="g-block-desc">3단계로 배포 완료</p>
+                        <div class="g-process-flow">
+                            <div class="g-flow-step">
+                                <span class="g-flow-num">01</span>
+                                <span class="g-flow-text">빌드</span>
+                                <span class="g-flow-sub">"배포용으로 빌드해줘"</span>
+                            </div>
+                            <span class="g-flow-arrow">&rarr;</span>
+                            <div class="g-flow-step">
+                                <span class="g-flow-num">02</span>
+                                <span class="g-flow-text">업로드</span>
+                                <span class="g-flow-sub">GitHub에 푸시</span>
+                            </div>
+                            <span class="g-flow-arrow">&rarr;</span>
+                            <div class="g-flow-step">
+                                <span class="g-flow-num">03</span>
+                                <span class="g-flow-text">공유</span>
+                                <span class="g-flow-sub">username.github.io</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GitHub Setup Steps -->
+                    <div class="g-content-block reveal">
+                        <h4 class="g-block-title">GitHub 시작하기</h4>
+                        <div class="g-process-steps">
+                            <div class="g-process-step">
+                                <span class="g-process-num">01</span>
+                                <div class="g-process-content">
+                                    <strong>github.com 접속</strong>
+                                    <p>브라우저에서 github.com에 접속한다.</p>
+                                </div>
+                            </div>
+                            <div class="g-process-step">
+                                <span class="g-process-num">02</span>
+                                <div class="g-process-content">
+                                    <strong>Sign Up &rarr; 이메일 입력</strong>
+                                    <p>무료 계정을 생성한다. 이메일과 비밀번호만 있으면 된다.</p>
+                                </div>
+                            </div>
+                            <div class="g-process-step">
+                                <span class="g-process-num">03</span>
+                                <div class="g-process-content">
+                                    <strong>username 설정</strong>
+                                    <p>이 username이 곧 나의 도메인이 된다. username.github.io</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Deploy Commands Code Block -->
+                    <div class="g-code-block reveal">
+                        <div class="g-code-header">
+                            <div class="g-code-dots">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <span class="g-code-filename">terminal</span>
+                            <button class="g-code-copy" onclick="copyCode(this)">복사</button>
+                        </div>
+                        <pre class="g-code"><code><span class="g-code-comment"># 1. Git 초기화</span>
+git init
+
+<span class="g-code-comment"># 2. 파일 추가 & 커밋</span>
+git add .
+git commit -m "first commit"
+
+<span class="g-code-comment"># 3. GitHub에 연결 & 푸시</span>
+git remote add origin https://github.com/username/username.github.io.git
+git push -u origin main
+
+<span class="g-code-comment"># 완료! https://username.github.io 에서 확인</span></code></pre>
+                    </div>
+
+                    <!-- Update & Maintain -->
+                    <div class="g-content-block reveal">
+                        <h4 class="g-block-title">Update &amp; Maintain</h4>
+                        <p class="g-block-desc">수정 &rarr; 커밋 &rarr; 푸시, 반복</p>
+                        <div class="g-update-loop">
+                            <div class="g-loop-step">
+                                <span class="g-loop-num">01</span>
+                                <div class="g-loop-content">
+                                    <strong>수정</strong>
+                                    <p>코드를 고치고</p>
+                                </div>
+                            </div>
+                            <div class="g-loop-step">
+                                <span class="g-loop-num">02</span>
+                                <div class="g-loop-content">
+                                    <strong>커밋</strong>
+                                    <p>변경을 기록하고</p>
+                                </div>
+                            </div>
+                            <div class="g-loop-step">
+                                <span class="g-loop-num">03</span>
+                                <div class="g-loop-content">
+                                    <strong>푸시</strong>
+                                    <p>세상에 반영한다</p>
+                                </div>
+                            </div>
+                            <div class="g-loop-step g-loop-step--infinite">
+                                <span class="g-loop-num">&infin;</span>
+                                <div class="g-loop-content">
+                                    <strong>반복</strong>
+                                    <p>계속 고치면 된다</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Downloads -->
+    <section class="g-download-section">
+        <div class="g-container">
+            <div class="g-subtitle-group reveal">
+                <h3 class="g-subtitle">Downloads</h3>
+                <p class="g-subtitle-sub">실습에 필요한 템플릿을 다운로드하세요</p>
+            </div>
+
+            <div class="g-download-explain reveal">
+                <div class="g-download-explain-block">
+                    <h4 class="g-block-title">PRD가 뭔가요?</h4>
+                    <p class="g-download-explain-text">
+                        PRD는 <strong>Product Requirements Document</strong>의 약자입니다.<br>
+                        쉽게 말하면 <strong>&ldquo;이렇게 만들어줘&rdquo;를 정리한 요청서</strong>입니다.
+                    </p>
+                    <div class="g-download-compare">
+                        <div class="g-download-compare-col">
+                            <span class="g-download-compare-label">마크다운 (.md)</span>
+                            <p>글을 쓰는 <strong>형식</strong>입니다.<br><code>#</code> <code>-</code> <code>**</code> 같은 기호로 제목, 목록, 굵은 글씨를 씁니다.<br>메모장에서도 열 수 있는 텍스트 파일입니다.</p>
+                        </div>
+                        <div class="g-download-compare-col">
+                            <span class="g-download-compare-label">PRD</span>
+                            <p>글의 <strong>내용</strong>입니다.<br>구조, 디자인, 콘텐츠를 정리해서 AI에게 전달합니다.<br>마크다운 형식으로 작성하면 AI가 가장 잘 읽습니다.</p>
+                        </div>
+                    </div>
+                    <p class="g-download-explain-tip">아래 템플릿을 다운로드해서 내용을 채운 후, Antigravity에 붙여넣으면 됩니다.</p>
+                </div>
+            </div>
+
+            <div class="g-download-grid reveal">
+                <div class="g-download-group">
+                    <p class="g-download-group-label">실습 템플릿</p>
+                    <div class="g-download-cards">
+                        <a href="MD/prd-template-a.md" download class="g-download-card">
+                            <span class="g-download-icon">A</span>
+                            <div class="g-download-info">
+                                <strong>이력서 &rarr; 포트폴리오</strong>
+                                <p>내 정보를 채워서 Antigravity에 붙여넣기</p>
+                            </div>
+                        </a>
+                        <a href="MD/prd-template-b.md" download class="g-download-card">
+                            <span class="g-download-icon">B</span>
+                            <div class="g-download-info">
+                                <strong>프로젝트 소개 페이지</strong>
+                                <p>프로젝트 1개를 골라 상세 소개 페이지 만들기</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="g-download-group">
+                    <p class="g-download-group-label">가이드 문서</p>
+                    <div class="g-download-cards">
+                        <a href="MD/prd-template-prd.md" download class="g-download-card">
+                            <span class="g-download-icon">#</span>
+                            <div class="g-download-info">
+                                <strong>PRD 작성 가이드</strong>
+                                <p>AI에게 정확하게 요청하는 문서 작성법</p>
+                            </div>
+                        </a>
+                        <a href="MD/prd-template-prompts.md" download class="g-download-card">
+                            <span class="g-download-icon">&gt;</span>
+                            <div class="g-download-info">
+                                <strong>프롬프트 치트시트</strong>
+                                <p>카테고리별 바로 쓰는 프롬프트 모음</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="g-download-group">
+                    <p class="g-download-group-label">셋업 가이드</p>
+                    <div class="g-download-cards">
+                        <a href="MD/prd-template-antigravity.md" download class="g-download-card">
+                            <span class="g-download-icon">&oplus;</span>
+                            <div class="g-download-info">
+                                <strong>Antigravity 셋업</strong>
+                                <p>설치, 초기 설정, 모델 선택, 사용법</p>
+                            </div>
+                        </a>
+                        <a href="https://sabum.kr/03_playground/antigravity-journal" target="_blank" rel="noopener" class="g-download-card">
+                            <span class="g-download-icon">&rarr;</span>
+                            <div class="g-download-info">
+                                <strong>Antigravity 작업 예시</strong>
+                                <p>실제로 만든 결과물 보기</p>
+                            </div>
+                        </a>
+                        <a href="MD/prd-template-git.md" download class="g-download-card">
+                            <span class="g-download-icon">&Delta;</span>
+                            <div class="g-download-info">
+                                <strong>Git &amp; GitHub 셋업</strong>
+                                <p>계정 만들기, 커밋, 푸시, 배포</p>
+                            </div>
+                        </a>
+                        <a href="MD/prd-template-domain.md" download class="g-download-card">
+                            <span class="g-download-icon">@</span>
+                            <div class="g-download-info">
+                                <strong>커스텀 도메인 연결</strong>
+                                <p>내 도메인을 GitHub Pages에 연결</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="g-footer">
+        <div class="g-container">
+            <div class="g-footer-inner">
+                <p class="g-footer-title">The Portfolio Shift</p>
+                <p class="g-footer-sub">&copy; 2026 sabum. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="guide.js"></script>
+</body>
+
+</html>

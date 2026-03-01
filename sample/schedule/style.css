@@ -1,0 +1,631 @@
+/* === WBS SCHEDULE EDITOR — MONOCHROME EDITORIAL === */
+
+/* ─── CSS VARIABLES ─────────────────── */
+:root {
+    --font-main: 'Noto Sans KR', 'Inter', -apple-system, sans-serif;
+    --font-mono: 'Inter', 'SF Mono', monospace;
+
+    --text-primary: #111111;
+    --text-secondary: #444444;
+    --text-muted: #888888;
+
+    --bg-page: #eeeef0;
+    --bg-document: #ffffff;
+    --bg-bar: #e0e0e0;
+    --bg-bar-hover: #d0d0d0;
+    --bg-header: #f5f5f5;
+
+    --border-color: #d0d0d0;
+    --border-light: #e5e5e5;
+    --grid-line: #ebebeb;
+    --milestone-line: #999999;
+
+    --task-col-width: 280px;
+    --week-col-width: 55px;
+
+    --transition: 0.15s ease;
+}
+
+/* ─── RESET ─────────────────────────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 12px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-main);
+    background: var(--bg-page);
+    color: var(--text-primary);
+    line-height: 1.5;
+    min-height: 100vh;
+}
+
+/* ─── ACTION BAR ────────────────────── */
+.action-bar {
+    max-width: 1200px;
+    margin: 24px auto 12px;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.action-left,
+.action-right {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+/* ─── BUTTONS ───────────────────────── */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 7px 14px;
+    font-size: 11px;
+    font-weight: 500;
+    font-family: var(--font-main);
+    border: 1px solid var(--border-color);
+    background: #fff;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all var(--transition);
+    white-space: nowrap;
+}
+
+.btn:hover {
+    background: var(--bg-header);
+    border-color: #999;
+}
+
+.btn-primary {
+    background: var(--text-primary);
+    color: #fff;
+    border-color: var(--text-primary);
+}
+
+.btn-primary:hover {
+    background: #333;
+}
+
+.btn-danger {
+    background: #fff;
+    color: #c00;
+    border-color: #c00;
+}
+
+.btn-danger:hover {
+    background: #fee;
+}
+
+/* ─── DOCUMENT ──────────────────────── */
+.document {
+    max-width: 1200px;
+    margin: 0 auto 60px;
+    background: var(--bg-document);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.08);
+    padding: 48px 48px 40px;
+}
+
+/* ─── DOCUMENT HEADER ───────────────── */
+.doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 32px;
+}
+
+.header-left .editable {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+}
+
+.header-right .editable {
+    font-size: 28px;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--text-primary);
+    text-transform: uppercase;
+}
+
+/* ─── EDITABLE ──────────────────────── */
+.editable {
+    outline: none;
+    transition: background var(--transition);
+    padding: 2px 4px;
+    margin: -2px -4px;
+}
+
+.editable:hover {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.editable:focus {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+/* ─── SCHEDULE SCROLL ───────────────── */
+.schedule-scroll {
+    overflow-x: auto;
+    overflow-y: visible;
+    margin: 0 -8px;
+    padding: 0 8px;
+}
+
+.schedule-scroll::-webkit-scrollbar {
+    height: 6px;
+}
+
+.schedule-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.schedule-scroll::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+/* ─── SCHEDULE CONTAINER ────────────── */
+.schedule-container {
+    position: relative;
+    min-width: max-content;
+}
+
+/* ─── SCHEDULE ROW (SHARED) ─────────── */
+.schedule-row {
+    display: flex;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.schedule-row:last-child {
+    border-bottom: none;
+}
+
+/* ─── LEFT COLUMN (TASK INFO) ────────── */
+.cell-task {
+    width: var(--task-col-width);
+    min-width: var(--task-col-width);
+    flex-shrink: 0;
+    position: sticky;
+    left: 0;
+    z-index: 20;
+    background: var(--bg-document);
+    border-right: 1px solid var(--border-color);
+}
+
+/* ─── TIMELINE HEADER ───────────────── */
+.header-row .cell-task {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.cell-timeline {
+    display: flex;
+    flex-direction: column;
+}
+
+.month-row {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.month-cell {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding: 8px 0 4px;
+    border-right: 1px solid var(--border-light);
+    letter-spacing: 0.02em;
+}
+
+.month-cell:last-child {
+    border-right: none;
+}
+
+.week-row {
+    display: flex;
+}
+
+.week-cell {
+    width: var(--week-col-width);
+    min-width: var(--week-col-width);
+    text-align: center;
+    font-size: 9px;
+    font-weight: 400;
+    color: var(--text-muted);
+    padding: 4px 0;
+    border-right: 1px solid var(--grid-line);
+    font-family: var(--font-mono);
+}
+
+.week-cell:last-child {
+    border-right: none;
+}
+
+/* ─── CATEGORY ROW ──────────────────── */
+.category-row {
+    min-height: 140px;
+}
+
+.category-row .cell-task {
+    padding: 16px 16px 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.category-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+    border-bottom: 1px solid var(--text-primary);
+    padding-bottom: 4px;
+    display: inline-block;
+    cursor: text;
+}
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.task-item {
+    font-size: 10px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    cursor: text;
+    padding: 1px 4px;
+    margin: -1px -4px;
+    transition: background var(--transition);
+}
+
+.task-item:hover {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+/* Category action buttons */
+.category-actions {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+    opacity: 0;
+    transition: opacity var(--transition);
+}
+
+.category-row:hover .category-actions {
+    opacity: 1;
+}
+
+.btn-cat-action {
+    font-size: 9px;
+    padding: 2px 8px;
+    background: transparent;
+    border: 1px solid var(--border-light);
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: var(--font-main);
+    transition: all var(--transition);
+}
+
+.btn-cat-action:hover {
+    border-color: var(--text-muted);
+    color: var(--text-primary);
+}
+
+.btn-cat-action.danger:hover {
+    border-color: #c00;
+    color: #c00;
+}
+
+/* ─── GANTT AREA ────────────────────── */
+.cell-gantt {
+    position: relative;
+    flex: 1;
+    min-width: max-content;
+}
+
+/* Vertical grid lines */
+.gantt-grid-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--grid-line);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ─── GANTT BAR ─────────────────────── */
+.gantt-bar {
+    position: absolute;
+    top: 12px;
+    bottom: 12px;
+    background: var(--bg-bar);
+    cursor: grab;
+    z-index: 5;
+    transition: background 0.1s;
+    display: flex;
+    align-items: flex-start;
+    padding-top: 6px;
+    padding-left: 8px;
+}
+
+.gantt-bar:hover {
+    background: var(--bg-bar-hover);
+}
+
+.gantt-bar.dragging {
+    cursor: grabbing;
+    background: var(--bg-bar-hover);
+    z-index: 10;
+}
+
+.bar-label {
+    font-size: 9px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Resize handles */
+.bar-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 8px;
+    cursor: col-resize;
+    z-index: 6;
+}
+
+.bar-handle.left {
+    left: -2px;
+}
+
+.bar-handle.right {
+    right: -2px;
+}
+
+.bar-handle:hover {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+/* ─── MILESTONE ─────────────────────── */
+.milestone-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    border-left: 1px dashed var(--milestone-line);
+    z-index: 8;
+    pointer-events: none;
+}
+
+.milestone-label-group {
+    position: absolute;
+    z-index: 9;
+    cursor: pointer;
+    pointer-events: all;
+    transform: translateX(-100%);
+    text-align: right;
+    padding-right: 6px;
+    top: 4px;
+}
+
+.milestone-label-group:hover {
+    opacity: 0.7;
+}
+
+.milestone-title {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+.milestone-sublabel {
+    font-size: 8px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    white-space: pre-line;
+    line-height: 1.4;
+}
+
+/* ─── FOOTER ────────────────────────── */
+.doc-footer {
+    margin-top: 32px;
+}
+
+.footer-line {
+    height: 1px;
+    background: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.footer-note {
+    font-size: 9px;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+/* ─── MODAL ─────────────────────────── */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal {
+    background: #fff;
+    padding: 28px 32px;
+    width: 380px;
+    max-width: 90vw;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.modal-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-family: var(--font-main);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    transition: border-color var(--transition);
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--text-primary);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 24px;
+}
+
+/* ─── TOAST ─────────────────────────── */
+.toast {
+    position: fixed;
+    bottom: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--text-primary);
+    color: #fff;
+    padding: 10px 24px;
+    font-size: 12px;
+    font-weight: 500;
+    z-index: 9999;
+    transition: bottom 0.3s ease;
+    white-space: nowrap;
+}
+
+.toast.show {
+    bottom: 32px;
+}
+
+/* ─── NO PRINT ──────────────────────── */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}
+
+/* ─── PDF RENDERING OVERRIDES ────────── */
+.pdf-rendering,
+.pdf-rendering * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
+
+.pdf-rendering .document {
+    box-shadow: none !important;
+    background: #ffffff !important;
+    max-width: none !important;
+    margin: 0 !important;
+}
+
+.pdf-rendering .schedule-scroll {
+    overflow: visible !important;
+}
+
+.pdf-rendering .cell-task {
+    position: relative !important;
+}
+
+.pdf-rendering .category-actions {
+    display: none !important;
+}
+
+.pdf-rendering .editable:hover,
+.pdf-rendering .task-item:hover {
+    background: transparent !important;
+}
+
+.pdf-rendering .gantt-bar:hover {
+    background: var(--bg-bar) !important;
+}
+
+.pdf-rendering .bar-handle {
+    display: none !important;
+}
+
+.pdf-rendering * {
+    animation: none !important;
+    transition: none !important;
+}
+
+/* ─── RESPONSIVE ────────────────────── */
+@media (max-width: 768px) {
+    .document {
+        padding: 24px 16px;
+    }
+
+    .action-bar {
+        flex-wrap: wrap;
+        padding: 0 12px;
+    }
+
+    .header-left .editable {
+        font-size: 16px;
+    }
+
+    .header-right .editable {
+        font-size: 20px;
+    }
+}

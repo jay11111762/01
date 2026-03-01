@@ -1,0 +1,9 @@
+.DS_Store
+.env
+.env.local
+*.pem
+*.key
+config.secret.js
+credentials/
+.ssh_temp/
+node_modules/

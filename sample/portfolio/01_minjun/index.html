@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minjun Han - Product Designer</title>
+    <meta name="description" content="한민준 - Product Designer. LINE, 당근마켓, 삼성전자 출신. 디자인 시스템, UI/UX, 모션 디자인 전문.">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Lenis for Smooth Scroll -->
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">MINJUN HAN</div>
+        <nav>
+            <a href="#work">WORK</a>
+            <a href="#about">ABOUT</a>
+            <a href="#awards">AWARDS</a>
+            <a href="#contact">CONTACT</a>
+            <button class="theme-toggle" aria-label="Toggle Dark/Light Mode">◑</button>
+        </nav>
+    </header>
+
+    <!-- Hero Section: Kinetic Typography -->
+    <section class="hero">
+        <canvas class="particles-canvas" id="particleCanvas"></canvas>
+        <div class="hero-text-container">
+            <h1 class="hero-text">PRODUCT</h1>
+            <h1 class="hero-text outline">DESIGNER</h1>
+            <h1 class="hero-text">SYSTEM</h1>
+            <h1 class="hero-text outline">CRAFTER</h1>
+        </div>
+    </section>
+
+    <!-- About Section: Bento Grid -->
+    <section class="content" id="about">
+        <h2 class="section-title">ABOUT</h2>
+        <div class="bento-grid about-grid">
+
+            <!-- Profile Card -->
+            <div class="bento-box profile-card">
+                <h2>한민준</h2>
+                <p class="subtitle">Product Designer @LINE</p>
+                <p class="bio">모바일/웹 서비스 UI/UX 디자인, 디자인 시스템 구축, 프로토타이핑, 사용자 리서치, 모션 디자인 전문</p>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="num">11+</span>
+                        <span class="label">YEARS</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="num">240+</span>
+                        <span class="label">COMPONENTS</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="num">8</span>
+                        <span class="label">AWARDS</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Career Timeline -->
+            <div class="bento-box career-card">
+                <h3>경력</h3>
+                <ul class="career-list">
+                    <li><span class="year">2021 ~ 현재</span><span class="role">라인 Product Designer (Lead)</span></li>
+                    <li><span class="year">2018 ~ 2021</span><span class="role">당근마켓 Product Designer</span></li>
+                    <li><span class="year">2015 ~ 2018</span><span class="role">삼성전자 무선사업부 UX Designer</span></li>
+                    <li><span class="year">2013 ~ 2015</span><span class="role">스튜디오좋 주니어 디자이너</span></li>
+                    <li><span class="year">2009 ~ 2013</span><span class="role">국민대학교 시각디자인학과</span></li>
+                </ul>
+            </div>
+
+            <!-- Core Competencies -->
+            <div class="bento-box skills-card">
+                <h3>핵심 역량</h3>
+                <div class="skill-tags">
+                    <span>UI/UX 디자인</span>
+                    <span>디자인 시스템</span>
+                    <span>프로토타이핑</span>
+                    <span>사용자 리서치</span>
+                    <span>모션 디자인</span>
+                </div>
+            </div>
+
+            <!-- Tool Stack -->
+            <div class="bento-box tools-card">
+                <h3>사용 도구</h3>
+                <div class="tool-list">
+                    <span>Figma</span>
+                    <span>Sketch</span>
+                    <span>Adobe CC</span>
+                    <span>Framer</span>
+                    <span>ProtoPie</span>
+                    <span>Principle</span>
+                    <span>Notion</span>
+                    <span>Jira</span>
+                    <span>Confluence</span>
+                    <span>Zeplin</span>
+                    <span>Python</span>
+                    <span>After Effects</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Work Section: Projects -->
+    <section class="content" id="work">
+        <h2 class="section-title">SELECTED WORK</h2>
+        <div class="bento-grid work-grid">
+
+            <!-- LINE Design System 3.0 -->
+            <div class="bento-box project-large accent-bg">
+                <div class="project-info">
+                    <span class="project-year">2024</span>
+                    <h3>라인 디자인 시스템 3.0</h3>
+                    <p>구축 리드 · 컴포넌트 240개 체계화 · 다크모드 전면 지원</p>
+                </div>
+                <div class="project-result">
+                    <span class="result-num">50%</span>
+                    <span class="result-label">핸드오프 시간 단축</span>
+                </div>
+            </div>
+
+            <!-- LINE Chat UX Redesign -->
+            <div class="bento-box project-medium">
+                <span class="project-year">2024</span>
+                <h3>라인 메신저 채팅 UX 리디자인</h3>
+                <p>일본/태국/대만 3개국 사용성 테스트</p>
+                <div class="project-result">
+                    <span class="result-num">40%</span>
+                    <span class="result-label">메시지 탐색 시간 단축</span>
+                </div>
+            </div>
+
+            <!-- LINE VOOM -->
+            <div class="bento-box project-medium">
+                <span class="project-year">2023</span>
+                <h3>라인 VOOM 크리에이터 스튜디오</h3>
+                <p>영상 편집 도구 UI · 크리에이터 온보딩 플로우</p>
+                <div class="project-result">
+                    <span class="result-num">35%</span>
+                    <span class="result-label">업로드 완료율 향상</span>
+                </div>
+            </div>
+
+            <!-- LINE AI Assistant -->
+            <div class="bento-box project-small">
+                <span class="project-year">2023</span>
+                <h3>라인 AI 어시스턴트 UI</h3>
+                <p>대화형 AI 인터페이스 · 멀티모달 입출력 UI 패턴</p>
+            </div>
+
+            <!-- LINE Gift -->
+            <div class="bento-box project-medium accent-bg">
+                <span class="project-year">2022</span>
+                <h3>라인 선물하기 글로벌 런칭</h3>
+                <p>일본/태국 현지화 UI 설계</p>
+                <div class="project-result dark-result">
+                    <span class="result-num">22%</span>
+                    <span class="result-label">구매 전환율 향상</span>
+                </div>
+            </div>
+
+            <!-- LINE Pay -->
+            <div class="bento-box project-small">
+                <span class="project-year">2022</span>
+                <h3>라인 Pay 결제 UX 간소화</h3>
+                <p>결제 플로우 5단계 → 3단계 축소 · 생체 인증 연동</p>
+            </div>
+
+            <!-- 당근마켓 Chat -->
+            <div class="bento-box project-medium">
+                <span class="project-year">2021</span>
+                <h3>당근마켓 채팅 거래 경험 개선</h3>
+                <p>가격 제안/약속 잡기 인터랙션</p>
+                <div class="project-result">
+                    <span class="result-num">18%</span>
+                    <span class="result-label">거래 성사율 향상</span>
+                </div>
+            </div>
+
+            <!-- 당근마켓 Feed -->
+            <div class="bento-box project-small">
+                <span class="project-year">2021</span>
+                <h3>당근마켓 동네생활 피드 리디자인</h3>
+                <p>카드형 피드 UI · 게시글 조회율 25% 증가</p>
+            </div>
+
+            <!-- 당근마켓 Biz Profile -->
+            <div class="bento-box project-medium accent-bg">
+                <span class="project-year">2020</span>
+                <h3>당근마켓 비즈프로필</h3>
+                <p>소상공인 프로필 빌더 UI</p>
+                <div class="project-result dark-result">
+                    <span class="result-num">30%</span>
+                    <span class="result-label">사장님 가입 전환율 향상</span>
+                </div>
+            </div>
+
+            <!-- 당근 씨앗 Design System -->
+            <div class="bento-box project-small">
+                <span class="project-year">2020</span>
+                <h3>당근마켓 디자인 시스템 "당근 씨앗"</h3>
+                <p>Figma 컴포넌트 120개 · 디자인 토큰 체계 설계</p>
+            </div>
+
+            <!-- 당근마켓 Search -->
+            <div class="bento-box project-small">
+                <span class="project-year">2019</span>
+                <h3>당근마켓 검색 경험 리디자인</h3>
+                <p>필터 UI · 검색 후 상세 조회율 20% 향상</p>
+            </div>
+
+            <!-- 당근마켓 Full Redesign -->
+            <div class="bento-box project-small">
+                <span class="project-year">2018</span>
+                <h3>당근마켓 앱 전면 리디자인</h3>
+                <p>홈 피드 카드 UI · 하단 네비게이션 · 브랜드 아이덴티티</p>
+            </div>
+
+            <!-- Galaxy S8 AOD -->
+            <div class="bento-box project-medium">
+                <span class="project-year">2017</span>
+                <h3>삼성 갤럭시 S8 AOD UI</h3>
+                <p>시계/알림 위젯 · 저전력 디스플레이 환경 최적화</p>
+            </div>
+
+            <!-- Galaxy Theme Store -->
+            <div class="bento-box project-small">
+                <span class="project-year">2017</span>
+                <h3>삼성 갤럭시 테마스토어 UI 개편</h3>
+                <p>테마 미리보기 및 적용 플로우 개선</p>
+            </div>
+
+            <!-- Galaxy S7 Edge Panel -->
+            <div class="bento-box project-medium">
+                <span class="project-year">2016</span>
+                <h3>삼성 갤럭시 S7 Edge Panel UI</h3>
+                <p>엣지 패널 앱 바로가기 · 한 손 조작 인터랙션 패턴</p>
+            </div>
+
+            <!-- Samsung Pay -->
+            <div class="bento-box project-small">
+                <span class="project-year">2016</span>
+                <h3>삼성페이 카드 등록 UX 개선</h3>
+                <p>OCR 스캔 연동 UI · 에러 핸들링 설계</p>
+            </div>
+
+            <!-- Galaxy S6 Icons -->
+            <div class="bento-box project-small">
+                <span class="project-year">2015</span>
+                <h3>삼성 갤럭시 S6 기본 앱 아이콘</h3>
+                <p>플랫 디자인 전환 · 아이콘 200개 리디자인</p>
+            </div>
+
+            <!-- Studio Joh - Hyundai Card -->
+            <div class="bento-box project-small">
+                <span class="project-year">2014</span>
+                <h3>현대카드 뮤직 라이브러리 공간 그래픽</h3>
+                <p>스튜디오좋 · 사이니지 및 공간 안내 시스템</p>
+            </div>
+
+            <!-- Studio Joh - Innisfree -->
+            <div class="bento-box project-small">
+                <span class="project-year">2014</span>
+                <h3>아모레퍼시픽 이니스프리 패키지</h3>
+                <p>스튜디오좋 · 시즌 한정판 일러스트레이션</p>
+            </div>
+
+            <!-- Studio Joh - Seoul Campaign -->
+            <div class="bento-box project-small">
+                <span class="project-year">2013</span>
+                <h3>서울시 "서울은 꽃이다" 포스터</h3>
+                <p>스튜디오좋 · 타이포그래피 기반 시리즈 4종</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Awards & Talks Section -->
+    <section class="content" id="awards">
+        <h2 class="section-title">AWARDS & TALKS</h2>
+        <div class="bento-grid awards-grid">
+
+            <!-- Awards -->
+            <div class="bento-box awards-card">
+                <h3>수상 실적</h3>
+                <ul class="awards-list">
+                    <li><span class="year">2024</span>Good Design Award (일본) — 라인 디자인 시스템</li>
+                    <li><span class="year">2023</span>iF Communication Design Award — 라인 VOOM</li>
+                    <li><span class="year">2022</span>Red Dot Design Award — 라인 선물하기</li>
+                    <li><span class="year">2021</span>Google Play Best App Design 후보 — 당근마켓</li>
+                    <li><span class="year">2020</span>IDEA Design Award — 당근마켓 앱</li>
+                    <li><span class="year">2019</span>GDA — 당근마켓 UI Design</li>
+                    <li><span class="year">2017</span>iF Design Award — Galaxy S8 AOD</li>
+                    <li><span class="year">2016</span>Red Dot Design Award — Galaxy S7 Edge Panel</li>
+                </ul>
+            </div>
+
+            <!-- Talks -->
+            <div class="bento-box talks-card">
+                <h3>강연 및 활동</h3>
+                <ul class="talks-list">
+                    <li><span class="year">2024</span>Config (Figma 컨퍼런스) 한국 커뮤니티 세션 연사</li>
+                    <li><span class="year">2023</span>디자인 스펙트럼 — "디자인 시스템, 만들기보다 지키기가 어렵다"</li>
+                    <li><span class="year">2022</span>FEConf — "디자이너가 코드를 읽으면 생기는 일"</li>
+                    <li><span class="year">2021</span>UXCAMP Seoul — "당근마켓 로컬 서비스 디자인"</li>
+                    <li><span class="year">2020</span>디자인 나침반 멘토 (주니어 디자이너 멘토링)</li>
+                    <li><span class="year">2019</span>노트폴리오 인터뷰 — "프로덕트 디자이너로 성장하기"</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="content" id="contact">
+        <h2 class="section-title">CONTACT</h2>
+        <div class="bento-grid contact-grid">
+
+            <div class="bento-box contact-card-main">
+                <h3>Let's Talk</h3>
+                <a href="mailto:minjun.design@gmail.com" class="email-link">minjun.design@gmail.com</a>
+                <p class="phone">010-5561-7742</p>
+            </div>
+
+            <div class="bento-box social-card">
+                <h3>Social</h3>
+                <div class="social-links">
+                    <a href="https://www.behance.net/minjunhan" target="_blank">Behance ↗</a>
+                    <a href="https://linkedin.com/in/minjunhan" target="_blank">LinkedIn ↗</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 Minjun Han. All Rights Reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

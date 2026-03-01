@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="웹사이트에서 이미지를 추출하는 북마크릿 도구입니다. Extract images from any website.">
+    <title>Image Extractor - 웹 이미지 추출 도구</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main class="container" role="main">
+        <header class="header">
+            <h1>Image Extractor</h1>
+            <p class="tagline">Drag the bookmarklet below to your bookmarks bar</p>
+        </header>
+
+        <section class="bookmarklet-section" aria-labelledby="bookmarklet-heading">
+            <h2 id="bookmarklet-heading" class="visually-hidden">북마크릿 설치</h2>
+            <p class="instruction" id="bookmarklet-instruction">Drag this button to your bookmarks bar:</p>
+            <a id="bookmarklet" 
+               href="#" 
+               class="bookmarklet-btn" 
+               role="button"
+               aria-describedby="bookmarklet-instruction"
+               draggable="true"
+               title="이 버튼을 북마크 바로 드래그하세요">Extract Images</a>
+            <p class="note" aria-live="polite">Then click it on any webpage to extract visible images (300px+)</p>
+
+            <div class="usage" role="region" aria-label="사용 방법 안내">
+                <p class="usage-title" id="usage-en">How to use:</p>
+                <ol aria-labelledby="usage-en">
+                    <li>Drag "Extract Images" button to your bookmarks bar</li>
+                    <li>Go to any website (Instagram, Pinterest, etc.)</li>
+                    <li>Scroll down to load images</li>
+                    <li>Click "Extract Images" in your bookmarks bar</li>
+                    <li>View all images (300px+) in a new window</li>
+                </ol>
+
+                <p class="usage-title" id="usage-ko">사용 방법:</p>
+                <ol aria-labelledby="usage-ko" lang="ko">
+                    <li>"Extract Images" 버튼을 북마크 바로 드래그</li>
+                    <li>원하는 사이트로 이동 (인스타그램, 핀터레스트 등)</li>
+                    <li>스크롤하여 이미지 로드</li>
+                    <li>북마크 바의 "Extract Images" 클릭</li>
+                    <li>새 창에서 300px 이상 이미지 확인</li>
+                </ol>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

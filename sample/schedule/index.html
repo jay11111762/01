@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스케줄 | WBS Schedule Editor</title>
+    <meta name="description" content="WBS 기반 프로젝트 스케줄 편집기 — 간트 차트, 마일스톤, PDF 내보내기">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Action Bar -->
+        <div class="action-bar no-print" id="actionBar">
+            <div class="action-left">
+                <button class="btn" id="btnSettings" title="타임라인 설정">⚙ 설정</button>
+                <button class="btn" id="btnAddCategory" title="카테고리 추가">+ 카테고리</button>
+                <button class="btn" id="btnAddMilestone" title="마일스톤 추가">+ 마일스톤</button>
+            </div>
+            <div class="action-right">
+                <button class="btn" id="btnReset">초기화</button>
+                <button class="btn" id="btnSave">저장</button>
+                <button class="btn btn-primary" id="btnPDF">PDF 다운로드</button>
+            </div>
+        </div>
+
+        <!-- Document -->
+        <div class="document" id="document">
+            <!-- Header -->
+            <div class="doc-header">
+                <div class="header-left">
+                    <span class="editable" data-field="projectTitle" contenteditable="true">Global Rebranding</span>
+                </div>
+                <div class="header-right">
+                    <span class="editable" data-field="documentTitle" contenteditable="true">Schedule</span>
+                </div>
+            </div>
+
+            <!-- Schedule -->
+            <div class="schedule-scroll" id="scheduleScroll">
+                <div class="schedule-container" id="scheduleContainer">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="doc-footer">
+                <div class="footer-line"></div>
+                <p class="footer-note editable" data-field="footerNote" contenteditable="true"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal">
+            <h3 class="modal-title">타임라인 설정</h3>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="inputStartDate">시작일 (월요일 기준)</label>
+                    <input type="date" id="inputStartDate">
+                </div>
+                <div class="form-group">
+                    <label for="inputNumWeeks">주 수</label>
+                    <input type="number" id="inputNumWeeks" min="4" max="60" value="23">
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn" id="btnModalCancel">취소</button>
+                <button class="btn btn-primary" id="btnModalApply">적용</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Milestone Modal -->
+    <div class="modal-overlay" id="milestoneModal">
+        <div class="modal">
+            <h3 class="modal-title" id="msModalTitle">마일스톤 추가</h3>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="inputMsWeek">위치 (주차 번호, 0부터 시작)</label>
+                    <input type="number" id="inputMsWeek" min="0" max="60" value="0">
+                </div>
+                <div class="form-group">
+                    <label for="inputMsLabel">제목</label>
+                    <input type="text" id="inputMsLabel" placeholder="1st Review">
+                </div>
+                <div class="form-group">
+                    <label for="inputMsSublabel">설명</label>
+                    <input type="text" id="inputMsSublabel" placeholder="전략 방향성 제안">
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn" id="btnMsCancel">취소</button>
+                <button class="btn btn-danger" id="btnMsDelete" style="display:none;">삭제</button>
+                <button class="btn btn-primary" id="btnMsApply">추가</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

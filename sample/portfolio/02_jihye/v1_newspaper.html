@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Jihye Yoon - The Product Planner / 윤지혜 - 서비스 기획자</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Google Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Korean Font (Nanum Myeongjo for Newspaper feel) -->
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2b6cee",
+                        "background-light": "#fcfbf9",
+                        /* Custom override for warmer paper feel */
+                        "background-dark": "#101622",
+                        "ink": "#1a1a1a",
+                        "paper": "#fcfbf9",
+                    },
+                    fontFamily: {
+                        "display": ["Newsreader", "serif"],
+                        "sans": ["Newsreader", "serif"],
+                        "ko": ["Nanum Myeongjo", "serif"], /* Korean Serif */
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        '128': '32rem',
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Custom Newspaper Styles */
+        body {
+            background-color: #fcfbf9;
+            /* Paper color */
+            background-image: linear-gradient(#e5e5e5 1px, transparent 1px), linear-gradient(90deg, #e5e5e5 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%;
+            /* No grid lines actually, just texture */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+        }
+
+        /* Korean text serif font override */
+        body.lang-ko .font-display,
+        body.lang-ko h1,
+        body.lang-ko h2,
+        body.lang-ko h3,
+        body.lang-ko h4,
+        body.lang-ko h5,
+        body.lang-ko p,
+        body.lang-ko span,
+        body.lang-ko a,
+        body.lang-ko div {
+            font-family: 'Nanum Myeongjo', serif !important;
+        }
+
+        .drop-cap::first-letter {
+            float: left;
+            font-size: 3.5rem;
+            line-height: 0.8;
+            font-weight: 700;
+            margin-right: 0.5rem;
+            margin-top: 0.2rem;
+            color: #2b6cee;
+        }
+
+        .vertical-rule {
+            border-right: 1px solid #d1d5db;
+        }
+
+        .double-rule-top {
+            border-top: 3px double #1a1a1a;
+        }
+
+        .double-rule-bottom {
+            border-bottom: 3px double #1a1a1a;
+        }
+
+        /* Hover effect for article links */
+        .hover-underline-animation {
+            display: inline-block;
+            position: relative;
+        }
+
+        .hover-underline-animation::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background-color: #2b6cee;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        .hover-underline-animation:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* Language Toggle Styles */
+        .lang-toggle-btn {
+            font-family: 'Newsreader', serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .lang-toggle-btn:hover {
+            color: #2b6cee;
+        }
+
+        .lang-active {
+            color: #2b6cee;
+            text-decoration: underline;
+        }
+
+        /* Language Visibility */
+        body.lang-en .ko-content {
+            display: none !important;
+        }
+
+        body.lang-ko .en-content {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body class="font-display text-ink antialiased min-h-screen flex flex-col items-center lang-ko">
+    <div
+        class="w-full max-w-7xl px-4 md:px-8 py-8 bg-background-light dark:bg-background-dark shadow-2xl my-0 md:my-8 border-x border-gray-200 min-h-[95vh]">
+
+        <!-- Language Toggle (Top Right fixed or relative) -->
+        <div
+            class="absolute top-4 right-4 md:top-12 md:right-12 z-50 bg-paper border border-ink px-3 py-1 text-xs font-bold uppercase tracking-widest shadow-sm">
+            <span class="lang-toggle-btn" onclick="setLanguage('ko')" id="btn-ko">KR</span>
+            <span class="mx-1 text-gray-400">|</span>
+            <span class="lang-toggle-btn" onclick="setLanguage('en')" id="btn-en">EN</span>
+        </div>
+
+        <!-- Header / Masthead -->
+        <header class="mb-8 text-center relative">
+            <div
+                class="flex justify-between items-end border-b-2 border-ink pb-2 mb-2 text-xs md:text-sm uppercase tracking-widest font-bold text-gray-600">
+                <span class="w-1/3 text-left">Vol. 01 — <span class="en-content">Planner</span><span
+                        class="ko-content">기획자</span></span>
+                <span class="w-1/3 text-center">Seoul, South Korea</span>
+                <span class="w-1/3 text-right">Est. 2010</span>
+            </div>
+            <h1
+                class="text-6xl md:text-8xl lg:text-9xl font-black tracking-tight leading-none text-ink transform scale-y-90 my-6">
+                <span class="en-content">JIHYE YOON</span>
+                <span class="ko-content">윤 지 혜</span>
+            </h1>
+            <div
+                class="double-rule-top double-rule-bottom py-3 flex flex-col md:flex-row justify-between items-center text-sm md:text-base font-medium italic">
+                <div class="flex gap-6 items-center">
+                    <span
+                        class="not-italic font-bold bg-primary text-white px-2 py-0.5 text-xs uppercase tracking-wider rounded-sm">Special
+                        Edition</span>
+                    <span class="en-content">The Product Planner</span>
+                    <span class="ko-content">서비스 기획자 · PM</span>
+                    <span class="hidden md:inline w-px h-4 bg-gray-300"></span>
+                    <span class="en-content text-gray-500">Service Planning Team Lead @ Kakao</span>
+                    <span class="ko-content text-gray-500">카카오 서비스기획팀 팀장</span>
+                </div>
+                <div class="flex gap-6 mt-2 md:mt-0 text-primary">
+                    <a class="hover:underline decoration-1 underline-offset-2"
+                        href="https://linkedin.com/in/jihyeyoon-pm" target="_blank">LinkedIn</a>
+                    <span class="text-gray-300 mx-1">|</span>
+                    <a class="hover:underline decoration-1 underline-offset-2"
+                        href="mailto:jihye.yoon@gmail.com">Email</a>
+                    <span class="text-gray-300 mx-1">|</span>
+                    <a class="hover:underline decoration-1 underline-offset-2" href="https://brunch.co.kr/@jihye-plan"
+                        target="_blank">Brunch</a>
+                </div>
+            </div>
+            <!-- Navbar Strip -->
+            <nav
+                class="border-b border-gray-300 py-2 flex justify-center gap-8 text-sm font-bold uppercase tracking-widest text-gray-500 mt-1">
+                <a class="hover:text-primary transition-colors" href="#featured"><span
+                        class="en-content">Projects</span><span class="ko-content">주요 프로젝트</span></a>
+                <a class="hover:text-primary transition-colors" href="#career"><span
+                        class="en-content">Timeline</span><span class="ko-content">경력</span></a>
+                <a class="hover:text-primary transition-colors" href="#insights"><span
+                        class="en-content">Editorials</span><span class="ko-content">인사이트</span></a>
+                <a class="hover:text-primary transition-colors" href="#skills"><span
+                        class="en-content">Skills</span><span class="ko-content">핵심 역량</span></a>
+            </nav>
+        </header>
+        <!-- Main Content Grid -->
+        <main class="grid grid-cols-1 lg:grid-cols-12 gap-8 relative">
+
+            <!-- Left Column: Career Timeline (Latest Editions) content reversed for mobile (stacked at bottom) -->
+            <aside class="lg:col-span-3 lg:border-r border-gray-300 lg:pr-8 flex flex-col gap-8 order-2 lg:order-1"
+                id="career">
+                <div class="border-b-2 border-black pb-1 mb-2">
+                    <h2 class="font-bold text-lg uppercase tracking-wider">
+                        <span class="en-content">Career Timeline</span>
+                        <span class="ko-content">경력 사항</span>
+                    </h2>
+                </div>
+
+                <!-- Job Item 1 -->
+                <article class="group">
+                    <div class="flex justify-between items-baseline mb-1">
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">2022 — <span
+                                class="en-content">Present</span><span class="ko-content">현재</span></span>
+                    </div>
+                    <h3 class="text-xl font-bold leading-tight group-hover:text-primary transition-colors">
+                        <span class="en-content">Kakao Corp.</span>
+                        <span class="ko-content">카카오</span>
+                    </h3>
+                    <p class="text-sm italic text-gray-500 mb-2">
+                        <span class="en-content">Service Planning Team Lead</span>
+                        <span class="ko-content">서비스기획팀 팀장</span>
+                    </p>
+                    <p class="text-sm leading-relaxed text-gray-700 text-justify border-l-2 border-gray-200 pl-3">
+                        <span class="en-content">Leading the service planning team. Overseeing personalized
+                            recommendation systems for Kakao Gift and advancing Kakao Talk channel business
+                            tools.</span>
+                        <span class="ko-content">서비스 기획팀을 이끌며 선물하기 개인화 추천 시스템 및 비즈니스 도구 고도화 프로젝트 총괄.</span>
+                    </p>
+                </article>
+                <hr class="border-gray-300 w-1/2 mx-auto" />
+
+                <!-- Job Item 2 -->
+                <article class="group">
+                    <div class="flex justify-between items-baseline mb-1">
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">2019 — 2022</span>
+                    </div>
+                    <h3 class="text-xl font-bold leading-tight group-hover:text-primary transition-colors">
+                        <span class="en-content">Toss (Viva Republica)</span>
+                        <span class="ko-content">토스 (비바리퍼블리카)</span>
+                    </h3>
+                    <p class="text-sm italic text-gray-500 mb-2">
+                        <span class="en-content">Product Manager</span>
+                        <span class="ko-content">Product Manager</span>
+                    </p>
+                    <p class="text-sm leading-relaxed text-gray-700 text-justify border-l-2 border-gray-200 pl-3">
+                        <span class="en-content">Designed onboarding for novice stock investors and launched insurance
+                            comparison MVP. Achieved significant conversion improvements.</span>
+                        <span class="ko-content">주식 서비스 초보 투자자 온보딩 설계 및 보험 비교 서비스 MVP 기획. 가입 전환율 대폭 상승 견인.</span>
+                    </p>
+                </article>
+                <hr class="border-gray-300 w-1/2 mx-auto" />
+
+                <!-- Job Item 3 -->
+                <article class="group">
+                    <div class="flex justify-between items-baseline mb-1">
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">2016 — 2019</span>
+                    </div>
+                    <h3 class="text-xl font-bold leading-tight group-hover:text-primary transition-colors">
+                        <span class="en-content">Naver</span>
+                        <span class="ko-content">네이버</span>
+                    </h3>
+                    <p class="text-sm italic text-gray-500 mb-2">
+                        <span class="en-content">Service Planner</span>
+                        <span class="ko-content">서비스 기획자</span>
+                    </p>
+                    <p class="text-sm leading-relaxed text-gray-700 text-justify border-l-2 border-gray-200 pl-3">
+                        <span class="en-content">Revamped Smart Store Seller Center and reorganized Naver Cafe mobile
+                            app IA.</span>
+                        <span class="ko-content">스마트스토어 판매자 센터 개편 및 카페 모바일 앱 정보 구조(IA) 재설계 담당.</span>
+                    </p>
+                </article>
+                <hr class="border-gray-300 w-1/2 mx-auto" />
+
+                <!-- Job Item 4 -->
+                <article class="group">
+                    <div class="flex justify-between items-baseline mb-1">
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">2014 — 2016</span>
+                    </div>
+                    <h3 class="text-xl font-bold leading-tight group-hover:text-primary transition-colors">
+                        <span class="en-content">Woowa Bros (Baemin)</span>
+                        <span class="ko-content">우아한형제들</span>
+                    </h3>
+                    <p class="text-sm italic text-gray-500 mb-2">
+                        <span class="en-content">Junior Planner</span>
+                        <span class="ko-content">주니어 기획자</span>
+                    </p>
+                    <p class="text-sm leading-relaxed text-gray-700 text-justify border-l-2 border-gray-200 pl-3">
+                        <span class="en-content">Optimized review system and order flow. Introduced photo
+                            reviews.</span>
+                        <span class="ko-content">리뷰 시스템 개편(포토 리뷰 도입) 및 주문 플로우 최적화 로직 기획.</span>
+                    </p>
+                </article>
+
+                <!-- Boxed Ad Style for Education -->
+                <div class="mt-8 border-2 border-ink p-4 relative bg-gray-100/50">
+                    <span
+                        class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-background-light px-2 text-xs font-bold uppercase tracking-widest text-gray-500">Education</span>
+                    <div class="text-center">
+                        <h4 class="font-bold text-lg">
+                            <span class="en-content">Hanyang University</span>
+                            <span class="ko-content">한양대학교</span>
+                        </h4>
+                        <p class="text-sm italic text-gray-600">
+                            <span class="en-content">B.A. Media & Communication</span>
+                            <span class="ko-content">미디어커뮤니케이션학과</span>
+                        </p>
+                        <div class="w-8 h-px bg-gray-400 mx-auto my-2"></div>
+                        <p class="text-xs text-gray-500">2010 ~ 2014</p>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Center Column: Feature Stories (Main Projects) -->
+            <section class="lg:col-span-6 flex flex-col gap-10 order-1 lg:order-2 mb-12 lg:mb-0" id="featured">
+
+                <!-- Lead Story -->
+                <article>
+                    <div class="border-b-2 border-black pb-1 mb-4 flex justify-between items-end">
+                        <h2 class="font-black text-3xl uppercase tracking-tight">Feature Stories</h2>
+                        <span class="text-xs font-mono text-gray-500 mb-1">KAKAO • 2024</span>
+                    </div>
+                    <h3 class="text-4xl md:text-5xl font-bold leading-none mb-3 text-ink">
+                        <span class="en-content">Personalizing Kakao Gift</span>
+                        <span class="ko-content">카카오톡 선물하기<br>개인화 추천 시스템</span>
+                    </h3>
+
+
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="w-full">
+                            <h4 class="font-bold text-lg mb-2 text-gray-800">
+                                <span class="en-content">The Goal: Relevance & Conversion</span>
+                                <span class="ko-content">목표: 관련성 증대와 구매 전환</span>
+                            </h4>
+                            <p class="text-lg leading-relaxed text-gray-800 mb-4 drop-cap text-justify">
+                                <span class="en-content">
+                                    Designed a personalized recommendation algorithm based on purchase history,
+                                    resulting in a 23% increase in conversion rates. Established UI branching strategies
+                                    tailored to different user segments.
+                                </span>
+                                <span class="ko-content">
+                                    구매 이력을 기반으로 한 고도화된 추천 알고리즘을 설계하여 전환율을 23% 향상시켰습니다. 또한 사용자 세그먼트별로 다른 UI를 노출하는 분기 전략을
+                                    수립하여 개인화 경험을 극대화했습니다.
+                                </span>
+                            </p>
+                            <p class="text-base leading-relaxed text-gray-700 mb-6 text-justify">
+                                <span class="en-content">
+                                    Additionally, defined features for the launch of Kakao Commerce Live Shopping and
+                                    designed the MVP, achieving 1.2 million MAU within 3 months.
+                                </span>
+                                <span class="ko-content">
+                                    더불어 카카오 커머스 라이브쇼핑 런칭을 위한 핵심 기능을 정의하고 MVP를 설계하여, 출시 3개월 만에 월간 활성 사용자(MAU) 120만을 달성하는
+                                    성과를 거두었습니다.
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </article>
+                <hr class="border-t-4 border-double border-gray-300 my-2" />
+
+                <!-- Secondary Story -->
+                <article class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col justify-center border border-gray-200 p-4 bg-white/50">
+                        <!-- Data/Visual placeholder -->
+                        <div class="text-center">
+                            <span class="material-symbols-outlined text-6xl text-gray-300 mb-2">smart_toy</span>
+                            <p class="text-xs font-mono text-gray-400">AI Chatbot Logic</p>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-primary uppercase tracking-widest mb-2 block">AI & CS
+                            Automation</span>
+                        <h3 class="text-2xl font-bold leading-tight mb-2 hover-underline-animation cursor-pointer">
+                            <span class="en-content">Kakao AI Chatbot</span>
+                            <span class="ko-content">카카오 AI 챗봇 기획</span>
+                        </h3>
+                        <p class="text-sm leading-relaxed text-gray-700 mb-3 text-justify">
+                            <span class="en-content">
+                                Authored functional specs for a GPT-based customer service chatbot. Successfully reduced
+                                incoming CS volume by 40% through automated responses.
+                            </span>
+                            <span class="ko-content">
+                                GPT 기반 고객 응대 챗봇의 기능 명세를 작성하고 시나리오를 설계했습니다. 이를 통해 CS 인입량을 40% 감소시키는 효율화를 달성했습니다.
+                            </span>
+                        </p>
+                    </div>
+                </article>
+                <hr class="border-t border-gray-300 my-2" />
+
+                <!-- Third Story (Smaller) -->
+                <article class="bg-gray-100 p-6 border-t border-b border-gray-300">
+                    <h3 class="text-xl font-bold mb-2">
+                        <span class="en-content">Toss: Fintech UX Innovation</span>
+                        <span class="ko-content">토스: 핀테크 UX 혁신</span>
+                    </h3>
+                    <div class="flex flex-col gap-4 text-sm text-gray-600">
+                        <div class="flex-1 text-justify">
+                            <p class="mb-2">
+                                <span class="font-bold text-ink en-content">Stock Onboarding</span>
+                                <span class="font-bold text-ink ko-content">주식 서비스 온보딩</span>
+                                <span class="en-content"> — Analyzed funnel drop-offs and improved UX for novice
+                                    investors. Increased conversion to first investment by 31%.</span>
+                                <span class="ko-content"> — 초보 투자자를 위한 친절한 온보딩 설계로 신규 가입 후 첫 투자 전환율을 31% 향상시켰습니다.</span>
+                            </p>
+                        </div>
+                        <div class="w-full h-px bg-gray-300 mx-auto"></div>
+                        <div class="flex-1 text-justify">
+                            <p>
+                                <span class="font-bold text-ink en-content">Remittance Renewal</span>
+                                <span class="font-bold text-ink ko-content">송금 UX 리뉴얼</span>
+                                <span class="en-content"> — Reduced taps from 5 to 3 based on user pain points derived
+                                    from 30+ interviews.</span>
+                                <span class="ko-content"> — 30건 이상의 사용자 인터뷰를 통해 페인포인트를 도출, 송금 단계를 5단계에서 3단계로
+                                    간소화했습니다.</span>
+                            </p>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <!-- Right Column: Editorials & Insights -->
+            <aside class="lg:col-span-3 lg:border-l border-gray-300 lg:pl-8 order-3" id="insights">
+                <!-- Section Header -->
+                <div class="border-b-2 border-black pb-1 mb-6">
+                    <h2 class="font-bold text-lg uppercase tracking-wider text-right lg:text-left">
+                        <span class="en-content">Editorials & Insights</span>
+                        <span class="ko-content">인사이트 & 활동</span>
+                    </h2>
+                </div>
+
+                <!-- Brunch / Articles List -->
+                <div class="mb-10">
+                    <h4 class="font-serif italic text-xl mb-3 text-gray-800 border-b border-gray-200 pb-2">From the Desk
+                        (Brunch)</h4>
+                    <ul class="space-y-4">
+                        <li class="group cursor-pointer">
+                            <span class="text-xs text-gray-400 font-sans block mb-1">Subscriber Count: 8,200+</span>
+                            <h5 class="font-bold text-base leading-snug group-hover:text-primary transition-colors">
+                                <span class="en-content">"Planner's Thinking" Series</span>
+                                <span class="ko-content">"기획자의 생각법" 시리즈</span>
+                            </h5>
+                            <p class="text-xs text-gray-500 mt-1 line-clamp-2">
+                                <span class="en-content">Selected as a popular Brunch writer in 2021. Essays on product
+                                    thinking and methodology.</span>
+                                <span class="ko-content">2021년 브런치 인기 작가 선정. 기획의 본질과 실무 노하우를 담은 에세이 연재.</span>
+                            </p>
+                        </li>
+                    </ul>
+                    <div class="mt-4 text-right">
+                        <a class="text-xs font-bold uppercase tracking-widest text-primary hover:underline"
+                            href="https://brunch.co.kr/@jihye-plan" target="_blank">View Brunch →</a>
+                    </div>
+                </div>
+
+                <!-- Public Speaking -->
+                <div class="mb-10 bg-primary/5 p-4 border border-primary/20 rounded-sm">
+                    <h4 class="font-bold text-sm uppercase tracking-widest text-primary mb-3 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-base">mic</span> Speaking
+                    </h4>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="font-bold text-sm">FastCampus 2024</p>
+                            <p class="text-xs italic text-gray-600">
+                                <span class="en-content">Online Course: "PM Bible"</span>
+                                <span class="ko-content">"PM 실무 바이블" 온라인 강의 런칭</span>
+                            </p>
+                        </div>
+                        <hr class="border-primary/20" />
+                        <div>
+                            <p class="font-bold text-sm">Product Camp Seoul 2023</p>
+                            <p class="text-xs italic text-gray-600">
+                                <span class="en-content">Speaker: "Persuading with Data"</span>
+                                <span class="ko-content">"데이터로 설득하는 기획자" 연사</span>
+                            </p>
+                        </div>
+                        <hr class="border-primary/20" />
+                        <div>
+                            <p class="font-bold text-sm">UXCAMP 2022</p>
+                            <p class="text-xs italic text-gray-600">
+                                <span class="en-content">Speaker: "Experiment Culture at Toss"</span>
+                                <span class="ko-content">"토스에서 배운 실험 문화" 연사</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Classifieds / Skills -->
+                <div class="border-t-4 border-black pt-2" id="skills">
+                    <h4 class="font-black text-2xl mb-4 text-center">CLASSIFIEDS</h4>
+                    <div class="grid grid-cols-2 gap-x-4 gap-y-6 text-xs">
+                        <!-- Skill Category 1 -->
+                        <div>
+                            <h5 class="font-bold border-b border-gray-400 mb-1 uppercase text-[10px] tracking-wider">
+                                <span class="en-content">Core Skills</span>
+                                <span class="ko-content">핵심 역량</span>
+                            </h5>
+                            <ul class="list-disc list-inside text-gray-700 leading-tight marker:text-gray-400">
+                                <li>Data-Driven Planning</li>
+                                <li>A/B Test Design</li>
+                                <li>User Research (UT)</li>
+                                <li>Squad Leadership</li>
+                            </ul>
+                        </div>
+                        <!-- Skill Category 2 -->
+                        <div>
+                            <h5 class="font-bold border-b border-gray-400 mb-1 uppercase text-[10px] tracking-wider">
+                                <span class="en-content">Tools & Tech</span>
+                                <span class="ko-content">도구 및 기술</span>
+                            </h5>
+                            <ul class="list-disc list-inside text-gray-700 leading-tight marker:text-gray-400">
+                                <li>SQL (Advanced)</li>
+                                <li>Amplitude / Mixpanel</li>
+                                <li>Jira / Confluence</li>
+                                <li>Figma</li>
+                            </ul>
+                        </div>
+                        <!-- Skill Category 3 -->
+                        <div class="col-span-2">
+                            <h5 class="font-bold border-b border-gray-400 mb-1 uppercase text-[10px] tracking-wider">
+                                <span class="en-content">Certifications</span>
+                                <span class="ko-content">자격 및 교육</span>
+                            </h5>
+                            <ul class="list-disc list-inside text-gray-700 leading-tight marker:text-gray-400">
+                                <li>CSPO (Certified Scrum Product Owner)</li>
+                                <li>Google UX Design Certificate</li>
+                                <li>Amplitude Analytics Certificate</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weather/Date Box -->
+                <div class="mt-8 border border-gray-300 p-2 text-center bg-white shadow-sm">
+                    <div class="text-[10px] uppercase font-bold text-gray-400 mb-1">Contact</div>
+                    <div class="font-serif text-lg italic">jihye.yoon@gmail.com</div>
+                    <div class="text-xs text-gray-500 mt-1">010-9172-3385</div>
+                </div>
+            </aside>
+        </main>
+
+        <!-- Footer -->
+        <footer class="w-full mt-12 border-t border-gray-300 pt-8 pb-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
+                <div class="md:col-span-1">
+                    <h2 class="font-black text-2xl tracking-tight mb-2">JIHYE YOON</h2>
+                    <p class="text-xs text-gray-500">© 2025 Jihye Yoon. All rights reserved.</p>
+                </div>
+                <div class="md:col-span-2 flex flex-col items-center justify-center">
+                    <p class="font-serif italic text-lg text-gray-700 mb-4 max-w-md text-center">
+                        <span class="en-content">"Product management is the art of solving the right problems for the
+                            right people at the right time."</span>
+                        <span class="ko-content">"기획은 올바른 문제를 정의하고, 데이터와 공감을 통해 최적의 해결책을 찾아가는 과정입니다."</span>
+                    </p>
+                    <div class="w-16 h-px bg-primary/50"></div>
+                </div>
+                <div
+                    class="md:col-span-1 flex flex-col items-center md:items-end gap-2 text-sm font-bold uppercase tracking-widest text-gray-600">
+                    <a class="hover:text-primary" href="https://linkedin.com/in/jihyeyoon-pm"
+                        target="_blank">LinkedIn</a>
+                    <a class="hover:text-primary" href="https://brunch.co.kr/@jihye-plan" target="_blank">Brunch</a>
+                    <a class="hover:text-primary" href="mailto:jihye.yoon@gmail.com">Email</a>
+                </div>
+            </div>
+            <div class="mt-8 text-center text-[10px] text-gray-400 uppercase tracking-widest">
+                Designed with Tailwind CSS • Editorial Theme
+            </div>
+        </footer>
+    </div>
+
+    <!-- Bilingual Toggle Script -->
+    <script>
+        function setLanguage(lang) {
+            document.body.classList.remove('lang-en', 'lang-ko');
+            document.body.classList.add('lang-' + lang);
+
+            // Update Toggle Button Styles
+            document.getElementById('btn-ko').classList.remove('lang-active');
+            document.getElementById('btn-en').classList.remove('lang-active');
+            document.getElementById('btn-' + lang).classList.add('lang-active');
+
+            // Save preference
+            localStorage.setItem('preferredLanguage', lang);
+        }
+
+        // Initialize based on saved preference or default to Korean
+        const savedLang = localStorage.getItem('preferredLanguage') || 'ko';
+        setLanguage(savedLang);
+    </script>
+</body>
+
+</html>

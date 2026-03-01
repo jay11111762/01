@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Portfolio Shift | 문서에서 웹으로</title>
+    <meta name="description" content="PDF 포트폴리오를 웹으로 전환하는 강의. 바이브코딩과 GitHub Pages로 나만의 URL을 만든다.">
+    <meta property="og:title" content="The Portfolio Shift">
+    <meta property="og:description" content="문서에서 웹으로">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sabum.github.io/sharex/">
+    <meta property="og:image" content="https://sabum.github.io/sharex/img/og-image.png">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Inter:wght@400;500;600&family=Noto+Serif+KR:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Navigation Dots -->
+    <nav class="nav-dots" aria-label="슬라이드 네비게이션">
+        <button class="dot active" data-slide="0" aria-label="Title"></button>
+        <button class="dot" data-slide="1" aria-label="Problem"></button>
+        <button class="dot" data-slide="2" aria-label="Gravity"></button>
+        <button class="dot" data-slide="3" aria-label="Antigravity"></button>
+        <button class="dot" data-slide="stats" aria-label="Stats"></button>
+        <span class="dot-divider"></span>
+        <button class="dot" data-slide="4" aria-label="Data First"></button>
+        <button class="dot" data-slide="5" aria-label="Folder"></button>
+        <button class="dot" data-slide="6" aria-label="Collect"></button>
+        <span class="dot-divider"></span>
+        <button class="dot" data-slide="7" aria-label="Reference"></button>
+        <button class="dot" data-slide="8" aria-label="Sites"></button>
+        <button class="dot" data-slide="9" aria-label="How to Use"></button>
+        <span class="dot-divider"></span>
+        <button class="dot" data-slide="10" aria-label="Structure"></button>
+        <button class="dot" data-slide="11" aria-label="Anatomy"></button>
+        <button class="dot" data-slide="12" aria-label="Before/After"></button>
+        <span class="dot-divider"></span>
+        <button class="dot" data-slide="13" aria-label="Vibe Coding"></button>
+        <button class="dot" data-slide="14" aria-label="Tools"></button>
+        <button class="dot" data-slide="15" aria-label="Process"></button>
+        <button class="dot" data-slide="16" aria-label="Plan First"></button>
+        <button class="dot" data-slide="17" aria-label="Prompt Tips"></button>
+        <button class="dot" data-slide="18" aria-label="AI Image"></button>
+        <span class="dot-divider"></span>
+        <button class="dot" data-slide="19" aria-label="Watch Out"></button>
+        <button class="dot" data-slide="20" aria-label="Publish"></button>
+        <button class="dot" data-slide="21" aria-label="Git & GitHub"></button>
+        <button class="dot" data-slide="22" aria-label="Deploy"></button>
+        <button class="dot" data-slide="23" aria-label="Update"></button>
+        <span class="dot-divider"></span>
+        <button class="dot" data-slide="24" aria-label="Start"></button>
+    </nav>
+
+    <!-- Slide Container -->
+    <main class="slides-container">
+
+        <!-- ========== INTRO SECTION ========== -->
+
+        <!-- Slide 01: Title - Graphic Design Style -->
+        <section class="slide slide-dark slide-graphic slide-with-bg" id="slide-0">
+            <video class="bg-video" autoplay muted loop playsinline>
+                <source src="img/bg_01_title.mp4" type="video/mp4">
+            </video>
+            <!-- Morphing Shape + Clone Spread -->
+            <div class="geo-elements">
+                <div class="geo-spread" style="--i:-5; --o:0.12">
+                    <div class="geo-clone"></div>
+                </div>
+                <div class="geo-spread" style="--i:-4; --o:0.16">
+                    <div class="geo-clone"></div>
+                </div>
+                <div class="geo-spread" style="--i:-3; --o:0.22">
+                    <div class="geo-clone"></div>
+                </div>
+                <div class="geo-spread" style="--i:-2; --o:0.28">
+                    <div class="geo-clone"></div>
+                </div>
+                <div class="geo-spread" style="--i:-1; --o:0.35">
+                    <div class="geo-clone"></div>
+                </div>
+                <div class="geo-circle geo-circle--hero"></div>
+                <div class="geo-spread" style="--i:1; --o:0.35">
+                    <div class="geo-clone"></div>
+                </div>
+                <div class="geo-spread" style="--i:2; --o:0.28">
+                    <div class="geo-clone"></div>
+                </div>
+                <div class="geo-spread" style="--i:3; --o:0.22">
+                    <div class="geo-clone"></div>
+                </div>
+                <div class="geo-spread" style="--i:4; --o:0.16">
+                    <div class="geo-clone"></div>
+                </div>
+                <div class="geo-spread" style="--i:5; --o:0.12">
+                    <div class="geo-clone"></div>
+                </div>
+            </div>
+            <div class="slide-center">
+                <h1 class="mega-text text-white fade-in">
+                    THE<br>
+                    PORTFOLIO<br>
+                    <span class="text-yellow">SHIFT</span>
+                </h1>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-yellow fade-in delay-2">문서에서 웹으로</p>
+            </footer>
+        </section>
+
+        <!-- Slide 02: Problem - Solid Black -->
+        <section class="slide slide-dark" id="slide-1">
+            <video class="bg-video" muted loop playsinline preload="none">
+                <source src="img/bg_02_problem.mp4" type="video/mp4">
+            </video>
+            <div class="slide-center">
+                <h2 class="mega-text text-white fade-in">
+                    <span class="text-yellow"><span class="slot-number">50</span>MB</span><br>
+                    PDF?
+                </h2>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">아직도 압축해서 메일로 보내시나요?</p>
+            </footer>
+        </section>
+
+        <!-- Slide 03: Gravity - Solid Black -->
+        <section class="slide slide-dark" id="slide-2">
+            <video class="bg-video" muted loop playsinline preload="none">
+                <source src="img/bg_03_gravity.mp4" type="video/mp4">
+            </video>
+            <div class="slide-center">
+                <h2 class="mega-text text-white fade-in">
+                    GRAVITY
+                </h2>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">죽은 정보 · 전송 한계 · 일방향성</p>
+            </footer>
+        </section>
+
+        <!-- Slide 04: Antigravity - With Background Video -->
+        <section class="slide slide-with-bg slide-dark" id="slide-3">
+            <video class="bg-video" muted loop playsinline preload="none">
+                <source src="img/bg_04_antigravity.mp4" type="video/mp4">
+            </video>
+            <div class="bg-overlay bg-overlay--dark"></div>
+            <div class="slide-center">
+                <h2 class="mega-text text-white fade-in zero-gravity-text">
+                    ANTI<br>
+                    GRAVITY
+                </h2>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">웹은 파일 크기도, 페이지 수도 없다</p>
+            </footer>
+        </section>
+
+        <!-- Slide: Stats - 채용 데이터 -->
+        <section class="slide slide-dark slide-with-bg" id="slide-stats">
+            <video class="bg-video" muted loop playsinline preload="none">
+                <source src="img/_it__1080p_202602081432.mp4" type="video/mp4">
+            </video>
+            <div class="bg-overlay bg-overlay--dark"></div>
+            <div class="slide-center">
+                <div class="stats-display">
+                    <div class="stat-item fade-in">
+                        <div class="stat-number-wrap">
+                            <span class="stat-number" data-target="73">0</span><span class="stat-suffix">%</span>
+                        </div>
+                        <p class="stat-desc">채용담당자가<br>링크 기반 포트폴리오 선호</p>
+                    </div>
+                    <div class="stat-item fade-in delay-1">
+                        <div class="stat-number-wrap">
+                            <span class="stat-number" data-target="2.4">0</span><span class="stat-suffix">배</span>
+                        </div>
+                        <p class="stat-desc">웹 포트폴리오 보유자의<br>면접 전환율</p>
+                    </div>
+                    <p class="stat-source">Recruiterflow 2025 · Fueler 채용 트렌드 리포트</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== CHAPTER 01: DATA FIRST ========== -->
+
+        <!-- Slide 05: Data First Title - Solid Black -->
+        <section class="slide slide-dark slide-with-bg" id="slide-4">
+            <video class="bg-video" muted loop playsinline preload="none">
+                <source src="img/bg_12_datafirst.mp4" type="video/mp4">
+            </video>
+            <div class="slide-center">
+                <p class="chapter-label text-white fade-in">CHAPTER 01</p>
+                <h2 class="mega-text text-white fade-in delay-1">
+                    <span class="text-sans tick-text" data-text="DATA">DATA</span><br>
+                    <span class="text-yellow">FIRST</span>
+                </h2>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">데이터가 먼저다. 구조는 그다음이다.</p>
+            </footer>
+        </section>
+
+        <!-- Slide 06: Folder - With Background Video -->
+        <section class="slide slide-dark slide-with-bg" id="slide-5">
+            <video class="bg-video" muted loop playsinline preload="none">
+                <source src="img/bg_05_folder.mp4" type="video/mp4">
+            </video>
+            <div class="slide-center">
+                <h2 class="mega-text text-white fade-in">
+                    OPEN<br>
+                    YOUR<br>
+                    <span class="text-yellow">FOLDER</span>
+                </h2>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">폴더에 모든 것을 모아라</p>
+            </footer>
+        </section>
+
+        <!-- Slide 07: What to Collect - Process Flow -->
+        <section class="slide slide-dark slide-with-bg" id="slide-6">
+            <video class="bg-video" muted loop playsinline preload="none">
+                <source src="img/bg_08_reference_use.mp4" type="video/mp4">
+            </video>
+            <div class="slide-center">
+                <div class="process-flow fade-in">
+                    <div class="process-step">
+                        <div class="process-circle">
+                            <svg class="circle-stroke" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="48" />
+                            </svg>
+                            <div class="circle-content">
+                                <span class="process-num">01</span>
+                                <span class="process-label">프로젝트<br>이미지</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-circle">
+                            <svg class="circle-stroke" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="48" />
+                            </svg>
+                            <div class="circle-content">
+                                <span class="process-num">02</span>
+                                <span class="process-label">작업 과정<br>스케치</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-circle">
+                            <svg class="circle-stroke" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="48" />
+                            </svg>
+                            <div class="circle-content">
+                                <span class="process-num">03</span>
+                                <span class="process-label">기획 문서<br>프레젠테이션</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-circle">
+                            <svg class="circle-stroke" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="48" />
+                            </svg>
+                            <div class="circle-content">
+                                <span class="process-num">04</span>
+                                <span class="process-label">수상/성과<br>기록</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">폴더에서 찾을 수 있는 것들</p>
+            </footer>
+        </section>
+
+        <!-- ========== CHAPTER 02: VISUAL REFERENCE ========== -->
+
+        <!-- Slide 08: Visual Reference Title - With Background Video -->
+        <section class="slide slide-dark slide-with-bg" id="slide-7">
+            <video class="bg-video" muted loop playsinline preload="none">
+                <source src="img/bg_06_reference.mp4" type="video/mp4">
+            </video>
+            <div class="slide-center">
+                <p class="chapter-label text-white fade-in">CHAPTER 02</p>
+                <h2 class="mega-text text-white fade-in delay-1">
+                    <span class="text-sans glitch-rgb" data-text="VISUAL">VISUAL</span><br>
+                    <span class="text-yellow">REFERENCE</span>
+                </h2>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">"모던하게 해줘"는 금물. 레퍼런스가 답이다.</p>
+            </footer>
+        </section>
+
+        <!-- Slide 09: Reference Sites - Solid Black -->
+        <section class="slide slide-dark" id="slide-8">
+            <div class="ref-grid fade-in">
+                <!-- Row 1 -->
+                <a href="https://pinterest.com" target="_blank" rel="noopener" class="ref-card">
+                    <div class="ref-logo">
+                        <img src="https://cdn.simpleicons.org/pinterest/white" alt="Pinterest">
+                    </div>
+                    <span class="ref-name">Pinterest</span>
+                    <span class="ref-desc">무드보드 & 영감</span>
+                    <span class="ref-url">pinterest.com</span>
+                </a>
+                <a href="https://dribbble.com" target="_blank" rel="noopener" class="ref-card">
+                    <div class="ref-logo">
+                        <img src="https://cdn.simpleicons.org/dribbble/white" alt="Dribbble">
+                    </div>
+                    <span class="ref-name">Dribbble</span>
+                    <span class="ref-desc">UI/UX 트렌드</span>
+                    <span class="ref-url">dribbble.com</span>
+                </a>
+                <a href="https://behance.net" target="_blank" rel="noopener" class="ref-card">
+                    <div class="ref-logo">
+                        <img src="https://cdn.simpleicons.org/behance/white" alt="Behance">
+                    </div>
+                    <span class="ref-name">Behance</span>
+                    <span class="ref-desc">케이스 스터디</span>
+                    <span class="ref-url">behance.net</span>
+                </a>
+                <a href="https://awwwards.com" target="_blank" rel="noopener" class="ref-card">
+                    <div class="ref-logo">
+                        <img src="https://cdn.simpleicons.org/awwwards/white" alt="Awwwards">
+                    </div>
+                    <span class="ref-name">Awwwards</span>
+                    <span class="ref-desc">웹 디자인 어워드</span>
+                    <span class="ref-url">awwwards.com</span>
+                </a>
+                <!-- Row 2 -->
+                <a href="https://mobbin.com" target="_blank" rel="noopener" class="ref-card">
+                    <div class="ref-logo">
+                        <img src="https://cdn.simpleicons.org/mobbin/white" alt="Mobbin">
+                    </div>
+                    <span class="ref-name">Mobbin</span>
+                    <span class="ref-desc">모바일 앱 UI</span>
+                    <span class="ref-url">mobbin.com</span>
+                </a>
+                <a href="https://figma.com/community" target="_blank" rel="noopener" class="ref-card">
+                    <div class="ref-logo">
+                        <img src="https://cdn.simpleicons.org/figma/white" alt="Figma">
+                    </div>
+                    <span class="ref-name">Figma</span>
+                    <span class="ref-desc">커뮤니티 템플릿</span>
+                    <span class="ref-url">figma.com/community</span>
+                </a>
+                <a href="https://unsplash.com" target="_blank" rel="noopener" class="ref-card">
+                    <div class="ref-logo">
+                        <img src="https://cdn.simpleicons.org/unsplash/white" alt="Unsplash">
+                    </div>
+                    <span class="ref-name">Unsplash</span>
+                    <span class="ref-desc">고퀄리티 이미지</span>
+                    <span class="ref-url">unsplash.com</span>
+                </a>
+                <a href="https://collectui.com" target="_blank" rel="noopener" class="ref-card">
+                    <div class="ref-logo">
+                        <img src="https://cdn.simpleicons.org/googlefonts/white" alt="Collect UI">
+                    </div>
+                    <span class="ref-name">Collect UI</span>
+                    <span class="ref-desc">일일 UI 컬렉션</span>
+                    <span class="ref-url">collectui.com</span>
+                </a>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">디자인 레퍼런스를 찾을 수 있는 곳</p>
+            </footer>
+        </section>
+
+        <!-- Slide 10: How to Use Reference -->
+        <section class="slide slide-dark" id="slide-9">
+            <div class="slide-center">
+                <div class="process-flow fade-in">
+                    <div class="process-step">
+                        <div class="process-circle">
+                            <svg class="circle-stroke" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="48" />
+                            </svg>
+                            <div class="circle-content">
+                                <span class="process-num">01</span>
+                                <span class="process-label">컬러 팔레트<br>추출</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-circle">
+                            <svg class="circle-stroke" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="48" />
+                            </svg>
+                            <div class="circle-content">
+                                <span class="process-num">02</span>
+                                <span class="process-label">레이아웃<br>구조 분석</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-circle">
+                            <svg class="circle-stroke" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="48" />
+                            </svg>
+                            <div class="circle-content">
+                                <span class="process-num">03</span>
+                                <span class="process-label">타이포그래피<br>조합</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-circle">
+                            <svg class="circle-stroke" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="48" />
+                            </svg>
+                            <div class="circle-content">
+                                <span class="process-num">04</span>
+                                <span class="process-label">AI에게<br>이미지로 전달</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">레퍼런스 활용법</p>
+            </footer>
+        </section>
+
+        <!-- ========== CHAPTER 03: STRUCTURE ========== -->
+
+        <!-- Slide 11: Structure Title -->
+        <section class="slide slide-dark slide-with-bg" id="slide-10">
+            <video class="bg-video" muted loop playsinline preload="none">
+                <source src="img/bg_07_structure.mp4" type="video/mp4">
+            </video>
+            <div class="bg-overlay bg-overlay--dark"></div>
+            <div class="slide-center">
+                <p class="chapter-label text-white fade-in">CHAPTER 03</p>
+                <h2 class="mega-text text-white fade-in delay-1">
+                    <span class="text-yellow">STRUC</span><br>
+                    TURE
+                </h2>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">구조부터 잡는다</p>
+            </footer>
+        </section>
+
+        <!-- Slide 12: Portfolio Anatomy - With Background Video -->
+        <section class="slide slide-dark slide-with-bg" id="slide-11">
+            <video class="bg-video" muted loop playsinline preload="none">
+                <source src="img/bg_09_anatomy.mp4" type="video/mp4">
+            </video>
+            <div class="typo-anatomy fade-in">
+                <div class="anatomy-row" style="--idx:0">
+                    <span class="anatomy-num">01</span>
+                    <span class="anatomy-name">HERO</span>
+                    <span class="anatomy-detail">첫인상 · 이름 · 한 줄 소개</span>
+                </div>
+                <div class="anatomy-row" style="--idx:1">
+                    <span class="anatomy-num">02</span>
+                    <span class="anatomy-name">ABOUT</span>
+                    <span class="anatomy-detail">나는 누구인가 · 어떤 가치를 추구하는가</span>
+                </div>
+                <div class="anatomy-row" style="--idx:2">
+                    <span class="anatomy-num">03</span>
+                    <span class="anatomy-name">PROJECTS</span>
+                    <span class="anatomy-detail">대표 작업물 3~6개 · 썸네일 + 설명</span>
+                </div>
+                <div class="anatomy-row" style="--idx:3">
+                    <span class="anatomy-num">04</span>
+                    <span class="anatomy-name">SKILLS</span>
+                    <span class="anatomy-detail">사용 도구 · 역량 시각화</span>
+                </div>
+                <div class="anatomy-row" style="--idx:4">
+                    <span class="anatomy-num">05</span>
+                    <span class="anatomy-name">CONTACT</span>
+                    <span class="anatomy-detail">연락처 · SNS · 이메일</span>
+                </div>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">대부분의 포트폴리오가 따르는 구조</p>
+            </footer>
+        </section>
+
+        <!-- Slide 13: Before vs After - Split Compare -->
+        <section class="slide slide-dark" id="slide-12">
+            <div class="split-compare fade-in">
+                <div class="split-left">
+                    <div class="split-label">BEFORE</div>
+                    <div class="split-items">
+                        <p class="split-item heavy-text">sabum profile.pdf</p>
+                        <p class="split-item heavy-text">50MB · 메일 첨부 불가</p>
+                        <p class="split-item heavy-text">고정된 페이지 순서</p>
+                        <p class="split-item heavy-text">다운로드 후 열기</p>
+                    </div>
+                </div>
+                <div class="split-divider">
+                    <svg viewBox="0 0 2 100" preserveAspectRatio="none">
+                        <line x1="1" y1="0" x2="1" y2="100" class="split-line-svg" />
+                    </svg>
+                    <div class="split-arrow">→</div>
+                </div>
+                <div class="split-right">
+                    <div class="split-label text-yellow">AFTER</div>
+                    <div class="split-items">
+                        <p class="split-item light-text">sabum.kr</p>
+                        <p class="split-item light-text">URL 공유 · 즉시 접속</p>
+                        <p class="split-item light-text">인터랙션 · 다크모드 · 다국어</p>
+                        <p class="split-item light-text">모바일 · PC · 어디서든</p>
+                    </div>
+                </div>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">같은 콘텐츠, 다른 전달 방식</p>
+            </footer>
+        </section>
+
+        <!-- ========== CHAPTER 04: VIBE CODING ========== -->
+
+        <!-- Slide 14: Vibe Coding Title -->
+        <section class="slide slide-dark slide-with-bg" id="slide-13">
+            <video class="bg-video" muted loop playsinline preload="none">
+                <source src="img/bg_08_vibecoding.mp4" type="video/mp4">
+            </video>
+            <div class="bg-overlay bg-overlay--dark"></div>
+            <div class="slide-center">
+                <p class="chapter-label text-white fade-in">CHAPTER 04</p>
+                <h2 class="mega-text text-white fade-in delay-1">
+                    VIBE<br>
+                    <span class="text-yellow typewriter-target">CODING</span>
+                </h2>
+            </div>
+            <div class="terminal-cursor"></div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">코드를 쓰지 않는다. 대화한다.</p>
+            </footer>
+        </section>
+
+        <!-- Slide 15: YOUR TOOLS -->
+        <section class="slide slide-dark slide-with-bg" id="slide-14">
+            <video class="bg-video" muted loop playsinline preload="none">
+                <source src="img/bg_15_tools.mp4" type="video/mp4">
+            </video>
+            <div class="slide-center">
+                <h2 class="mega-text text-white fade-in">
+                    YOUR<br>
+                    <span class="text-yellow">TOOLS</span>
+                </h2>
+                <div class="prd-lines">
+                    <p class="prd-line" style="--idx:0"><span class="prd-hash">#</span> Cursor <span class="prd-dim">—
+                            AI 코드 에디터의 시작</span></p>
+                    <p class="prd-line" style="--idx:1"><span class="prd-hash">#</span> Claude Code <span
+                            class="prd-dim">— 터미널에서 대화하는 AI</span></p>
+                    <p class="prd-line" style="--idx:2"><span class="prd-hash">#</span> Antigravity <span
+                            class="prd-dim">— 대화만으로 웹사이트 완성, 코드 편집 없이</span></p>
+                    <p class="prd-line" style="--idx:3"><span class="prd-hash">#</span> VS Code <span class="prd-dim">—
+                            무료 코드 에디터</span></p>
+                </div>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">도구는 달라도 방법은 같다 — 대화</p>
+            </footer>
+        </section>
+
+        <!-- Slide 16: Process Flow -->
+        <section class="slide slide-dark slide-with-bg" id="slide-15">
+            <video class="bg-video" muted loop playsinline preload="none">
+                <source src="img/bg_10_process.mp4" type="video/mp4">
+            </video>
+            <div class="bg-overlay bg-overlay--dark"></div>
+            <div class="slide-center">
+                <div class="process-flow fade-in">
+                    <div class="process-step">
+                        <div class="process-circle">
+                            <svg class="circle-stroke" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="48" />
+                            </svg>
+                            <div class="circle-content">
+                                <span class="process-num">01</span>
+                                <span class="process-label">설치<br>3분</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-circle">
+                            <svg class="circle-stroke" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="48" />
+                            </svg>
+                            <div class="circle-content">
+                                <span class="process-num">02</span>
+                                <span class="process-label">폴더<br>열기</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-circle">
+                            <svg class="circle-stroke" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="48" />
+                            </svg>
+                            <div class="circle-content">
+                                <span class="process-num">03</span>
+                                <span class="process-label">대화<br>시작</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-circle">
+                            <svg class="circle-stroke" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="48" />
+                            </svg>
+                            <div class="circle-content">
+                                <span class="process-num">04</span>
+                                <span class="process-label">결과<br>확인</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">설치 3분, 첫 사이트 10분</p>
+            </footer>
+        </section>
+
+        <!-- Slide 17: Plan First - PRD in Markdown -->
+        <section class="slide slide-dark slide-with-bg" id="slide-16">
+            <video class="bg-video" muted loop playsinline preload="none">
+                <source src="img/bg_11_planfirst.mp4" type="video/mp4">
+            </video>
+            <div class="slide-center">
+                <h2 class="mega-text text-white fade-in">
+                    <span class="text-yellow">PLAN</span><br>FIRST
+                </h2>
+                <div class="prd-lines">
+                    <p class="prd-line" style="--idx:0"><span class="prd-hash">#</span> 포트폴리오 사이트</p>
+                    <p class="prd-line" style="--idx:1"><span class="prd-hash">##</span> 목표 <span class="prd-dim">— 나를
+                            소개하는 웹</span></p>
+                    <p class="prd-line" style="--idx:2"><span class="prd-hash">##</span> 구조 <span class="prd-dim">— Hero
+                            → 프로젝트 → 연락처</span></p>
+                    <p class="prd-line" style="--idx:3"><span class="prd-hash">##</span> 디자인 <span class="prd-dim">— 어두운
+                            배경, 큰 세리프</span></p>
+                    <p class="prd-line" style="--idx:4"><span class="prd-hash">##</span> 기술 <span class="prd-dim">— HTML
+                            + CSS + 바이브코딩</span></p>
+                </div>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">계획이 있으면 AI가 더 정확하다</p>
+            </footer>
+        </section>
+
+        <!-- Slide 17: Prompt Comparison - Pure Typography -->
+        <section class="slide slide-dark" id="slide-17">
+            <div class="prompt-compare fade-in">
+                <div class="prompt-col prompt-bad">
+                    <p class="prompt-label-text">이렇게 말하면</p>
+                    <p class="prompt-text bad">"웹사이트 만들어줘"</p>
+                    <p class="prompt-text bad">"예쁘게 해줘"</p>
+                    <p class="prompt-text bad">"이거 이상해"</p>
+                </div>
+                <div class="prompt-vs">VS</div>
+                <div class="prompt-col prompt-good">
+                    <p class="prompt-label-text good">이렇게 말하면</p>
+                    <p class="prompt-text good">"포트폴리오 사이트, 어두운 배경, 큰 세리프 타이틀, 프로젝트 3열 그리드"</p>
+                    <p class="prompt-text good">"Hero에 Kinetic Typography로 이름 등장, 스크롤 시 작업물 페이드인"</p>
+                    <p class="prompt-text good">"헤더가 스크롤 시 사라짐 → 상단 고정으로 변경"</p>
+                </div>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">구체적으로 말할수록, AI는 정확히 만든다</p>
+            </footer>
+        </section>
+
+        <!-- Slide 19: AI Image -->
+        <section class="slide slide-dark slide-with-bg" id="slide-18">
+            <video class="bg-video bg-video--zoomed" muted loop playsinline preload="none">
+                <source src="img/bg_13_aiimage.mp4" type="video/mp4">
+            </video>
+            <div class="slide-center">
+                <h2 class="mega-text text-white fade-in">
+                    <span class="text-yellow">AI</span><br>
+                    IMAGE
+                </h2>
+                <div class="prd-lines">
+                    <p class="prd-line" style="--idx:0"><span class="prd-hash">#</span> API 한 줄 <span class="prd-dim">—
+                            이미지가 만들어진다</span></p>
+                    <p class="prd-line" style="--idx:1"><span class="prd-hash">##</span> Gemini <span class="prd-dim">—
+                            Google의 이미지 생성</span></p>
+                    <p class="prd-line" style="--idx:2"><span class="prd-hash">##</span> DALL·E <span class="prd-dim">—
+                            OpenAI의 이미지 생성</span></p>
+                    <p class="prd-line" style="--idx:3"><span class="prd-hash">##</span> Midjourney <span
+                            class="prd-dim">— 아트 디렉션의 정석</span></p>
+                    <p class="prd-line" style="--idx:4"><span class="prd-hash">##</span> 활용 <span class="prd-dim">— Hero
+                            배경, 아이콘, OG 이미지</span></p>
+                </div>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">포트폴리오에 필요한 이미지, AI가 만든다</p>
+            </footer>
+        </section>
+
+        <!-- Slide 20: WATCH OUT -->
+        <section class="slide slide-dark slide-with-bg" id="slide-19">
+            <video class="bg-video" muted loop playsinline preload="none">
+                <source src="img/bg_14_watchout.mp4" type="video/mp4">
+            </video>
+            <div class="slide-center">
+                <h2 class="mega-text text-white fade-in">
+                    WATCH<br>
+                    <span class="text-yellow">OUT</span>
+                </h2>
+                <div class="prd-lines">
+                    <p class="prd-line" style="--idx:0"><span class="prd-hash">×</span> 파일명에 한글·공백 <span
+                            class="prd-dim">— 영문 소문자, 하이픈만</span></p>
+                    <p class="prd-line" style="--idx:1"><span class="prd-hash">×</span> 이미지 원본 그대로 <span
+                            class="prd-dim">— 1MB 이하로 압축</span></p>
+                    <p class="prd-line" style="--idx:2"><span class="prd-hash">×</span> 모바일 확인 안 함 <span
+                            class="prd-dim">— 반드시 실기기 테스트</span></p>
+                    <p class="prd-line" style="--idx:3"><span class="prd-hash">×</span> 커밋 없이 작업 <span class="prd-dim">—
+                            수시로 저장, 수시로 커밋</span></p>
+                    <p class="prd-line" style="--idx:4"><span class="prd-hash">×</span> 완벽주의 <span class="prd-dim">— 일단
+                            배포, 그다음 개선</span></p>
+                </div>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">처음부터 완벽할 필요 없다. 피하기만 하면 된다.</p>
+            </footer>
+        </section>
+
+        <!-- ========== CHAPTER 05: PUBLISH ========== -->
+
+        <!-- Slide 21: Publish Title -->
+        <section class="slide slide-dark slide-with-bg" id="slide-20">
+            <video class="bg-video" muted loop playsinline preload="none">
+                <source src="img/bg_09_publish.mp4" type="video/mp4">
+            </video>
+            <div class="bg-overlay bg-overlay--dark"></div>
+            <div class="slide-center">
+                <p class="chapter-label text-white fade-in">CHAPTER 05</p>
+                <h2 class="mega-text text-white fade-in delay-1">
+                    PUB<br>
+                    <span class="text-yellow">LISH</span>
+                </h2>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">만들었으면 배포한다</p>
+            </footer>
+        </section>
+
+        <!-- Slide 22: Git & GitHub -->
+        <section class="slide slide-dark" id="slide-21">
+            <div class="git-explain fade-in">
+                <div class="git-col">
+                    <h3 class="git-title">Git</h3>
+                    <p class="git-sub">버전 기록 도구</p>
+                    <p class="git-body">작업을 저장하고<br>언제든 되돌릴 수 있는<br>버전 관리 시스템</p>
+                </div>
+                <div class="git-col">
+                    <h3 class="git-title"><span class="text-yellow">GitHub</span></h3>
+                    <p class="git-sub">Git + 웹 = 무료 배포</p>
+                    <div class="git-steps">
+                        <div class="git-step" style="--idx:0">
+                            <span class="git-step-num">01</span>
+                            <span class="git-step-text">github.com 접속</span>
+                        </div>
+                        <div class="git-step" style="--idx:1">
+                            <span class="git-step-num">02</span>
+                            <span class="git-step-text">Sign Up → 이메일 입력</span>
+                        </div>
+                        <div class="git-step" style="--idx:2">
+                            <span class="git-step-num">03</span>
+                            <span class="git-step-text">username 설정 → 곧 나의 도메인</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">username.github.io — 무료, 영구, 전 세계 접속</p>
+            </footer>
+        </section>
+
+        <!-- Slide 23: Deploy 3 Steps -->
+        <section class="slide slide-dark" id="slide-22">
+            <div class="slide-center">
+                <div class="deploy-flow fade-in">
+                    <div class="deploy-step">
+                        <div class="deploy-circle">
+                            <svg class="circle-stroke" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="48" />
+                            </svg>
+                            <div class="circle-content">
+                                <span class="process-num">01</span>
+                                <span class="process-label">빌드</span>
+                            </div>
+                        </div>
+                        <div class="deploy-desc">"배포용으로 빌드해줘"</div>
+                    </div>
+                    <div class="deploy-connector">
+                        <svg viewBox="0 0 120 2" preserveAspectRatio="none">
+                            <line x1="0" y1="1" x2="120" y2="1" class="connector-line" />
+                        </svg>
+                    </div>
+                    <div class="deploy-step">
+                        <div class="deploy-circle">
+                            <svg class="circle-stroke" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="48" />
+                            </svg>
+                            <div class="circle-content">
+                                <span class="process-num">02</span>
+                                <span class="process-label">업로드</span>
+                            </div>
+                        </div>
+                        <div class="deploy-desc">GitHub에 푸시</div>
+                    </div>
+                    <div class="deploy-connector">
+                        <svg viewBox="0 0 120 2" preserveAspectRatio="none">
+                            <line x1="0" y1="1" x2="120" y2="1" class="connector-line" />
+                        </svg>
+                    </div>
+                    <div class="deploy-step">
+                        <div class="deploy-circle">
+                            <svg class="circle-stroke" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="48" />
+                            </svg>
+                            <div class="circle-content">
+                                <span class="process-num">03</span>
+                                <span class="process-label">공유</span>
+                            </div>
+                        </div>
+                        <div class="deploy-desc">username.github.io 완성</div>
+                    </div>
+                </div>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">3분이면 전 세계에서 접속 가능</p>
+            </footer>
+        </section>
+
+        <!-- Slide 24: UPDATE & MAINTAIN -->
+        <section class="slide slide-dark slide-with-bg" id="slide-23">
+            <video class="bg-video" muted loop playsinline preload="none">
+                <source src="img/bg_16_update.mp4" type="video/mp4">
+            </video>
+            <div class="slide-center">
+                <h2 class="mega-text text-white fade-in">
+                    UP<br>
+                    <span class="text-yellow">DATE</span>
+                </h2>
+                <div class="prd-lines">
+                    <p class="prd-line" style="--idx:0"><span class="prd-hash">01</span> 수정 <span class="prd-dim">— 코드를
+                            고치고</span></p>
+                    <p class="prd-line" style="--idx:1"><span class="prd-hash">02</span> 커밋 <span class="prd-dim">— 변경을
+                            기록하고</span></p>
+                    <p class="prd-line" style="--idx:2"><span class="prd-hash">03</span> 푸시 <span class="prd-dim">— 세상에
+                            반영한다</span></p>
+                    <p class="prd-line" style="--idx:3"><span class="prd-hash">∞</span> 반복 <span class="prd-dim">—
+                            계속 고치면 된다</span></p>
+                </div>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-white fade-in delay-2">수정 → 커밋 → 푸시, 반복</p>
+            </footer>
+        </section>
+
+        <!-- ========== ENDING ========== -->
+
+        <!-- Slide 25: Start - Yellow Background -->
+        <section class="slide slide-yellow" id="slide-24">
+            <div class="slide-center">
+                <h2 class="mega-text text-black fade-in">
+                    START
+                </h2>
+            </div>
+            <footer class="slide-bottom">
+                <p class="desc text-black fade-in delay-2">지금 시작하면 됩니다</p>
+            </footer>
+        </section>
+
+    </main>
+
+    <script src="main.js"></script>
+</body>
+
+</html>

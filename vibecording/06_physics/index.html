@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" type="image/png" href="../Assets/favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics Typography - Lab</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            overflow: hidden;
+            height: 100vh;
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .description-container {
+            position: fixed;
+            left: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 280px;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            line-height: 1.6;
+            pointer-events: none;
+            mix-blend-mode: difference;
+            white-space: pre-wrap;
+            z-index: 999;
+        }
+
+        .desc-title {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+
+        .desc-body {
+            display: block;
+            color: #ccc;
+        }
+
+        .dud {
+            color: #757575;
+        }
+
+        .interaction-hint {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.3);
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            pointer-events: none;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sabum.me/03_Playground/lab_physics.html">
+    <meta property="og:title" content="Physics Typography - SABUM Lab">
+    <meta property="og:description" content="Interactive visual experiment by SABUM">
+    <meta property="og:image" content="https://sabum.me/assets/og-lab.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Physics Typography - SABUM Lab">
+    <meta name="twitter:description" content="Interactive visual experiment by SABUM">
+    <meta name="twitter:image" content="https://sabum.me/assets/og-lab.png">
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="description-container">
+        <span id="desc-title" class="desc-title"></span>
+        <span id="desc-body" class="desc-body"></span>
+    </div>
+    <div class="interaction-hint">HOVER TO PUSH LETTERS • CLICK TO SCATTER</div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        let physicsChars = [];
+        let physicsGroups = {};
+        let charCache = {};
+        const mouse = { x: null, y: null };
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', () => { resizeCanvas(); init(); });
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+        });
+
+        window.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
+
+        // 터치 지원
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            mouse.x = touch.clientX - rect.left;
+            mouse.y = touch.clientY - rect.top;
+        }, { passive: false });
+
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            mouse.x = touch.clientX - rect.left;
+            mouse.y = touch.clientY - rect.top;
+        }, { passive: false });
+
+        canvas.addEventListener('touchend', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        class PhysicsChar {
+            constructor(char, x, y, size, groupId = null) {
+                this.char = char;
+                this.x = x;
+                this.y = y;
+                this.baseX = x;
+                this.baseY = y;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = size;
+                this.rotation = 0;
+                this.vRotation = 0;
+                this.isBroken = false;
+                this.groupId = groupId;
+                this.brokenTime = 0;
+                this.getBitmap();
+            }
+
+            getBitmap() {
+                const key = `${this.char}-${this.size}`;
+                if (!charCache[key]) {
+                    const c = document.createElement('canvas');
+                    const padding = 10;
+                    c.width = this.size + padding * 2;
+                    c.height = this.size + padding * 2;
+                    const cctx = c.getContext('2d');
+                    cctx.font = `700 ${this.size}px "Inter", -apple-system, system-ui, sans-serif`;
+                    cctx.fillStyle = 'white';
+                    cctx.textAlign = 'center';
+                    cctx.textBaseline = 'middle';
+                    cctx.fillText(this.char, c.width / 2, c.height / 2);
+                    charCache[key] = c;
+                }
+                return charCache[key];
+            }
+
+            update() {
+                const now = Date.now();
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+                const mousePower = 130;
+
+                if (!this.isBroken) {
+                    const swayTime = now * 0.0008;
+                    let targetX = this.baseX + Math.sin(swayTime + this.baseY * 0.01) * 1.5;
+                    let targetY = this.baseY + Math.cos(swayTime + this.baseX * 0.01) * 1.5;
+
+                    if (mouse.x !== null && dist < mousePower) {
+                        const pushForce = (mousePower - dist) / mousePower;
+                        targetX += (this.x - mouse.x) * pushForce * 0.5;
+                        targetY += (this.y - mouse.y) * pushForce * 0.5;
+
+                        if (dist < 60 && Math.random() < 0.25) {
+                            this.breakGroup();
+                        }
+                    }
+
+                    this.x += (targetX - this.x) * 0.1;
+                    this.y += (targetY - this.y) * 0.1;
+                    this.rotation += (0 - this.rotation) * 0.1;
+                } else {
+                    const recoveryDelay = 4500;
+                    const timeSinceBroken = now - this.brokenTime;
+
+                    if (timeSinceBroken > recoveryDelay) {
+                        const dxToHome = this.baseX - this.x;
+                        const dyToHome = this.baseY - this.y;
+                        const distToHome = Math.sqrt(dxToHome * dxToHome + dyToHome * dyToHome);
+
+                        const moveSpeed = 0.04;
+                        this.vx = dxToHome * moveSpeed;
+                        this.vy = dyToHome * moveSpeed;
+                        this.vRotation *= 0.85;
+                        this.rotation += (0 - this.rotation) * 0.06;
+
+                        if (distToHome < 0.5 && Math.abs(this.rotation) < 0.01) {
+                            this.isBroken = false;
+                            this.x = this.baseX;
+                            this.y = this.baseY;
+                            this.rotation = 0;
+                            this.vx = 0;
+                            this.vy = 0;
+                            this.vRotation = 0;
+                            this.brokenTime = 0;
+                        }
+                    } else {
+                        this.vx *= 0.99;
+                        this.vy *= 0.99;
+                        this.vRotation *= 0.99;
+                    }
+
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.rotation += this.vRotation;
+
+                    const bounce = -0.5;
+                    if (this.x < 0) { this.x = 0; this.vx *= bounce; }
+                    else if (this.x > canvas.width) { this.x = canvas.width; this.vx *= bounce; }
+                    if (this.y < 0) { this.y = 0; this.vy *= bounce; }
+                    else if (this.y > canvas.height) { this.y = canvas.height; this.vy *= bounce; }
+                }
+            }
+
+            breakGroup() {
+                if (this.isBroken) return;
+                const groupMembers = (this.groupId && physicsGroups[this.groupId]) ? physicsGroups[this.groupId] : [this];
+                const now = Date.now();
+
+                const angle = Math.atan2(this.y - (mouse.y || this.y), this.x - (mouse.x || this.x)) + (Math.random() - 0.5) * 0.3;
+                const speed = 2 + Math.random() * 3;
+                const sharedVX = Math.cos(angle) * speed;
+                const sharedVY = Math.sin(angle) * speed;
+                const sharedVRot = (Math.random() - 0.5) * 0.12;
+
+                for (let i = 0; i < groupMembers.length; i++) {
+                    const c = groupMembers[i];
+                    if (!c.isBroken) {
+                        c.isBroken = true;
+                        c.brokenTime = now;
+                        c.vx = sharedVX;
+                        c.vy = sharedVY;
+                        c.vRotation = sharedVRot;
+                    }
+                }
+            }
+
+            render() {
+                const bitmap = this.getBitmap();
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                ctx.drawImage(bitmap, -bitmap.width / 2, -bitmap.height / 2);
+                ctx.restore();
+            }
+        }
+
+        function init() {
+            physicsChars = [];
+            charCache = {};
+            physicsGroups = {};
+
+            const baseQuote = "Every tool has implied limitations of how and what you can make with it. Programming is not different, but when you are working with code, you are essentially making your own tools, so you can set precisely what and how it works. ";
+            const quote = (baseQuote + baseQuote).repeat(3) + "Infinite zero-gravity sticky clusters of data.";
+
+            const fontSize = 18;
+            ctx.font = `700 ${fontSize}px "Inter", -apple-system, system-ui, sans-serif`;
+
+            const startX = canvas.width * 0.2;
+            const wrapLimit = canvas.width * 0.8;
+            const lineHeight = fontSize * 1.5;
+            const words = quote.split(' ');
+
+            let tempX = startX;
+            let lineCount = 1;
+            words.forEach(word => {
+                const wordWidth = ctx.measureText(word + ' ').width;
+                if (tempX + wordWidth > wrapLimit) { tempX = startX; lineCount++; }
+                tempX += wordWidth;
+            });
+
+            const totalHeight = lineCount * lineHeight;
+            let currentY = (canvas.height - totalHeight) / 2 + fontSize;
+            let currentX = startX;
+
+            words.forEach((word, wordIdx) => {
+                const wordWidth = ctx.measureText(word + ' ').width;
+                if (currentX + wordWidth > wrapLimit) { currentX = startX; currentY += lineHeight; }
+
+                const rand = Math.random();
+                let groupId;
+                if (rand < 0.45) groupId = `word-${wordIdx}`;
+                else if (rand < 0.8) groupId = `chunk-${Math.floor(physicsChars.length / 3)}`;
+                else groupId = null;
+
+                if (groupId && !physicsGroups[groupId]) physicsGroups[groupId] = [];
+
+                for (let char of word) {
+                    const charWidth = ctx.measureText(char).width;
+                    const pChar = new PhysicsChar(char, currentX + charWidth / 2, currentY, fontSize, groupId);
+                    physicsChars.push(pChar);
+                    if (groupId) physicsGroups[groupId].push(pChar);
+                    currentX += charWidth;
+                }
+                currentX += ctx.measureText(' ').width;
+            });
+        }
+
+        function animate() {
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Spatial Partitioning Grid for collision
+            const gridSize = 50;
+            const grid = {};
+
+            for (let i = 0; i < physicsChars.length; i++) {
+                const pc = physicsChars[i];
+                pc.update();
+                if (pc.isBroken) {
+                    const gx = Math.floor(pc.x / gridSize);
+                    const gy = Math.floor(pc.y / gridSize);
+                    const key = `${gx},${gy}`;
+                    if (!grid[key]) grid[key] = [];
+                    grid[key].push(pc);
+                }
+            }
+
+            for (let i = 0; i < physicsChars.length; i++) {
+                const pc = physicsChars[i];
+                if (pc.isBroken) {
+                    const gx = Math.floor(pc.x / gridSize);
+                    const gy = Math.floor(pc.y / gridSize);
+                    const minDist = pc.size * 0.7;
+                    const minDistSq = minDist * minDist;
+
+                    for (let ox = -1; ox <= 1; ox++) {
+                        for (let oy = -1; oy <= 1; oy++) {
+                            const neighbor = grid[`${gx + ox},${gy + oy}`];
+                            if (neighbor) {
+                                for (let j = 0; j < neighbor.length; j++) {
+                                    const other = neighbor[j];
+                                    if (pc === other) continue;
+                                    const dx = other.x - pc.x;
+                                    const dy = other.y - pc.y;
+                                    const distSq = dx * dx + dy * dy;
+                                    if (distSq < minDistSq) {
+                                        const dist = Math.sqrt(distSq) || 0.1;
+                                        const force = (minDist - dist) * 0.05;
+                                        const angle = Math.atan2(dy, dx);
+                                        const fx = Math.cos(angle) * force;
+                                        const fy = Math.sin(angle) * force;
+                                        pc.vx -= fx;
+                                        pc.vy -= fy;
+                                        other.vx += fx;
+                                        other.vy += fy;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                pc.render();
+            }
+
+            // Red outline indicator
+            if (mouse.x !== null) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(mouse.x, mouse.y, 80, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(255, 0, 0, 0.4)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        class TextScramble {
+            constructor(el) { this.el = el; this.chars = '!<>-_\\/[]{}—=+*^?#'; this.update = this.update.bind(this); }
+            setText(newText) {
+                const oldText = this.el.innerText, length = Math.max(oldText.length, newText.length);
+                const promise = new Promise(resolve => this.resolve = resolve);
+                this.queue = [];
+                for (let i = 0; i < length; i++) this.queue.push({ from: oldText[i] || '', to: newText[i] || '', start: Math.floor(Math.random() * 40), end: Math.floor(Math.random() * 40) + 40 });
+                cancelAnimationFrame(this.frameRequest); this.frame = 0; this.update(); return promise;
+            }
+            update() {
+                let output = '', complete = 0;
+                this.queue.forEach(q => {
+                    if (this.frame >= q.end) { complete++; output += q.to; }
+                    else if (this.frame >= q.start) { if (!q.char || Math.random() < 0.28) q.char = this.chars[Math.floor(Math.random() * this.chars.length)]; output += `<span class="dud">${q.char}</span>`; }
+                    else output += q.from;
+                });
+                this.el.innerHTML = output;
+                if (complete === this.queue.length) this.resolve(); else { this.frameRequest = requestAnimationFrame(this.update); this.frame++; }
+            }
+        }
+
+        // Wait for font to load
+        document.fonts.ready.then(() => {
+            resizeCanvas();
+            init();
+            animate();
+
+            setTimeout(() => {
+                const fxTitle = new TextScramble(document.getElementById('desc-title'));
+                const fxBody = new TextScramble(document.getElementById('desc-body'));
+                fxTitle.setText('PHYSICS SIMULATION').then(() => {
+                    setTimeout(() => {
+                        fxBody.setText(`Letters obey Newtonian
+mechanics—gravity, collision,
+and restitution.
+
+Typography becomes a
+playground of kinetic energy.
+
+Hover to push letters,
+get close to scatter.
+
+Letters return home
+after 4.5 seconds.`);
+                    }, 500);
+                });
+            }, 1000);
+        });
+    </script>
+</body>
+
+</html>

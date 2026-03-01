@@ -1,0 +1,1003 @@
+/* ===== YEOBAEK V2 — 가로 스크롤 브랜드 웹사이트 ===== */
+/* 여백 · 달항아리 · 미니멀 · 정갈한 그리드 */
+
+/* ===== Variables ===== */
+:root {
+    --bg: #FFFFFF;
+    --bg-warm: #FAF8F5;
+    --placeholder: #D4C4B0;
+    --text: #1A1A1A;
+    --text-secondary: #8A8078;
+    --text-muted: #B8B0A8;
+    --accent: #C4A882;
+    --accent-hover: #B89A70;
+    --border: rgba(0, 0, 0, 0.08);
+
+    --scrollbar-track: #F0EBE5;
+    --scrollbar-thumb: #C4A882;
+    --scrollbar-thumb-hover: #B89A70;
+
+    --font-display: 'Cormorant Garamond', serif;
+    --font-heading: 'Playfair Display', serif;
+    --font-body-kr: 'Noto Serif KR', serif;
+    --font-body-en: 'Cormorant Garamond', serif;
+
+    --transition-slow: 1.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+    --transition-medium: 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+    --transition-fast: 0.4s ease;
+
+    --panel-count: 7;
+    /* hero + philosophy + collection(2x) + craft + space + contact */
+}
+
+/* ===== Reset ===== */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    overflow: hidden;
+    height: 100%;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body-kr);
+    font-weight: 300;
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+    word-break: keep-all;
+    overflow: hidden;
+    height: 100%;
+}
+
+::selection {
+    background: var(--placeholder);
+    color: var(--text);
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+/* ===== Custom Scrollbar ===== */
+/* Webkit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 3px;
+    transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+}
+
+::-webkit-scrollbar-corner {
+    background: var(--scrollbar-track);
+}
+
+/* Firefox */
+.scroll-container {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* ===== Navigation ===== */
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 48px;
+    gap: 12px;
+    z-index: 100;
+    transition: opacity var(--transition-medium);
+}
+
+.nav-logo {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 300;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--text);
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 36px;
+}
+
+.nav-link {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 3px;
+    color: var(--text-muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color var(--transition-fast);
+    position: relative;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--text);
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--accent);
+}
+
+/* ===== Progress Bar ===== */
+.progress {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--scrollbar-track);
+    z-index: 100;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    transition: width 0.05s linear;
+}
+
+/* ===== Section Indicator ===== */
+.section-indicator {
+    position: fixed;
+    bottom: 40px;
+    right: 48px;
+    z-index: 100;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.indicator-current {
+    color: var(--text);
+    font-weight: 400;
+}
+
+/* ===== Reveal Animation ===== */
+.reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity var(--transition-slow), transform var(--transition-slow);
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== Horizontal Scroll System ===== */
+.scroll-container {
+    width: 100%;
+    height: 100vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: flex;
+}
+
+/* ===== Panel Base ===== */
+.panel {
+    width: 100vw;
+    height: 100vh;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== Section Label ===== */
+.section-label {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+}
+
+/* ===== PANEL 1 — HERO ===== */
+.panel-hero {
+    background: var(--bg);
+    flex-direction: column;
+    gap: 0;
+}
+
+.hero-bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+}
+
+.hero-brand {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.hero-jar {
+    width: clamp(120px, 16vw, 200px);
+    height: clamp(120px, 16vw, 200px);
+    margin: 4px 0;
+    position: relative;
+}
+
+.hero-jar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 60px rgba(196, 168, 130, 0.15));
+}
+
+.hero-title {
+    font-family: var(--font-body-kr);
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 200;
+    line-height: 1;
+    letter-spacing: -2px;
+    color: var(--text);
+}
+
+.hero-tagline {
+    font-family: var(--font-display);
+    font-size: clamp(16px, 1.6vw, 22px);
+    font-weight: 300;
+    color: var(--accent);
+    letter-spacing: 2px;
+}
+
+.hero-sub {
+    font-family: var(--font-body-kr);
+    font-size: clamp(13px, 1.2vw, 16px);
+    font-weight: 200;
+    color: var(--text-secondary);
+    letter-spacing: 3px;
+    margin-top: 4px;
+}
+
+/* Scroll Cue */
+.scroll-cue {
+    position: absolute;
+    right: 48px;
+    bottom: 50%;
+    transform: translateY(50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    opacity: 0.4;
+    animation: pulseCue 3s ease-in-out infinite;
+}
+
+.scroll-cue span {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    writing-mode: vertical-rl;
+}
+
+.scroll-cue-line {
+    width: 1px;
+    height: 60px;
+    background: var(--accent);
+    animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes pulseCue {
+
+    0%,
+    100% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+@keyframes scrollPulse {
+
+    0%,
+    100% {
+        transform: scaleY(1);
+        opacity: 0.3;
+    }
+
+    50% {
+        transform: scaleY(0.5);
+        opacity: 1;
+    }
+}
+
+/* ===== PANEL 2 — PHILOSOPHY ===== */
+.panel-philosophy {
+    background: var(--bg);
+    padding: 0 clamp(36px, 5vw, 80px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 4vw, 80px);
+    align-items: center;
+}
+
+.philosophy-text {
+    max-width: 480px;
+    max-height: 550px;
+    overflow: hidden;
+    justify-self: end;
+}
+
+.philosophy-quote {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 3vw, 38px);
+    font-weight: 300;
+    line-height: 1.3;
+    letter-spacing: -1px;
+    color: var(--text);
+    border: none;
+    margin-bottom: 12px;
+}
+
+.philosophy-desc {
+    font-size: clamp(12px, 1vw, 14px);
+    font-weight: 200;
+    color: var(--text-secondary);
+    line-height: 1.9;
+    margin-bottom: 16px;
+}
+
+.philosophy-values {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.value-item {
+    padding-left: 16px;
+    border-left: 1px solid var(--border);
+}
+
+.value-num {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.value-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+}
+
+.value-kr {
+    font-size: 12px;
+    font-weight: 200;
+    color: var(--accent);
+    letter-spacing: 2px;
+    margin-bottom: 2px;
+}
+
+.value-desc {
+    font-size: 13px;
+    font-weight: 200;
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+.philosophy-visual {
+    width: 100%;
+    max-height: 550px;
+    overflow: hidden;
+    border-radius: 2px;
+}
+
+.philosophy-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ===== PANEL 3 — COLLECTION ===== */
+.panel-collection {
+    width: 200vw;
+    background: var(--bg-warm);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: clamp(50px, 6vh, 70px) clamp(36px, 4vw, 60px) clamp(20px, 2vh, 30px);
+}
+
+.collection-header {
+    margin-bottom: clamp(20px, 3vh, 40px);
+}
+
+.collection-title {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 300;
+    letter-spacing: -1px;
+}
+
+.collection-grid {
+    display: flex;
+    gap: clamp(32px, 3vw, 60px);
+    min-height: 0;
+}
+
+.scent-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+    padding: clamp(16px, 2vw, 32px);
+    background: transparent;
+    border-radius: 2px;
+    transition: transform var(--transition-medium);
+}
+
+.scent-card:hover {
+    transform: translateY(-4px);
+}
+
+.scent-visual {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.scent-visual-bg {
+    width: 100%;
+    height: 100%;
+}
+
+.scent-info {
+    flex: 1;
+}
+
+.scent-num {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 6px;
+}
+
+.scent-name {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 2.5vw, 36px);
+    font-weight: 300;
+    letter-spacing: -1px;
+    margin-bottom: 4px;
+}
+
+.scent-name-kr {
+    font-size: 13px;
+    font-weight: 200;
+    color: var(--accent);
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+}
+
+.scent-notes {
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--text-secondary);
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+.scent-mood {
+    font-size: 13px;
+    font-weight: 200;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    line-height: 1.8;
+}
+
+.scent-type {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 6px;
+}
+
+.scent-swatch {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+}
+
+.swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+}
+
+/* Layering Guide */
+.layering-guide {
+    margin-top: clamp(16px, 2vh, 32px);
+    padding-top: clamp(16px, 2vh, 32px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.layering-label {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+.layering-recipe {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.recipe-scent {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--text);
+}
+
+.recipe-plus,
+.recipe-eq {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.recipe-result {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--accent);
+    font-style: italic;
+}
+
+/* ===== PANEL 4 — CRAFT ===== */
+.panel-craft {
+    background: var(--bg);
+    flex-direction: column;
+    padding: clamp(50px, 6vh, 70px) clamp(36px, 4vw, 60px) clamp(20px, 2vh, 30px);
+    gap: clamp(12px, 2vh, 24px);
+}
+
+.craft-bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.craft-header {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.craft-title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3.5vw, 44px);
+    font-weight: 300;
+    letter-spacing: -1px;
+}
+
+.craft-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    width: 100%;
+    max-width: 1200px;
+    max-height: 480px;
+    min-height: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.craft-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    flex: 1;
+}
+
+.craft-image {
+    background: var(--placeholder);
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+}
+
+.craft-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.craft-card:hover .craft-image img {
+    transform: scale(1.03);
+}
+
+.craft-text {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    flex: 1;
+}
+
+.craft-num {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.craft-text h3 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 300;
+    margin: 8px 0 4px;
+}
+
+.craft-key {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.craft-desc {
+    font-size: 13px;
+    font-weight: 200;
+    color: var(--text-secondary);
+    line-height: 1.9;
+}
+
+/* ===== PANEL 5 — SPACE ===== */
+.panel-space {
+    background: var(--bg-warm);
+    flex-direction: column;
+    gap: 0;
+}
+
+.space-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../img/chamber_of_void.png') center center / cover no-repeat;
+    opacity: 0.25;
+}
+
+.space-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 600px;
+    max-height: 550px;
+    padding: 24px;
+}
+
+.space-title {
+    font-family: var(--font-body-kr);
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 200;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+}
+
+.space-desc {
+    font-size: clamp(12px, 1vw, 14px);
+    font-weight: 200;
+    color: var(--text-secondary);
+    line-height: 2;
+    margin-bottom: 16px;
+}
+
+.space-features {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.space-feature {
+    text-align: center;
+    padding: 12px 8px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+}
+
+.feature-title {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 6px;
+    color: var(--text);
+}
+
+.space-feature p {
+    font-size: 12px;
+    font-weight: 200;
+    color: var(--text-secondary);
+}
+
+/* ===== PANEL 6 — CONTACT ===== */
+.panel-contact {
+    background: var(--bg);
+    flex-direction: column;
+    gap: 0;
+}
+
+.contact-content {
+    text-align: center;
+    max-width: 500px;
+    padding: 48px;
+}
+
+.contact-title {
+    font-family: var(--font-body-kr);
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 300;
+    line-height: 1.5;
+    color: var(--text);
+    margin-bottom: 40px;
+}
+
+.contact-form {
+    display: flex;
+    gap: 0;
+    margin-bottom: 16px;
+}
+
+.form-input {
+    flex: 1;
+    padding: 14px 20px;
+    border: 1px solid var(--border);
+    border-right: none;
+    background: transparent;
+    font-family: var(--font-body-kr);
+    font-size: 14px;
+    font-weight: 200;
+    color: var(--text);
+    outline: none;
+    transition: border-color var(--transition-fast);
+}
+
+.form-input:focus {
+    border-color: var(--accent);
+}
+
+.form-input::placeholder {
+    color: var(--text-muted);
+}
+
+.form-btn {
+    padding: 14px 28px;
+    background: var(--text);
+    color: var(--bg);
+    border: 1px solid var(--text);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.form-btn:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.contact-sub {
+    font-size: 13px;
+    font-weight: 200;
+    color: var(--text-muted);
+}
+
+/* Footer */
+.footer {
+    position: absolute;
+    bottom: 32px;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.footer-brand {
+    font-family: var(--font-display);
+    font-size: 12px;
+    letter-spacing: 6px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.footer-copy {
+    font-family: var(--font-display);
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+}
+
+/* ===== Responsive — 모바일 세로 스크롤 전환 ===== */
+@media (max-width: 768px) {
+
+    html,
+    body {
+        overflow: auto;
+        height: auto;
+    }
+
+    .scroll-container {
+        flex-direction: column;
+        height: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .panel {
+        width: 100%;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .panel-collection {
+        width: 100%;
+    }
+
+    .collection-grid {
+        flex-direction: column;
+    }
+
+    .scent-card {
+        flex-direction: column;
+    }
+
+    .scent-visual {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+    }
+
+    .panel-philosophy {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 100px 24px 60px;
+    }
+
+    .philosophy-text {
+        max-width: 100%;
+        justify-self: start;
+    }
+
+    .philosophy-visual {
+        height: 40vh;
+    }
+
+    .craft-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .space-features {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .nav {
+        padding: 20px 24px;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .section-indicator {
+        right: 24px;
+        bottom: 24px;
+    }
+
+    .scroll-cue {
+        display: none;
+    }
+
+    .progress {
+        display: none;
+    }
+
+    .layering-guide {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+}
