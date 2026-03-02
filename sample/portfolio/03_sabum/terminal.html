@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sabum@portfolio:~$ — Sabum Byun</title>
+    <meta name="description" content="변사범 - Creative Director / CDO. Plus X, NHN, 스탠더스 출신. 브랜드, UI/UX, AI 디자인 전문.">
+    <style>
+        @font-face {
+            font-family: 'PixelFont';
+            src: local('Courier New'), local('Menlo'), local('Monaco');
+        }
+
+        :root {
+            --bg: #0000AA;
+            --text: #FFFFFF;
+            --highlight: #FFFF55;
+            --cyan: #55FFFF;
+            --green: #55FF55;
+            --gray: #AAAAAA;
+            --dark-bg: #000088;
+            --border: #5555FF;
+            --font: 'Menlo', 'Monaco', 'Courier New', 'Consolas', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 14px;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background-color: var(--text);
+            color: var(--bg);
+        }
+
+        a {
+            color: var(--cyan);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: var(--highlight);
+        }
+
+        /* Terminal Window */
+        .terminal-window {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .terminal-header {
+            background-color: var(--gray);
+            color: #000;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #555;
+            margin-bottom: 20px;
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .terminal-dots span {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .dot-red {
+            background: #FF5F56;
+        }
+
+        .dot-yellow {
+            background: #FFBD2E;
+        }
+
+        .dot-green {
+            background: #27C93F;
+        }
+
+        /* Pixel Art */
+        .pixel-art {
+            font-size: 10px;
+            line-height: 1;
+            white-space: pre;
+            color: var(--cyan);
+            margin: 10px 0;
+            font-family: var(--font);
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 30px;
+            padding: 16px;
+            border: 1px solid var(--border);
+            background-color: var(--dark-bg);
+        }
+
+        .section-title {
+            color: var(--highlight);
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .section-title::before {
+            content: '█ ';
+            color: var(--cyan);
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 40px 20px;
+            border: 2px double var(--border);
+            background-color: var(--dark-bg);
+            margin-bottom: 30px;
+        }
+
+        .hero-ascii {
+            color: var(--highlight);
+            font-size: 10px;
+            line-height: 1.1;
+            white-space: pre;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .hero h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .hero .subtitle {
+            color: var(--cyan);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .hero .prompt-line {
+            color: var(--green);
+            font-size: 13px;
+        }
+
+        .cursor-blink {
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .typing {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 2px solid var(--green);
+            animation: typing 2.5s steps(40, end), blink-caret 0.75s step-end infinite;
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes blink-caret {
+
+            0%,
+            100% {
+                border-color: var(--green);
+            }
+
+            50% {
+                border-color: transparent;
+            }
+        }
+
+        /* Profile Info */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 4px 16px;
+            font-size: 13px;
+        }
+
+        .info-label {
+            color: var(--cyan);
+            text-align: right;
+        }
+
+        .info-value {
+            color: var(--text);
+        }
+
+        /* Career */
+        .career-item {
+            display: grid;
+            grid-template-columns: 130px 1fr;
+            gap: 8px;
+            padding: 6px 0;
+            border-bottom: 1px dotted rgba(85, 85, 255, 0.4);
+            font-size: 13px;
+        }
+
+        .career-item:last-child {
+            border-bottom: none;
+        }
+
+        .career-year {
+            color: var(--green);
+            font-weight: bold;
+        }
+
+        /* Awards */
+        .awards-list {
+            max-height: 280px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .awards-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .awards-list::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+
+        .awards-list::-webkit-scrollbar-thumb {
+            background: var(--border);
+        }
+
+        .award-item {
+            display: grid;
+            grid-template-columns: 50px 1fr;
+            gap: 8px;
+            padding: 4px 0;
+            font-size: 12px;
+            border-bottom: 1px dotted rgba(85, 85, 255, 0.3);
+        }
+
+        .award-year {
+            color: var(--highlight);
+            font-weight: bold;
+        }
+
+        .award-name {
+            color: var(--gray);
+        }
+
+        /* Projects */
+        .project-group {
+            margin-bottom: 16px;
+        }
+
+        .project-group-title {
+            color: var(--green);
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .project-group-title::before {
+            content: '▸ ';
+            color: var(--highlight);
+        }
+
+        .project-item {
+            font-size: 12px;
+            color: var(--gray);
+            padding: 2px 0 2px 16px;
+            position: relative;
+        }
+
+        .project-item::before {
+            content: '├─ ';
+            color: var(--border);
+            position: absolute;
+            left: 0;
+        }
+
+        .project-item:last-child::before {
+            content: '└─ ';
+        }
+
+        /* Lectures */
+        .lecture-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .lecture-tag {
+            border: 1px solid var(--border);
+            color: var(--cyan);
+            padding: 2px 8px;
+            font-size: 11px;
+            transition: all 0.2s ease;
+        }
+
+        .lecture-tag:hover {
+            background-color: var(--cyan);
+            color: var(--bg);
+        }
+
+        /* Contact */
+        .contact-line {
+            font-size: 13px;
+            padding: 3px 0;
+        }
+
+        .contact-line .cmd {
+            color: var(--green);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--gray);
+            font-size: 11px;
+            border-top: 1px dashed var(--border);
+            margin-top: 20px;
+        }
+
+        .pixel-footer {
+            color: var(--highlight);
+            margin-bottom: 8px;
+            font-size: 10px;
+            white-space: pre;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .terminal-window {
+                padding: 10px;
+            }
+
+            .hero-ascii {
+                font-size: 6px;
+            }
+
+            .hero h1 {
+                font-size: 18px;
+            }
+
+            .info-grid {
+                grid-template-columns: 80px 1fr;
+            }
+
+            .career-item {
+                grid-template-columns: 100px 1fr;
+            }
+
+            .section {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="terminal-window">
+
+        <!-- Terminal Top Bar -->
+        <div class="terminal-header">
+            <div class="terminal-dots">
+                <span class="dot-red"></span>
+                <span class="dot-yellow"></span>
+                <span class="dot-green"></span>
+            </div>
+            <span>sabum@portfolio — zsh — 120×40</span>
+            <span>⌥</span>
+        </div>
+
+        <!-- Hero -->
+        <div class="hero">
+            <pre class="hero-ascii">
+ ██████  █████  ██████  ██    ██ ███    ███
+██      ██   ██ ██   ██ ██    ██ ████  ████
+ █████  ███████ ██████  ██    ██ ██ ████ ██
+     ██ ██   ██ ██   ██ ██    ██ ██  ██  ██
+██████  ██   ██ ██████   ██████  ██      ██
+        </pre>
+            <h1>변사범 / Sabum Byun</h1>
+            <p class="subtitle">Creative Director &amp; CDO</p>
+            <p class="prompt-line">
+                sabum@portfolio:~$ <span class="typing">cat mission.txt</span>
+            </p>
+            <p style="color: var(--gray); font-size: 12px; margin-top: 8px;">
+                "브랜드의 경험을 디자인하고, AI로 창작의 경계를 넓힙니다."
+            </p>
+        </div>
+
+        <!-- Profile -->
+        <div class="section">
+            <div class="section-title">PROFILE</div>
+            <pre class="pixel-art">
+  ╔══╗
+  ║◉◉║
+  ║ ▽ ║
+  ╚══╝
+ ━┫  ┣━
+   ┃┃
+  ═╝╚═
+        </pre>
+            <div class="info-grid">
+                <span class="info-label">Name :</span><span class="info-value">변사범 / Sabum Byun</span>
+                <span class="info-label">Role :</span><span class="info-value">플러스엑스 고문 / 스탠더스 CDO</span>
+                <span class="info-label">Phone :</span><span class="info-value">010-3448-8594</span>
+                <span class="info-label">E-mail :</span><span class="info-value"><a
+                        href="mailto:sabum@plus-ex.com">sabum@plus-ex.com</a></span>
+                <span class="info-label">Site :</span><span class="info-value"><a href="http://www.plus-ex.com"
+                        target="_blank">www.plus-ex.com</a></span>
+                <span class="info-label">Blog :</span><span class="info-value"><a href="http://blog.naver.com/sabum007"
+                        target="_blank">blog.naver.com/sabum007</a></span>
+            </div>
+        </div>
+
+        <!-- Career -->
+        <div class="section">
+            <div class="section-title">CAREER</div>
+            <div class="career-item"><span class="career-year">2023 ~ 현재</span><span class="career-role">플러스엑스 고문 / 스탠더스
+                    CDO</span></div>
+            <div class="career-item"><span class="career-year">2020 ~ 2023</span><span class="career-role">위더코어
+                    공동대표</span></div>
+            <div class="career-item"><span class="career-year">2010 ~ 2020</span><span class="career-role">Plus X 공동대표 /
+                    Creative Director</span></div>
+            <div class="career-item"><span class="career-year">2006 ~ 2010</span><span class="career-role">NHN 미디어디자인
+                    팀장</span></div>
+            <div class="career-item"><span class="career-year">2005 ~ 2006</span><span class="career-role">디자인피버
+                    디자이너</span></div>
+            <div class="career-item"><span class="career-year">2003 ~ 2005</span><span class="career-role">디자인뉴이
+                    창업</span></div>
+            <div class="career-item"><span class="career-year">1999 ~ 2003</span><span class="career-role">청강문화산업대학
+                    멀티미디어디자인학과</span></div>
+        </div>
+
+        <!-- Awards -->
+        <div class="section">
+            <div class="section-title">AWARDS — 40+ International Design Awards</div>
+            <div class="awards-list">
+                <div class="award-item"><span class="award-year">2021</span><span class="award-name">IDEA - Krafton
+                        Brand eXperience Design</span></div>
+                <div class="award-item"><span class="award-year">2021</span><span class="award-name">Awwward × 2 - Neker
+                        / Deeponde Brand Website</span></div>
+                <div class="award-item"><span class="award-year">2020</span><span class="award-name">Reddot + Awwward +
+                        CSS DA - PlusX Website</span></div>
+                <div class="award-item"><span class="award-year">2020</span><span class="award-name">IF award - PlusX
+                        Internal Branding</span></div>
+                <div class="award-item"><span class="award-year">2020</span><span class="award-name">GDA × 2 - emart App
+                        / G9 App</span></div>
+                <div class="award-item"><span class="award-year">2019</span><span class="award-name">IF - YG Select /
+                        GDA × 3 - 신세계 / S.I.VILLAGE / L.POINT</span></div>
+                <div class="award-item"><span class="award-year">2018</span><span class="award-name">Reddot + IF comm -
+                        L.POINT App</span></div>
+                <div class="award-item"><span class="award-year">2017</span><span class="award-name">IF communication -
+                        YGTIMES App</span></div>
+                <div class="award-item"><span class="award-year">2016</span><span class="award-name">Reddot - SSG PAY /
+                        IF - 29CM App</span></div>
+                <div class="award-item"><span class="award-year">2015</span><span class="award-name">& award 대상 - 29CM /
+                        SSG PAY App</span></div>
+                <div class="award-item"><span class="award-year">2014</span><span class="award-name">IDEA final + IF
+                        product × 2 + IF comm × 2</span></div>
+                <div class="award-item"><span class="award-year">2013</span><span class="award-name">IF communication -
+                        Plus X Brand Identity</span></div>
+                <div class="award-item"><span class="award-year">2011</span><span class="award-name">Reddot 본상 / It
+                        Award 대상 / App Award 다수</span></div>
+                <div class="award-item"><span class="award-year">2010</span><span class="award-name">IF comm × 2 / 깐느
+                        Silver Lion 🏆</span></div>
+            </div>
+        </div>
+
+        <!-- Selected Projects -->
+        <div class="section">
+            <div class="section-title">SELECTED PROJECTS</div>
+            <div class="project-group">
+                <div class="project-group-title">2024–2025 — AI & Brand</div>
+                <div class="project-item">로우로우 폴스미스 포스터 제작</div>
+                <div class="project-item">MBC 다큐 교실이데아 인트로 아트웍</div>
+                <div class="project-item">블러블러 AI 모델에이전트 브랜드 개발</div>
+                <div class="project-item">패스트캠퍼스 AI 강의 런칭</div>
+            </div>
+            <div class="project-group">
+                <div class="project-group-title">2020–2023 — Brand & Cosmetics</div>
+                <div class="project-item">디폰데 / 키네프 / 포슐라 코스메틱 브랜드 전체 운영</div>
+                <div class="project-item">삼성화재 디자인 컨설팅 및 개선</div>
+                <div class="project-item">픽스낫띵 / 네케르 패션브랜드 런칭</div>
+            </div>
+            <div class="project-group">
+                <div class="project-group-title">2014–2019 — UI/UX & Commerce</div>
+                <div class="project-item">29CM 앱 UI/UX 디자인 & 고도화</div>
+                <div class="project-item">신세계 SSG PAY 브랜드 & 앱 UI/UX</div>
+                <div class="project-item">이마트 / G9 / L.POINT / 제주항공 앱 UI/UX</div>
+                <div class="project-item">YG TIMES / YG E-SHOP / YG SELECT 앱 UI/UX</div>
+                <div class="project-item">삼성전자 갤럭시 Gear2 / 헬스케어 / 선행 UI/UX</div>
+            </div>
+            <div class="project-group">
+                <div class="project-group-title">2006–2013 — NHN & Enterprise</div>
+                <div class="project-item">NAVER 한글캠페인 (깐느 Silver Lion 수상)</div>
+                <div class="project-item">NAVER 그린팩토리 미디어 디자인 총괄</div>
+                <div class="project-item">NAVER 메인 / 지도 / 뮤직 / 개인화 개편</div>
+                <div class="project-item">CGV 아이패드/아이폰 앱 UI/UX</div>
+                <div class="project-item">쿠팡 UI/UX 디자인</div>
+            </div>
+        </div>
+
+        <!-- Lectures -->
+        <div class="section">
+            <div class="section-title">LECTURES & TALKS — 110+ Sessions</div>
+            <p style="font-size: 12px; color: var(--gray); margin-bottom: 10px;">2024년 기업/대학 70여번 AI 강연 · 2010년부터 40여 차례
+                세미나</p>
+            <p style="font-size: 11px; color: var(--cyan); margin-bottom: 6px;">// 대학</p>
+            <div class="lecture-tags">
+                <span class="lecture-tag">홍익대</span>
+                <span class="lecture-tag">국민대</span>
+                <span class="lecture-tag">KAIST</span>
+                <span class="lecture-tag">서강대</span>
+                <span class="lecture-tag">경희대</span>
+                <span class="lecture-tag">Art Center (USA)</span>
+                <span class="lecture-tag">대만디자인대학</span>
+            </div>
+            <p style="font-size: 11px; color: var(--cyan); margin-top: 12px; margin-bottom: 6px;">// 기업 (해외)</p>
+            <div class="lecture-tags">
+                <span class="lecture-tag">알리바바</span>
+                <span class="lecture-tag">텐센트</span>
+                <span class="lecture-tag">왕이</span>
+                <span class="lecture-tag">에스티로더</span>
+                <span class="lecture-tag">랄프로렌</span>
+                <span class="lecture-tag">HKDC</span>
+            </div>
+            <p style="font-size: 11px; color: var(--cyan); margin-top: 12px; margin-bottom: 6px;">// 기업 (국내)</p>
+            <div class="lecture-tags">
+                <span class="lecture-tag">삼성전자</span>
+                <span class="lecture-tag">네이버</span>
+                <span class="lecture-tag">카카오</span>
+                <span class="lecture-tag">라인</span>
+                <span class="lecture-tag">쿠팡</span>
+                <span class="lecture-tag">배달의민족</span>
+                <span class="lecture-tag">29CM</span>
+                <span class="lecture-tag">LG전자</span>
+                <span class="lecture-tag">Adobe</span>
+                <span class="lecture-tag">SM</span>
+                <span class="lecture-tag">아모레</span>
+                <span class="lecture-tag">SPC</span>
+            </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="section">
+            <div class="section-title">CONTACT</div>
+            <div class="contact-line"><span class="cmd">$ echo $EMAIL</span> → <a
+                    href="mailto:sabum@plus-ex.com">sabum@plus-ex.com</a></div>
+            <div class="contact-line"><span class="cmd">$ echo $PHONE</span> → 010-3448-8594</div>
+            <div class="contact-line"><span class="cmd">$ echo $SITE</span> → <a href="http://www.plus-ex.com"
+                    target="_blank">www.plus-ex.com</a></div>
+            <div class="contact-line"><span class="cmd">$ open</span> → <a href="https://www.behance.net/sabum"
+                    target="_blank">behance.net/sabum ↗</a></div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <pre class="pixel-footer">
+  ★  ★  ★
+ ═══════════
+  PLUS X  AI
+ ═══════════
+        </pre>
+            <p>© 2025 Sabum Byun. All Rights Reserved.</p>
+            <p style="margin-top: 4px;">sabum@portfolio:~$ exit <span style="color: var(--green);">✓</span></p>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

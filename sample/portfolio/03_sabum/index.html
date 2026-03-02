@@ -1,0 +1,1899 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SABUM.EXE — 변사범 포트폴리오</title>
+    <meta name="description" content="변사범 — Creative Director, Designer, Educator. 20년 이상의 디자인 경력.">
+    <style>
+        /* ═══════════════════════════════════════════
+           RESET & BASE
+           ═══════════════════════════════════════════ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0000AA;
+            --text: #FFFFFF;
+            --highlight: #FFFF00;
+            --dim: #AAAAAA;
+            --cursor: #FFFFFF;
+            --accent: #55FFFF;
+            --green: #55FF55;
+            --red: #FF5555;
+        }
+
+        /* Theme: BLACK */
+        body.theme-black {
+            --bg: #111111;
+            --dim: #666666;
+        }
+
+        body.theme-black .hero-visual {
+            background: linear-gradient(180deg, #111 0%, #000 50%, #111 100%);
+        }
+
+        /* Theme: PRISM */
+        body.theme-prism {
+            --bg: #1a0a2e;
+        }
+
+        body.theme-prism .hero-visual {
+            background: linear-gradient(135deg, #1a0a2e, #16213e, #0f3460, #533483, #e94560, #0f3460, #1a0a2e);
+            background-size: 400% 400%;
+            animation: prismShift 8s ease infinite;
+        }
+
+        @keyframes prismShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        body.theme-prism {
+            background: linear-gradient(135deg, #1a0a2e, #16213e, #0f3460, #533483, #1a0a2e);
+            background-size: 400% 400%;
+            animation: prismBg 12s ease infinite;
+        }
+
+        @keyframes prismBg {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Theme Switcher */
+        .theme-switcher {
+            position: fixed;
+            top: 12px;
+            right: 12px;
+            z-index: 9999;
+            display: flex;
+            gap: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+        }
+
+        .theme-btn {
+            background: rgba(0, 0, 0, 0.6);
+            color: var(--dim);
+            border: 1px solid var(--dim);
+            padding: 4px 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            cursor: inherit;
+            transition: all 0.2s;
+        }
+
+        .theme-btn:hover {
+            color: var(--highlight);
+            border-color: var(--highlight);
+        }
+
+        .theme-btn.active {
+            color: var(--bg);
+            background: var(--highlight);
+            border-color: var(--highlight);
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Courier New', 'Consolas', 'Monaco', 'Liberation Mono', monospace;
+            font-size: 16px;
+            line-height: 1.6;
+            overflow-x: hidden;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 16 16'%3E%3Cpath d='M2 2h2v2h-2zM4 4h2v2h-2zM6 6h2v2h-2zM8 8h2v2h-2zM4 8h2v2h-2zM6 10h2v2h-2zM8 12h2v2h-2zM2 4h2v2h-2zM2 6h2v2h-2zM2 8h2v2h-2zM2 10h2v2h-2z' fill='%23FFFF00'/%3E%3Cpath d='M4 2h2v2h-2zM6 4h2v2h-2zM8 6h2v2h-2zM10 8h2v2h-2zM4 6h2v2h-2zM6 8h2v2h-2zM8 10h2v2h-2zM10 12h2v2h-2z' fill='%23000000'/%3E%3C/svg%3E") 0 0, auto;
+        }
+
+        a,
+        .nav-bar a,
+        .title-bar-buttons span {
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 16 16'%3E%3Cpath d='M4 0h2v2h-2zM6 0h2v2h-2zM8 0h2v2h-2zM10 0h2v2h-2zM3 2h2v2h-2zM4 4h2v2h-2zM5 6h2v2h-2zM6 8h2v2h-2zM7 10h2v2h-2zM11 2h2v2h-2zM10 4h2v2h-2zM9 6h2v2h-2zM8 8h2v2h-2z' fill='%2300FFFF'/%3E%3C/svg%3E") 6 0, pointer;
+        }
+
+        ::selection {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* ═══════════════════════════════════════════
+           SCANLINE OVERLAY
+           ═══════════════════════════════════════════ */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(0deg,
+                    rgba(0, 0, 0, 0.03) 0px,
+                    rgba(0, 0, 0, 0.03) 1px,
+                    transparent 1px,
+                    transparent 3px);
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* ═══════════════════════════════════════════
+           LAYOUT
+           ═══════════════════════════════════════════ */
+        .terminal {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* ═══════════════════════════════════════════
+           TITLE BAR
+           ═══════════════════════════════════════════ */
+        .title-bar {
+            display: none;
+        }
+
+        .title-bar-buttons {
+            display: flex;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .title-bar-buttons span {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 1px solid var(--bg);
+            text-align: center;
+            line-height: 14px;
+            cursor: pointer;
+            font-size: 10px;
+        }
+
+        /* ═══════════════════════════════════════════
+           SCREEN AREA
+           ═══════════════════════════════════════════ */
+        .screen {
+            border: none;
+            padding: 24px;
+            min-height: 100vh;
+        }
+
+        /* ═══════════════════════════════════════════
+           SECTIONS
+           ═══════════════════════════════════════════ */
+        .section {
+            margin-bottom: 48px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ═══════════════════════════════════════════
+           PIXEL GLITCH EFFECT
+           ═══════════════════════════════════════════ */
+        .section.glitch-in .output,
+        .section.glitch-in .prompt {
+            animation: pixelGlitch 0.6s steps(1) forwards;
+        }
+
+        @keyframes pixelGlitch {
+            0% {
+                clip-path: inset(0 0 80% 0);
+                transform: translateX(-4px);
+                opacity: 0.7;
+                text-shadow: 2px 0 #ff0055, -2px 0 #00ffaa;
+            }
+
+            10% {
+                clip-path: inset(20% 0 40% 0);
+                transform: translateX(6px);
+                opacity: 0.9;
+                text-shadow: -3px 0 #ff0055, 3px 0 #00ffaa;
+            }
+
+            20% {
+                clip-path: inset(60% 0 10% 0);
+                transform: translateX(-2px);
+                opacity: 0.6;
+                text-shadow: 1px 0 #ff0055, -1px 0 #00ffaa;
+            }
+
+            30% {
+                clip-path: inset(10% 0 60% 0);
+                transform: translateX(4px);
+                opacity: 1;
+                text-shadow: -2px 0 #ff0055, 2px 0 #00ffaa;
+            }
+
+            40% {
+                clip-path: inset(40% 0 20% 0);
+                transform: translateX(-6px);
+                opacity: 0.8;
+                text-shadow: 3px 0 #ff0055, -3px 0 #00ffaa;
+            }
+
+            50% {
+                clip-path: inset(0 0 30% 0);
+                transform: translateX(2px);
+                opacity: 0.9;
+                text-shadow: -1px 0 #ff0055, 1px 0 #00ffaa;
+            }
+
+            60% {
+                clip-path: inset(50% 0 0% 0);
+                transform: translateX(-3px);
+                opacity: 1;
+                text-shadow: 2px 0 #ff0055, -2px 0 #00ffaa;
+            }
+
+            70% {
+                clip-path: inset(5% 0 5% 0);
+                transform: translateX(1px);
+                opacity: 0.95;
+                text-shadow: -1px 0 #ff0055, 1px 0 #00ffaa;
+            }
+
+            80% {
+                clip-path: none;
+                transform: translateX(-1px);
+                opacity: 1;
+                text-shadow: 1px 0 #ff0055, -1px 0 #00ffaa;
+            }
+
+            90% {
+                clip-path: none;
+                transform: translateX(0);
+                opacity: 1;
+                text-shadow: 0 0 transparent;
+            }
+
+            100% {
+                clip-path: none;
+                transform: translateX(0);
+                opacity: 1;
+                text-shadow: none;
+            }
+        }
+
+        .prompt {
+            color: var(--green);
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .prompt::before {
+            content: 'C:\\SABUM> ';
+            color: var(--dim);
+        }
+
+        .output {
+            padding-left: 0;
+            margin-top: 8px;
+        }
+
+        .divider {
+            color: var(--dim);
+            margin: 16px 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .divider::after {
+            content: '════════════════════════════════════════════════════════════════════════════════';
+        }
+
+        /* ═══════════════════════════════════════════
+           PIXEL ART CHARACTER
+           ═══════════════════════════════════════════ */
+        .pixel-art {
+            font-size: 10px;
+            line-height: 1;
+            letter-spacing: 0;
+            white-space: pre;
+            color: var(--highlight);
+            margin: 16px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .pixel-icon {
+            display: inline-block;
+            font-size: 10px;
+            line-height: 1;
+            white-space: pre;
+            color: var(--highlight);
+            vertical-align: middle;
+            margin-right: 8px;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* ═══════════════════════════════════════════
+           HERO
+           ═══════════════════════════════════════════ */
+        .hero-name {
+            font-size: clamp(16px, 2.5vw, 22px);
+            font-weight: bold;
+            color: var(--highlight);
+            line-height: 1.4;
+            margin: 12px 0 4px;
+        }
+
+        .hero-title {
+            font-size: clamp(14px, 2.5vw, 20px);
+            color: var(--accent);
+        }
+
+        /* ═══════════════════════════════════════════
+           HERO VISUAL (FULL WIDTH CANVAS)
+           ═══════════════════════════════════════════ */
+        .hero-visual {
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            margin-bottom: 100px;
+            background: linear-gradient(180deg, #000088 0%, #000055 50%, #000088 100%);
+            border-top: 2px solid var(--highlight);
+            border-bottom: 2px solid var(--highlight);
+            padding: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hero-visual canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        .hero-meta {
+            margin-top: 16px;
+            color: var(--dim);
+            font-size: 14px;
+        }
+
+        .hero-meta span {
+            display: block;
+        }
+
+        /* ═══════════════════════════════════════════
+           CURSOR BLINK
+           ═══════════════════════════════════════════ */
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 18px;
+            background: var(--cursor);
+            animation: blink 1s step-end infinite;
+            vertical-align: text-bottom;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* ═══════════════════════════════════════════
+           TYPING ANIMATION
+           ═══════════════════════════════════════════ */
+        .typing {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: none;
+            width: 0;
+            animation: typing 1.5s steps(40) forwards;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 100%;
+            }
+        }
+
+        /* ═══════════════════════════════════════════
+           CAREER TABLE
+           ═══════════════════════════════════════════ */
+        .career-item {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            gap: 8px;
+            padding: 4px 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        .career-item:last-child {
+            border-bottom: none;
+        }
+
+        .career-year {
+            color: var(--highlight);
+            white-space: nowrap;
+        }
+
+        .career-role {
+            color: var(--text);
+        }
+
+        /* ═══════════════════════════════════════════
+           AWARD LIST
+           ═══════════════════════════════════════════ */
+        .award-item {
+            padding: 2px 0;
+            font-size: 14px;
+        }
+
+        .award-item::before {
+            content: '├── ';
+            color: var(--dim);
+        }
+
+        .award-item:last-child::before {
+            content: '└── ';
+        }
+
+        .award-year {
+            color: var(--highlight);
+        }
+
+        .award-name {
+            color: var(--accent);
+        }
+
+        /* ═══════════════════════════════════════════
+           PROJECT TREE
+           ═══════════════════════════════════════════ */
+        .project-year-group {
+            margin-bottom: 16px;
+        }
+
+        .project-year-header {
+            color: var(--highlight);
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .project-year-header::before {
+            content: '📁 ';
+            font-size: 12px;
+        }
+
+        .project-item {
+            padding: 1px 0;
+            padding-left: 24px;
+            font-size: 14px;
+            color: var(--text);
+        }
+
+        .project-item::before {
+            content: '│  ';
+            color: var(--dim);
+        }
+
+        .project-year-group .project-item:last-child::before {
+            content: '└─ ';
+        }
+
+        /* ═══════════════════════════════════════════
+           LECTURE SECTION
+           ═══════════════════════════════════════════ */
+        .lecture-block {
+            margin-bottom: 16px;
+        }
+
+        .lecture-label {
+            color: var(--highlight);
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .lecture-list {
+            color: var(--dim);
+            font-size: 14px;
+        }
+
+        /* ═══════════════════════════════════════════
+           CONTACT / FOOTER
+           ═══════════════════════════════════════════ */
+        .contact-item {
+            margin: 4px 0;
+        }
+
+        .contact-label {
+            color: var(--dim);
+            display: inline-block;
+            width: 100px;
+        }
+
+        .footer-bar {
+            display: none;
+        }
+
+        /* ═══════════════════════════════════════════
+           PIXEL ART ICONS (CSS)
+           ═══════════════════════════════════════════ */
+        .px-trophy {
+            color: var(--highlight);
+        }
+
+        .px-folder {
+            color: var(--accent);
+        }
+
+        .px-mail {
+            color: var(--green);
+        }
+
+        .px-star {
+            color: var(--highlight);
+        }
+
+        /* ═══════════════════════════════════════════
+           NAV BAR (top inside screen)
+           ═══════════════════════════════════════════ */
+        .nav-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 16px;
+            margin-bottom: 32px;
+            font-size: 14px;
+        }
+
+        .nav-bar a {
+            color: var(--dim);
+            transition: color 0.2s;
+        }
+
+        .nav-bar a:hover {
+            color: var(--highlight);
+        }
+
+        .nav-bar a::before {
+            content: '[';
+            color: var(--dim);
+        }
+
+        .nav-bar a::after {
+            content: ']';
+            color: var(--dim);
+        }
+
+        /* ═══════════════════════════════════════════
+           STAT BOXES
+           ═══════════════════════════════════════════ */
+        .stat-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .stat-box {
+            border: 1px solid var(--dim);
+            padding: 16px 12px 12px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .stat-pixel {
+            font-family: 'Courier New', monospace;
+            font-size: 8px;
+            line-height: 1;
+            letter-spacing: 1px;
+            white-space: pre;
+            color: var(--highlight);
+            display: flex;
+            justify-content: center;
+            gap: 2px;
+            margin-bottom: 8px;
+            min-height: 40px;
+            align-items: center;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--dim);
+            margin-top: 4px;
+        }
+
+        .stat-box.counted .stat-pixel {
+            animation: statFlash 0.3s ease-out;
+        }
+
+        @keyframes statFlash {
+            0% {
+                text-shadow: 0 0 20px var(--highlight), 0 0 40px var(--highlight);
+                transform: scale(1.1);
+            }
+
+            100% {
+                text-shadow: none;
+                transform: scale(1);
+            }
+        }
+
+        /* ═══════════════════════════════════════════
+           LOADING BAR
+           ═══════════════════════════════════════════ */
+        .loading-bar {
+            margin: 24px 0;
+        }
+
+        .loading-text {
+            color: var(--dim);
+            font-size: 14px;
+        }
+
+        .loading-track {
+            width: 100%;
+            height: 16px;
+            border: 1px solid var(--dim);
+            position: relative;
+            margin-top: 4px;
+        }
+
+        .loading-fill {
+            height: 100%;
+            background: var(--green);
+            width: 0%;
+            transition: width 1.5s ease-out;
+        }
+
+        .loading-bar.active .loading-fill {
+            width: 100%;
+        }
+
+        /* ═══════════════════════════════════════════
+           RESPONSIVE
+           ═══════════════════════════════════════════ */
+        @media (max-width: 600px) {
+            body {
+                font-size: 14px;
+            }
+
+            .terminal {
+                padding: 8px;
+            }
+
+            .screen {
+                padding: 16px;
+            }
+
+            .career-item {
+                grid-template-columns: 1fr;
+                gap: 2px;
+            }
+
+            .career-year {
+                font-size: 12px;
+            }
+
+            .stat-row {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .pixel-art {
+                font-size: 7px;
+            }
+
+            .hero-name {
+                margin-top: 8px;
+            }
+
+            .hero-meta span {
+                font-size: 12px;
+            }
+        }
+
+        /* ═══════════════════════════════════════════
+           PIXEL WORKS GALLERY
+           ═══════════════════════════════════════════ */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .work-item {
+            border: 1px solid var(--dim);
+            overflow: hidden;
+            position: relative;
+            transition: border-color 0.3s;
+        }
+
+        .work-item:hover {
+            border-color: var(--highlight);
+        }
+
+        .work-item canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        .work-item .work-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--highlight);
+            font-size: 10px;
+            padding: 4px 8px;
+            font-family: 'Courier New', monospace;
+        }
+
+        @media (max-width: 500px) {
+            .works-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ═══════════════════════════════════════════
+           SECTION LABEL (comment-style)
+           ═══════════════════════════════════════════ */
+        .section-comment {
+            color: var(--dim);
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .section-comment::before {
+            content: '// ';
+        }
+
+        /* ═══════════════════════════════════════════
+           BOOT SEQUENCE
+           ═══════════════════════════════════════════ */
+        #boot-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            transition: opacity 0.5s ease;
+        }
+
+        #boot-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #boot-text {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: var(--dim);
+            white-space: pre-wrap;
+            max-width: 600px;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ╔═══════════════════════════════════════════╗
+         ║          BOOT SEQUENCE OVERLAY            ║
+         ╚═══════════════════════════════════════════╝ -->
+    <div id="boot-screen">
+        <div id="boot-text"></div>
+    </div>
+
+    <div class="theme-switcher" id="theme-switcher" style="display:none;">
+        <button class="theme-btn" data-theme="blue" data-active="true"
+            style="color:var(--bg);background:var(--highlight);border-color:var(--highlight);">BLUE</button>
+        <button class="theme-btn" data-theme="black">BLACK</button>
+        <button class="theme-btn" data-theme="prism">PRISM</button>
+        <span style="color:var(--dim);margin:0 4px;">│</span>
+        <button class="theme-btn active" id="lang-btn" data-lang="ko">KO/EN</button>
+    </div>
+
+    <!-- ╔═══════════════════════════════════════════╗
+         ║            MAIN TERMINAL                  ║
+         ╚═══════════════════════════════════════════╝ -->
+    <div class="terminal" id="main-terminal" style="display: none;">
+        <div class="title-bar">
+            <span>⬛ SABUM.EXE — Portfolio Terminal v2.5</span>
+            <div class="title-bar-buttons">
+                <span>─</span>
+                <span>□</span>
+                <span>×</span>
+            </div>
+        </div>
+
+        <div class="screen">
+
+            <!-- NAV -->
+            <nav class="nav-bar">
+                <a href="#career" data-en="Career">경력</a>
+                <a href="#awards" data-en="Awards">수상</a>
+                <a href="#projects" data-en="Projects">프로젝트</a>
+                <a href="#teaching" data-en="Lectures">강의</a>
+                <a href="#contact" data-en="Contact">연락처</a>
+            </nav>
+
+            <!-- ═══ HERO ═══ -->
+            <section class="section visible" id="hero">
+                <div class="prompt">whoami</div>
+                <div class="output">
+                    <div class="hero-visual">
+                        <canvas id="pixel-hero" width="240" height="40"></canvas>
+                    </div>
+                    <div class="hero-name">변사범 / Sabum Byun</div>
+                    <div class="hero-title">Creative Director · Designer · Educator</div>
+                    <div class="hero-meta">
+                        <span data-en="┌ Current: PlusX Advisor / Standers CDO">┌ 현재: 플러스엑스 고문 / 스탠더스 CDO</span>
+                        <span data-en="├ Career: 20+ yrs Design · Brand · UX/UI">├ 경력: 20년+ 디자인 · 브랜드 · UX/UI</span>
+                        <span data-en="├ Awards: 40+ International Design Awards">├ 수상: 40+ 국제 디자인 어워드</span>
+                        <span data-en="└ Talks: 100+ University · Corporate · Conf">└ 강의: 100회+ 대학 · 기업 · 컨퍼런스</span>
+                    </div>
+                </div>
+
+                <div class="stat-row" id="stat-row">
+                    <div class="stat-box" data-target="20" data-suffix="+">
+                        <div class="stat-pixel"></div>
+                        <div class="stat-label">YEARS EXP</div>
+                    </div>
+                    <div class="stat-box" data-target="40" data-suffix="+">
+                        <div class="stat-pixel"></div>
+                        <div class="stat-label">AWARDS</div>
+                    </div>
+                    <div class="stat-box" data-target="100" data-suffix="+">
+                        <div class="stat-pixel"></div>
+                        <div class="stat-label">PROJECTS</div>
+                    </div>
+                    <div class="stat-box" data-target="100" data-suffix="+">
+                        <div class="stat-pixel"></div>
+                        <div class="stat-label">LECTURES</div>
+                    </div>
+                </div>
+
+                <div class="loading-bar" id="exp-bar">
+                    <div class="loading-text">Loading career data... [██████████████████████████████] 100%</div>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <!-- ═══ CAREER ═══ -->
+            <section class="section" id="career">
+                <div class="section-comment" data-en="Printing career history">경력 사항을 출력합니다</div>
+                <div class="prompt">cat career.log</div>
+                <div class="output">
+                    <pre class="pixel-art" style="font-size: 8px; margin-bottom: 12px;">
+ ┌─────┐
+ │ ▓▓▓ │  CAREER
+ │ ▓▓▓ │  LOG
+ │ ▓▓▓ │
+ └─────┘
+</pre>
+                    <div class="career-item">
+                        <span class="career-year" data-en="2023 ~ Present">2023 ~ 현재</span>
+                        <span class="career-role" data-en="PlusX Advisor / Standers CDO">플러스엑스 고문 / 스탠더스 CDO</span>
+                    </div>
+                    <div class="career-item">
+                        <span class="career-year">2020 ~ 2023</span>
+                        <span class="career-role" data-en="Withecore Co-CEO">위더코어 공동대표</span>
+                    </div>
+                    <div class="career-item">
+                        <span class="career-year">2010 ~ 2020</span>
+                        <span class="career-role" data-en="Plus X Co-CEO / Creative Director">Plus X 공동대표 / Creative
+                            Director</span>
+                    </div>
+                    <div class="career-item">
+                        <span class="career-year">2006 ~ 2010</span>
+                        <span class="career-role" data-en="NHN Media Design Team Lead">NHN 미디어디자인 팀장</span>
+                    </div>
+                    <div class="career-item">
+                        <span class="career-year">2005 ~ 2006</span>
+                        <span class="career-role" data-en="DesignFever Designer">디자인피버 디자이너</span>
+                    </div>
+                    <div class="career-item">
+                        <span class="career-year">2003 ~ 2005</span>
+                        <span class="career-role" data-en="DesignNui Founder">디자인뉴이 창업</span>
+                    </div>
+                    <div class="career-item">
+                        <span class="career-year">1999 ~ 2003</span>
+                        <span class="career-role"
+                            data-en="Chungkang College of Cultural Industries, Multimedia Design">청강문화산업대학
+                            멀티미디어디자인학과</span>
+                    </div>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <!-- ═══ AWARDS ═══ -->
+            <section class="section" id="awards">
+                <div class="section-comment" data-en="Browsing awards directory">수상 내역 디렉토리를 조회합니다</div>
+                <div class="prompt">ls -la awards/</div>
+                <div class="output">
+                    <pre class="pixel-art" style="font-size: 8px; margin-bottom: 12px;">
+  ★ ★ ★
+ ★ ★ ★ ★  AWARDS
+  ★ ★ ★   TROPHY
+</pre>
+                    <div style="color: var(--dim); font-size: 12px; margin-bottom: 8px;"
+                        data-en="total 40+ files — showing major awards only">total 40+ files — 주요 수상만 표시
+                    </div>
+                    <div class="award-item"><span class="award-year">2021</span> <span class="award-name">IDEA</span> —
+                        Krafton Brand eXperience Design</div>
+                    <div class="award-item"><span class="award-year">2021</span> <span class="award-name">Awwward</span>
+                        — Neker / Deeponde Brand Website</div>
+                    <div class="award-item"><span class="award-year">2020</span> <span class="award-name">Reddot</span>
+                        — PlusX Official Website</div>
+                    <div class="award-item"><span class="award-year">2020</span> <span class="award-name">Awwward</span>
+                        — PlusX Official Website</div>
+                    <div class="award-item"><span class="award-year">2020</span> <span class="award-name">IF
+                            Award</span> — PlusX Internal Branding</div>
+                    <div class="award-item"><span class="award-year">2020</span> <span class="award-name">GDA</span> —
+                        emart App / G9 App UX/UI</div>
+                    <div class="award-item"><span class="award-year">2019</span> <span class="award-name">IF
+                            Award</span> — YG Select App Design</div>
+                    <div class="award-item"><span class="award-year">2019</span> <span class="award-name">GDA</span> —
+                        신세계백화점 / S.I.VILLAGE / L.POINT</div>
+                    <div class="award-item"><span class="award-year">2018</span> <span class="award-name">Reddot +
+                            IF</span> — L.POINT App</div>
+                    <div class="award-item"><span class="award-year">2016</span> <span class="award-name">Reddot +
+                            IF</span> — SSG PAY / 29CM App</div>
+                    <div class="award-item"><span class="award-year">2015</span> <span class="award-name">&amp; Award
+                            대상</span> — 29CM App</div>
+                    <div class="award-item"><span class="award-year">2014</span> <span class="award-name">IDEA +
+                            IF</span> — SKT B box Product</div>
+                    <div class="award-item"><span class="award-year">2013</span> <span class="award-name">IF</span> —
+                        Plus X Brand Identity</div>
+                    <div class="award-item"><span class="award-year">2011</span> <span class="award-name">Reddot + It
+                            Award</span> — 기업디자인 본상</div>
+                    <div class="award-item"><span class="award-year">2010</span> <span class="award-name">깐느 Silver
+                            Lion</span> — 네이버 한글캠페인</div>
+                    <div class="award-item"><span class="award-year">2010</span> <span class="award-name">IF</span> —
+                        NHN Media wall / NAVER Story</div>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <!-- ═══ PROJECTS ═══ -->
+            <section class="section" id="projects">
+                <div class="section-comment" data-en="Printing project tree">프로젝트 트리를 출력합니다</div>
+                <div class="prompt">tree projects/ --recent</div>
+                <div class="output">
+
+                    <div class="project-year-group">
+                        <div class="project-year-header">2024 ~ 2025</div>
+                        <div class="project-item">로우로우 폴스미스 포스터 제작</div>
+                        <div class="project-item">MBC다큐 교실이데아 인트로 아트웍</div>
+                        <div class="project-item">블러블러 AI 모델에이전트 브랜드 개발</div>
+                    </div>
+
+                    <div class="project-year-group">
+                        <div class="project-year-header">2023</div>
+                        <div class="project-item">패스트캠퍼스 AI 강의 런칭</div>
+                        <div class="project-item">동해소주 AI포스터 디자인</div>
+                        <div class="project-item">LG생활건강 아우라 라벨 디자인 (AI)</div>
+                        <div class="project-item">LG생활건강 키비주얼 디자인 (AI)</div>
+                    </div>
+
+                    <div class="project-year-group">
+                        <div class="project-year-header">2020 ~ 2022</div>
+                        <div class="project-item">디폰데 코스메틱 브랜드 전체 운영</div>
+                        <div class="project-item">키네프 / 포슐라 코스메틱 브랜드</div>
+                        <div class="project-item">픽스낫띵 패션브랜드 런칭</div>
+                        <div class="project-item">삼성화재 디자인 컨설팅</div>
+                    </div>
+
+                    <div class="project-year-group">
+                        <div class="project-year-header">2018 ~ 2019</div>
+                        <div class="project-item">플러스엑스 웹사이트 리뉴얼</div>
+                        <div class="project-item">이마트 APP UI/UX</div>
+                        <div class="project-item">삼성전자 신규 제품개발 UI/UX</div>
+                        <div class="project-item">제주항공 UI/UX</div>
+                    </div>
+
+                    <div class="project-year-group">
+                        <div class="project-year-header">2015 ~ 2017</div>
+                        <div class="project-item">롯데 L.POINT UI/UX</div>
+                        <div class="project-item">이베이 G9 UI/UX</div>
+                        <div class="project-item">YG E-SHOP / TIMES APP UI/UX</div>
+                        <div class="project-item">신세계백화점 앱 UI/UX</div>
+                        <div class="project-item">29CM 앱 UI/UX 고도화</div>
+                    </div>
+
+                    <div class="project-year-group">
+                        <div class="project-year-header">2012 ~ 2014</div>
+                        <div class="project-item">삼성전자 갤럭시 Gear2 UI/UX</div>
+                        <div class="project-item">삼성 플렉서블 UI/UX</div>
+                        <div class="project-item">SSG PAY 브랜드 · 서비스 앱</div>
+                        <div class="project-item">29CM 모바일 앱 UI/UX</div>
+                        <div class="project-item">쿠팡 UI/UX</div>
+                    </div>
+
+                    <div class="project-year-group">
+                        <div class="project-year-header">2010 ~ 2011 (PLUS X)</div>
+                        <div class="project-item">CGV 아이패드/아이폰 앱 UI/UX</div>
+                        <div class="project-item">삼성전자 클라우드서비스 디자인</div>
+                        <div class="project-item">영국문화원 교육용 앱 UI/UX</div>
+                    </div>
+
+                    <div class="project-year-group">
+                        <div class="project-year-header">2006 ~ 2010 (NHN)</div>
+                        <div class="project-item">네이버 한글캠페인 미디어 마케팅</div>
+                        <div class="project-item">네이버 그린팩토리 미디어 디자인 총괄</div>
+                        <div class="project-item">네이버 브랜드사이트 / 메인 개편</div>
+                        <div class="project-item">네이버 지도 파노라마 마케팅</div>
+                        <div class="project-item">네이버 10주년 히스토리 웹사이트</div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <!-- ═══ TEACHING ═══ -->
+            <section class="section" id="teaching">
+                <div class="section-comment" data-en="Reading lecture history file">강의 경력 파일을 읽습니다</div>
+                <div class="prompt">cat lectures.md</div>
+                <div class="output">
+                    <pre class="pixel-art" style="font-size: 8px; margin-bottom: 12px;">
+ ┌──────────┐
+ │ ■■■      │
+ │ ■■■■■    │  LECTURES
+ │ ■■■■■■■  │  & TALKS
+ │ ■■■■■    │
+ └──────────┘
+</pre>
+                    <div class="lecture-block">
+                        <div class="lecture-label"># 주요 이력</div>
+                        <div class="lecture-list">
+                            - 2024년 기업, 대학 70여번의 AI강연<br>
+                            - 2023년 패스트캠퍼스 온라인 AI강의 런칭<br>
+                            - 2013년 국민대 디자인학부 UI/UX디자인 수업 출강<br>
+                            - 2010년부터 40여 차례 세미나 진행
+                        </div>
+                    </div>
+                    <div class="lecture-block">
+                        <div class="lecture-label"># 대학</div>
+                        <div class="lecture-list">홍익대, 국민대, 카이스트, 단국대, 서강대, 경희대, 계원대, 가천대, 청강대, 대만디자인대학, 미국 아트센터 칼리지 오브
+                            디자인</div>
+                    </div>
+                    <div class="lecture-block">
+                        <div class="lecture-label"># 기업 (해외)</div>
+                        <div class="lecture-list">중국 알리바바 / 왕이 / 텐센트, 홍콩디자인센터 HKDC, 에스티로더, 랄프로렌</div>
+                    </div>
+                    <div class="lecture-block">
+                        <div class="lecture-label"># 기업 (국내)</div>
+                        <div class="lecture-list">삼성전자, LG전자, KT, 네이버, 카카오, 쿠팡, 배달의민족, 29CM, 아모레, SPC, SM, 현대홈쇼핑, 제일기획,
+                            Adobe, 위메프, 여기어때, 라인플러스, 한화, 미래에셋 등</div>
+                    </div>
+                    <div class="lecture-block">
+                        <div class="lecture-label"># 단체 · 컨퍼런스</div>
+                        <div class="lecture-list">KIDP, 패스트캠퍼스, UX World, CA컨퍼런스, 현대카드 컬쳐, 롱블랙, 해럴드디자인, 브랜드비즈 등</div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <!-- ═══ WORKS ═══ -->
+            <section class="section" id="works">
+                <div class="section-comment" data-en="Rendering portfolio works">포트폴리오 작업물을 렌더링합니다</div>
+                <div class="prompt">render --pixelate ./works/*.jpg</div>
+                <div class="output">
+                    <pre class="pixel-art" style="font-size: 8px; margin-bottom: 12px;">
+ ┌─────────┐
+ │ ▓▓▓ ░░░ │  SELECTED
+ │ ░░░ ▓▓▓ │  WORKS
+ └─────────┘
+</pre>
+                    <div class="works-grid">
+                        <div class="work-item">
+                            <canvas class="pixel-work" data-src="img/img_004.jpg" width="64" height="48"></canvas>
+                            <div class="work-label">PROJECT_001.bmp</div>
+                        </div>
+                        <div class="work-item">
+                            <canvas class="pixel-work" data-src="img/img_009.jpg" width="64" height="48"></canvas>
+                            <div class="work-label">PROJECT_002.bmp</div>
+                        </div>
+                        <div class="work-item">
+                            <canvas class="pixel-work" data-src="img/img_011.jpg" width="64" height="48"></canvas>
+                            <div class="work-label">PROJECT_003.bmp</div>
+                        </div>
+                        <div class="work-item">
+                            <canvas class="pixel-work" data-src="img/img_012.jpg" width="64" height="48"></canvas>
+                            <div class="work-label">PROJECT_004.bmp</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <!-- ═══ CONTACT ═══ -->
+            <section class="section" id="contact">
+                <div class="section-comment" data-en="Printing contact environment variables">연락처 환경변수를 출력합니다</div>
+                <div class="prompt">echo $CONTACT</div>
+                <div class="output">
+                    <pre class="pixel-art" style="font-size: 8px; margin-bottom: 12px;">
+  ╔═══════╗
+  ║ ✉     ║
+  ║  ╲   ╱║  CONTACT
+  ║   ╲╱  ║  ME
+  ╚═══════╝
+</pre>
+                    <div class="contact-item">
+                        <span class="contact-label">NAME</span>
+                        <span>변사범 / Sabum Byun</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-label">PHONE</span>
+                        <span>010-3448-8594</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-label">EMAIL</span>
+                        <a href="mailto:sabum@plus-ex.com">sabum@plus-ex.com</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-label">SITE</span>
+                        <a href="https://www.plus-ex.com" target="_blank">www.plus-ex.com</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-label">BLOG</span>
+                        <a href="http://blog.naver.com/sabum007" target="_blank">blog.naver.com/sabum007</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-label">BEHANCE</span>
+                        <a href="https://www.behance.net/sabum" target="_blank">behance.net/sabum</a>
+                    </div>
+                </div>
+
+                <div style="margin-top: 24px;">
+                    <div class="prompt" style="color: var(--dim);"><span class="cursor"></span></div>
+                </div>
+            </section>
+
+        </div><!-- .screen -->
+
+        <div class="footer-bar">
+            <span>Ready</span>
+            <span>Lines: 237 | UTF-8 | LF</span>
+        </div>
+    </div><!-- .terminal -->
+
+    <!-- ═══════════════════════════════════════════
+         SCRIPT
+         ═══════════════════════════════════════════ -->
+    <script>
+        // ─── BOOT SEQUENCE ───
+        const bootLines = [
+            'SABUM BIOS v2.5 — Copyright (C) 1999-2025',
+            'Checking system memory... 20+ years OK',
+            'Loading design modules...',
+            '  ├ UX/UI Design ............. [OK]',
+            '  ├ Brand Experience ......... [OK]',
+            '  ├ Creative Direction ....... [OK]',
+            '  ├ AI Design ................ [OK]',
+            '  └ Education ................ [OK]',
+            '',
+            'Awards detected: 40+ international',
+            'Projects loaded: 100+ completed',
+            '',
+            '> Starting SABUM.EXE ...',
+            '',
+        ];
+
+        const bootEl = document.getElementById('boot-text');
+        const bootScreen = document.getElementById('boot-screen');
+        const mainTerminal = document.getElementById('main-terminal');
+        let bootIndex = 0;
+
+        function bootStep() {
+            if (bootIndex < bootLines.length) {
+                bootEl.textContent += bootLines[bootIndex] + '\n';
+                bootIndex++;
+                const delay = bootLines[bootIndex - 1] === '' ? 100 : (80 + Math.random() * 120);
+                setTimeout(bootStep, delay);
+            } else {
+                // 부팅 완료
+                setTimeout(() => {
+                    bootScreen.classList.add('fade-out');
+                    mainTerminal.style.display = 'block';
+                    setTimeout(() => {
+                        bootScreen.remove();
+                        initScrollReveal();
+                        document.getElementById('theme-switcher').style.display = 'flex';
+                    }, 500);
+                }, 400);
+            }
+        }
+
+        // 부팅 시작
+        bootStep();
+
+        // ─── SCROLL REVEAL + GLITCH ───
+        function initScrollReveal() {
+            const sections = document.querySelectorAll('.section:not(.visible)');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible', 'glitch-in');
+                        observer.unobserve(entry.target);
+                        // Remove glitch class after animation completes
+                        setTimeout(() => {
+                            entry.target.classList.remove('glitch-in');
+                        }, 700);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach(s => observer.observe(s));
+        }
+
+        // ─── SMOOTH SCROLL for NAV ───
+        document.querySelectorAll('.nav-bar a').forEach(a => {
+            a.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(a.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ═══════════════════════════════════════════
+        //  PIXEL ART STAT NUMBERS
+        // ═══════════════════════════════════════════
+        const DIGITS = {
+            '0': ['█████', '██  ██', '██  ██', '██  ██', '█████'],
+            '1': ['  ██ ', '████ ', '  ██ ', '  ██ ', '█████'],
+            '2': ['█████', '   ██', '█████', '██   ', '█████'],
+            '3': ['█████', '   ██', '█████', '   ██', '█████'],
+            '4': ['██  ██', '██  ██', '█████', '   ██', '   ██'],
+            '5': ['█████', '██   ', '█████', '   ██', '█████'],
+            '6': ['█████', '██   ', '█████', '██  ██', '█████'],
+            '7': ['█████', '   ██', '  ██ ', ' ██  ', ' ██  '],
+            '8': ['█████', '██  ██', '█████', '██  ██', '█████'],
+            '9': ['█████', '██  ██', '█████', '   ██', '█████'],
+            '+': ['     ', '  ██ ', '█████', '  ██ ', '     ']
+        };
+
+        function renderPixelNumber(str) {
+            const chars = str.split('');
+            let lines = ['', '', '', '', ''];
+            chars.forEach((c, i) => {
+                const d = DIGITS[c];
+                if (d) {
+                    for (let r = 0; r < 5; r++) {
+                        lines[r] += (i > 0 ? ' ' : '') + d[r];
+                    }
+                }
+            });
+            return lines.join('\n');
+        }
+
+        function animateStats() {
+            const boxes = document.querySelectorAll('.stat-box[data-target]');
+            boxes.forEach((box, idx) => {
+                const target = parseInt(box.dataset.target);
+                const suffix = box.dataset.suffix || '';
+                const el = box.querySelector('.stat-pixel');
+                let frame = 0;
+                const totalFrames = 12;
+                const interval = setInterval(() => {
+                    frame++;
+                    if (frame < totalFrames) {
+                        // Random glitch numbers
+                        const rand = Math.floor(Math.random() * (target * 2));
+                        el.textContent = renderPixelNumber(rand + suffix);
+                    } else {
+                        el.textContent = renderPixelNumber(target + suffix);
+                        box.classList.add('counted');
+                        clearInterval(interval);
+                    }
+                }, 60 + idx * 20);
+            });
+        }
+
+        // Trigger stat animation after boot
+        setTimeout(animateStats, 2500);
+
+        // ═══════════════════════════════════════════
+        //  PIXEL HERO CANVAS ANIMATION
+        // ═══════════════════════════════════════════
+        (function () {
+            const canvas = document.getElementById('pixel-hero');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const W = 240, H = 40;
+            const Y = '#FFFF00', D = '#AAAA00', B = '#0000AA', G = '#00AA00', R = '#FF0055', C = '#00FFAA', WH = '#FFFFFF', DM = '#AAAAAA';
+
+            // Character frames (10x14) — 2 walk frames per direction
+            const charFrames = [
+                // Frame 0: stand right
+                [
+                    [0, 0, 0, Y, Y, Y, Y, 0, 0, 0],
+                    [0, 0, Y, Y, Y, Y, Y, Y, 0, 0],
+                    [0, 0, Y, B, Y, Y, B, Y, 0, 0],
+                    [0, 0, Y, Y, Y, Y, Y, Y, 0, 0],
+                    [0, 0, Y, D, D, D, D, Y, 0, 0],
+                    [0, 0, 0, Y, Y, Y, Y, 0, 0, 0],
+                    [0, 0, Y, Y, Y, Y, Y, Y, 0, 0],
+                    [0, Y, Y, 0, Y, Y, 0, Y, Y, 0],
+                    [0, 0, 0, 0, Y, Y, 0, 0, 0, 0],
+                    [0, 0, 0, 0, Y, Y, 0, 0, 0, 0],
+                    [0, 0, 0, Y, Y, 0, Y, Y, 0, 0],
+                ],
+                // Frame 1: walk right A
+                [
+                    [0, 0, 0, Y, Y, Y, Y, 0, 0, 0],
+                    [0, 0, Y, Y, Y, Y, Y, Y, 0, 0],
+                    [0, 0, Y, B, Y, Y, B, Y, 0, 0],
+                    [0, 0, Y, Y, Y, Y, Y, Y, 0, 0],
+                    [0, 0, Y, D, D, D, D, Y, 0, 0],
+                    [0, 0, 0, Y, Y, Y, Y, 0, 0, 0],
+                    [0, 0, Y, Y, Y, Y, Y, Y, 0, 0],
+                    [0, Y, Y, 0, Y, Y, 0, Y, Y, 0],
+                    [0, 0, 0, 0, Y, Y, 0, 0, 0, 0],
+                    [0, 0, 0, Y, Y, 0, 0, Y, 0, 0],
+                    [0, 0, Y, Y, 0, 0, 0, Y, Y, 0],
+                ],
+                // Frame 2: walk right B
+                [
+                    [0, 0, 0, Y, Y, Y, Y, 0, 0, 0],
+                    [0, 0, Y, Y, Y, Y, Y, Y, 0, 0],
+                    [0, 0, Y, B, Y, Y, B, Y, 0, 0],
+                    [0, 0, Y, Y, Y, Y, Y, Y, 0, 0],
+                    [0, 0, Y, D, D, D, D, Y, 0, 0],
+                    [0, 0, 0, Y, Y, Y, Y, 0, 0, 0],
+                    [0, 0, Y, Y, Y, Y, Y, Y, 0, 0],
+                    [0, Y, Y, 0, Y, Y, 0, Y, Y, 0],
+                    [0, 0, 0, 0, Y, Y, 0, 0, 0, 0],
+                    [0, 0, 0, 0, Y, 0, Y, Y, 0, 0],
+                    [0, 0, 0, Y, Y, 0, 0, Y, Y, 0],
+                ],
+                // Frame 3: jump
+                [
+                    [0, 0, 0, Y, Y, Y, Y, 0, 0, 0],
+                    [0, 0, Y, Y, Y, Y, Y, Y, 0, 0],
+                    [0, 0, Y, B, Y, Y, B, Y, 0, 0],
+                    [0, 0, Y, Y, D, D, Y, Y, 0, 0],
+                    [0, 0, Y, D, D, D, D, Y, 0, 0],
+                    [0, 0, 0, Y, Y, Y, Y, 0, 0, 0],
+                    [0, Y, Y, Y, Y, Y, Y, Y, Y, 0],
+                    [Y, Y, 0, Y, Y, Y, Y, 0, Y, Y],
+                    [0, 0, 0, 0, Y, Y, 0, 0, 0, 0],
+                    [0, 0, 0, Y, 0, 0, Y, 0, 0, 0],
+                    [0, 0, Y, Y, 0, 0, Y, Y, 0, 0],
+                ],
+            ];
+
+            function drawPixel(x, y, color) {
+                if (!color) return;
+                ctx.fillStyle = color;
+                ctx.fillRect(x, y, 1, 1);
+            }
+
+            function drawSprite(sprite, sx, sy, flip) {
+                for (let r = 0; r < sprite.length; r++) {
+                    for (let c = 0; c < sprite[r].length; c++) {
+                        const px = flip ? sx + (sprite[r].length - 1 - c) : sx + c;
+                        drawPixel(px, sy + r, sprite[r][c]);
+                    }
+                }
+            }
+
+            // Objects
+            function drawMonitor(x, y, shake) {
+                const ox = shake ? Math.round(Math.sin(Date.now() / 30) * 1) : 0;
+                ctx.fillStyle = DM; ctx.fillRect(x + ox, y, 14, 10);
+                ctx.fillStyle = G; ctx.fillRect(x + 1 + ox, y + 1, 12, 8);
+                ctx.fillStyle = B;
+                // Screen text flicker
+                const t = Math.floor(Date.now() / 200) % 3;
+                ctx.fillStyle = Y;
+                if (t === 0) { ctx.fillRect(x + 3 + ox, y + 3, 3, 1); ctx.fillRect(x + 3 + ox, y + 5, 5, 1); }
+                else if (t === 1) { ctx.fillRect(x + 3 + ox, y + 3, 5, 1); ctx.fillRect(x + 3 + ox, y + 5, 2, 1); }
+                else { ctx.fillRect(x + 3 + ox, y + 4, 4, 1); }
+                ctx.fillStyle = DM; ctx.fillRect(x + 5 + ox, y + 10, 4, 2); ctx.fillRect(x + 3 + ox, y + 12, 8, 1);
+            }
+
+            function drawCoffee(x, y, spill) {
+                ctx.fillStyle = WH; ctx.fillRect(x, y + 2, 5, 6); ctx.fillRect(x + 5, y + 3, 2, 3);
+                ctx.fillStyle = D; ctx.fillRect(x + 1, y + 3, 3, 2);
+                if (!spill) {
+                    // Steam
+                    const s = Math.floor(Date.now() / 300) % 2;
+                    ctx.fillStyle = DM;
+                    ctx.fillRect(x + 1, y - s, 1, 1);
+                    ctx.fillRect(x + 3, y - 1 + s, 1, 1);
+                }
+                if (spill) {
+                    ctx.fillStyle = D;
+                    ctx.fillRect(x + 5, y + 7, 3, 1);
+                    ctx.fillRect(x + 6, y + 8, 2, 1);
+                }
+            }
+
+            function drawTrophy(x, y, bounce) {
+                const by = bounce ? -Math.abs(Math.sin(Date.now() / 100) * 3) | 0 : 0;
+                ctx.fillStyle = Y;
+                ctx.fillRect(x + 2, y + by, 4, 1);
+                ctx.fillRect(x + 1, y + 1 + by, 6, 3);
+                ctx.fillRect(x, y + 1 + by, 1, 2); ctx.fillRect(x + 7, y + 1 + by, 1, 2);
+                ctx.fillRect(x + 3, y + 4 + by, 2, 2);
+                ctx.fillRect(x + 2, y + 6 + by, 4, 1);
+            }
+
+            function drawStar(x, y, twinkle) {
+                const on = twinkle ? Math.floor(Date.now() / 400 + x) % 3 !== 0 : true;
+                if (on) {
+                    ctx.fillStyle = Y;
+                    ctx.fillRect(x + 1, y, 1, 1);
+                    ctx.fillRect(x, y + 1, 3, 1);
+                    ctx.fillRect(x + 1, y + 2, 1, 1);
+                }
+            }
+
+            function drawText(x, y, text, color) {
+                ctx.fillStyle = color || Y;
+                // Simple 3x5 pixel font for tiny text
+                const font3x5 = {
+                    'S': [[1, 1, 1], [1, 0, 0], [1, 1, 1], [0, 0, 1], [1, 1, 1]],
+                    'A': [[0, 1, 0], [1, 0, 1], [1, 1, 1], [1, 0, 1], [1, 0, 1]],
+                    'B': [[1, 1, 0], [1, 0, 1], [1, 1, 0], [1, 0, 1], [1, 1, 0]],
+                    'U': [[1, 0, 1], [1, 0, 1], [1, 0, 1], [1, 0, 1], [1, 1, 1]],
+                    'M': [[1, 0, 1], [1, 1, 1], [1, 1, 1], [1, 0, 1], [1, 0, 1]],
+                    'D': [[1, 1, 0], [1, 0, 1], [1, 0, 1], [1, 0, 1], [1, 1, 0]],
+                    'E': [[1, 1, 1], [1, 0, 0], [1, 1, 0], [1, 0, 0], [1, 1, 1]],
+                    'I': [[1, 1, 1], [0, 1, 0], [0, 1, 0], [0, 1, 0], [1, 1, 1]],
+                    'G': [[1, 1, 1], [1, 0, 0], [1, 0, 1], [1, 0, 1], [1, 1, 1]],
+                    'N': [[1, 0, 1], [1, 1, 1], [1, 1, 1], [1, 0, 1], [1, 0, 1]],
+                    'R': [[1, 1, 0], [1, 0, 1], [1, 1, 0], [1, 0, 1], [1, 0, 1]],
+                    'X': [[1, 0, 1], [1, 0, 1], [0, 1, 0], [1, 0, 1], [1, 0, 1]],
+                    '/': [[0, 0, 1], [0, 0, 1], [0, 1, 0], [1, 0, 0], [1, 0, 0]],
+                    'C': [[1, 1, 1], [1, 0, 0], [1, 0, 0], [1, 0, 0], [1, 1, 1]],
+                    'O': [[1, 1, 1], [1, 0, 1], [1, 0, 1], [1, 0, 1], [1, 1, 1]],
+                    'Y': [[1, 0, 1], [1, 0, 1], [0, 1, 0], [0, 1, 0], [0, 1, 0]],
+                    'P': [[1, 1, 1], [1, 0, 1], [1, 1, 1], [1, 0, 0], [1, 0, 0]],
+                    'T': [[1, 1, 1], [0, 1, 0], [0, 1, 0], [0, 1, 0], [0, 1, 0]],
+                    'L': [[1, 0, 0], [1, 0, 0], [1, 0, 0], [1, 0, 0], [1, 1, 1]],
+                    'F': [[1, 1, 1], [1, 0, 0], [1, 1, 0], [1, 0, 0], [1, 0, 0]],
+                    'H': [[1, 0, 1], [1, 0, 1], [1, 1, 1], [1, 0, 1], [1, 0, 1]],
+                    'W': [[1, 0, 1], [1, 0, 1], [1, 1, 1], [1, 1, 1], [1, 0, 1]],
+                    ' ': [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+                    '+': [[0, 0, 0], [0, 1, 0], [1, 1, 1], [0, 1, 0], [0, 0, 0]],
+                };
+                let cx = x;
+                for (const ch of text) {
+                    const g = font3x5[ch];
+                    if (g) {
+                        for (let r = 0; r < 5; r++) for (let c = 0; c < 3; c++) {
+                            if (g[r][c]) ctx.fillRect(cx + c, y + r, 1, 1);
+                        }
+                    }
+                    cx += 4;
+                }
+            }
+
+            // Scene state
+            let charX = 20, charY = 28, frame = 0, dir = 1, walkFrame = 0;
+            let state = 'walk_right';
+            let stateTimer = 0;
+            let coffeeSpill = false, trophyBounce = false, monitorShake = false;
+            let jumpOffset = 0;
+            const GROUND = 34;
+            const monX = 90, monY = 21;
+            const coffeeX = 145, coffeeY = 26;
+            const trophyX = 175, trophyY = 26;
+            let particles = [];
+
+            function addParticles(x, y, color, count) {
+                for (let i = 0; i < count; i++) {
+                    particles.push({
+                        x, y,
+                        vx: (Math.random() - 0.5) * 2,
+                        vy: -Math.random() * 2,
+                        life: 15 + Math.random() * 10,
+                        color
+                    });
+                }
+            }
+
+            function updateScene() {
+                stateTimer++;
+                switch (state) {
+                    case 'walk_right':
+                        charX += 1;
+                        walkFrame = (Math.floor(stateTimer / 3) % 2) + 1;
+                        dir = 1;
+                        if (charX >= monX - 14) {
+                            state = 'bump_monitor'; stateTimer = 0;
+                            monitorShake = true;
+                            addParticles(monX + 7, monY + 5, C, 6);
+                        }
+                        break;
+                    case 'bump_monitor':
+                        walkFrame = 0;
+                        if (stateTimer > 12) {
+                            monitorShake = false;
+                            state = 'walk_right2'; stateTimer = 0;
+                        }
+                        break;
+                    case 'walk_right2':
+                        charX += 1; walkFrame = (Math.floor(stateTimer / 3) % 2) + 1; dir = 1;
+                        if (charX >= coffeeX - 12) {
+                            state = 'kick_coffee'; stateTimer = 0;
+                            coffeeSpill = true;
+                            addParticles(coffeeX + 3, coffeeY + 2, D, 5);
+                        }
+                        break;
+                    case 'kick_coffee':
+                        walkFrame = 3; // jump frame
+                        if (stateTimer > 10) { state = 'walk_right3'; stateTimer = 0; }
+                        break;
+                    case 'walk_right3':
+                        charX += 1; walkFrame = (Math.floor(stateTimer / 3) % 2) + 1; dir = 1;
+                        if (charX >= trophyX - 10) {
+                            state = 'grab_trophy'; stateTimer = 0;
+                            trophyBounce = true;
+                            addParticles(trophyX + 4, trophyY, Y, 8);
+                        }
+                        break;
+                    case 'grab_trophy':
+                        walkFrame = 3; // jump
+                        jumpOffset = stateTimer < 6 ? -stateTimer : -(12 - stateTimer);
+                        if (stateTimer >= 12) { jumpOffset = 0; }
+                        if (stateTimer > 16) {
+                            trophyBounce = false;
+                            state = 'walk_left'; stateTimer = 0;
+                        }
+                        break;
+                    case 'walk_left':
+                        charX -= 1; walkFrame = (Math.floor(stateTimer / 3) % 2) + 1; dir = -1;
+                        coffeeSpill = stateTimer > 20 ? false : coffeeSpill;
+                        if (charX <= 20) {
+                            state = 'pause'; stateTimer = 0;
+                        }
+                        break;
+                    case 'pause':
+                        walkFrame = 0; dir = 1;
+                        if (stateTimer > 20) {
+                            state = 'walk_right'; stateTimer = 0;
+                            coffeeSpill = false;
+                        }
+                        break;
+                }
+
+                // Update particles
+                particles = particles.filter(p => {
+                    p.x += p.vx; p.y += p.vy; p.vy += 0.1; p.life--;
+                    return p.life > 0;
+                });
+            }
+
+            function drawScene() {
+                ctx.clearRect(0, 0, W, H);
+
+                // Ground line
+                ctx.fillStyle = DM;
+                for (let x = 0; x < W; x += 3) ctx.fillRect(x, GROUND, 2, 1);
+
+                // Stars
+                drawStar(30, 2, true); drawStar(60, 4, true); drawStar(100, 1, true);
+                drawStar(150, 3, true); drawStar(200, 2, true); drawStar(220, 5, true);
+                drawStar(45, 6, true); drawStar(180, 1, true);
+
+                // Objects
+                drawMonitor(monX, monY, monitorShake);
+                drawCoffee(coffeeX, coffeeY, coffeeSpill);
+                drawTrophy(trophyX, trophyY, trophyBounce);
+
+                // Text labels
+                drawText(90, 15, 'DESIGN', DM);
+                drawText(143, 20, 'COFFEE', DM);
+                drawText(173, 20, 'AWARD', DM);
+
+                // Title text
+                drawText(5, 2, 'SABUM BYUN', Y);
+                drawText(5, 9, 'CREATIVE DIRECTOR', C);
+                drawText(5, 16, 'DESIGNER+EDUCATOR', G);
+
+                // Bottom text
+                drawText(70, 37, 'PIXEL BY PIXEL DESIGNING THE FUTURE', DM);
+
+                // Decorative boxes
+                ctx.strokeStyle = DM; ctx.lineWidth = 0.5;
+                // UX/AI boxes
+                drawText(5, 24, 'UX', Y); drawText(15, 24, 'AI', Y);
+                drawText(25, 24, 'APP', Y); drawText(39, 24, 'WEB', Y);
+
+                // Character
+                const f = Math.min(walkFrame, charFrames.length - 1);
+                drawSprite(charFrames[f], charX, charY + jumpOffset - 11, dir < 0);
+
+                // Particles
+                particles.forEach(p => {
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(Math.round(p.x), Math.round(p.y), 1, 1);
+                });
+            }
+
+            // Stop-motion: ~8fps
+            let lastFrame = 0;
+            function animate(ts) {
+                if (ts - lastFrame > 125) { // ~8fps for stop-motion feel
+                    updateScene();
+                    drawScene();
+                    lastFrame = ts;
+                }
+                requestAnimationFrame(animate);
+            }
+            // Start after boot
+            setTimeout(() => requestAnimationFrame(animate), 2000);
+        })();
+
+        // ═══════════════════════════════════════════
+        //  PIXELATE PORTFOLIO IMAGES
+        // ═══════════════════════════════════════════
+        document.querySelectorAll('.pixel-work').forEach(canvas => {
+            const src = canvas.dataset.src;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;   // 64
+            const h = canvas.height;  // 48
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = () => {
+                // Draw image scaled down to tiny canvas = instant pixel art
+                ctx.imageSmoothingEnabled = false;
+                ctx.drawImage(img, 0, 0, w, h);
+            };
+            img.src = src;
+        });
+        // ═══════════════════════════════════════════
+        //  THEME SWITCHER
+        // ═══════════════════════════════════════════
+        function setTheme(theme) {
+            document.body.classList.remove('theme-black', 'theme-prism');
+            if (theme !== 'blue') {
+                document.body.classList.add('theme-' + theme);
+            }
+            document.querySelectorAll('.theme-btn[data-theme]').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.theme === theme);
+            });
+            localStorage.setItem('sabum-theme', theme);
+        }
+
+        document.querySelectorAll('.theme-btn[data-theme]').forEach(btn => {
+            btn.addEventListener('click', () => setTheme(btn.dataset.theme));
+        });
+
+        const savedTheme = localStorage.getItem('sabum-theme');
+        if (savedTheme) setTheme(savedTheme);
+
+        // ═══════════════════════════════════════════
+        //  LANGUAGE TOGGLE (KO / EN)
+        // ═══════════════════════════════════════════
+        const translations = {
+            '.project-item': [
+                ['Rawrow x Paul Smith Poster Design'],
+                ['MBC Documentary Classroom Idea Intro Artwork'],
+                ['BlurBlur AI Model Agent Brand Dev'],
+                ['FastCampus AI Course Launch'],
+                ['Donghae Soju AI Poster Design'],
+                ['LG H&H Aura Label Design (AI)'],
+                ['LG H&H Key Visual Design (AI)'],
+                ['Deeponde Cosmetics Full Brand Ops'],
+                ['Kineff / Foshula Cosmetics Brand'],
+                ['FixNothing Fashion Brand Launch'],
+                ['Samsung Fire Design Consulting'],
+                ['PlusX Website Renewal'],
+                ['E-Mart App UI/UX'],
+                ['Samsung New Product UI/UX'],
+                ['Jeju Air UI/UX'],
+                ['Lotte L.POINT UI/UX'],
+                ['eBay G9 UI/UX'],
+                ['YG E-SHOP / TIMES APP UI/UX'],
+                ['Shinsegae Dept. Store App UI/UX'],
+                ['29CM App UI/UX Enhancement'],
+                ['Samsung Galaxy Gear2 UI/UX'],
+                ['Samsung Flexible UI/UX'],
+                ['SSG PAY Brand & Service App'],
+                ['29CM Mobile App UI/UX'],
+                ['Coupang UI/UX'],
+                ['CGV iPad/iPhone App UI/UX'],
+                ['Samsung Cloud Service Design'],
+                ['British Council Education App UI/UX'],
+                ['NAVER Hangul Campaign Media Marketing'],
+                ['NAVER Green Factory Media Design Director'],
+                ['NAVER Brand Site / Main Renewal'],
+                ['NAVER Map Panorama Marketing'],
+                ['NAVER 10th Anniversary History Website']
+            ],
+            '.lecture-label': [
+                ['# Key History'],
+                ['# Universities'],
+                ['# Corporations (International)'],
+                ['# Corporations (Domestic)'],
+                ['# Organizations & Conferences']
+            ],
+            '.lecture-list': [
+                ['- 2024: 70+ AI lectures at corporations & universities<br>- 2023: FastCampus online AI course launch<br>- 2013: Kookmin Univ. UI/UX adjunct lecturer<br>- 40+ seminars since 2010'],
+                ['Hongik, Kookmin, KAIST, Dankook, Sogang, Kyunghee, Kaywon, Gachon, Chungkang, Taiwan Design Univ., Art Center College of Design (USA)'],
+                ['Alibaba / NetEase / Tencent (China), HKDC (Hong Kong), Estee Lauder, Ralph Lauren'],
+                ['Samsung, LG, KT, NAVER, Kakao, Coupang, Baemin, 29CM, Amore, SPC, SM, Hyundai Home Shopping, Cheil, Adobe, WeMakePrice, Yanolja, LINE Plus, Hanwha, Mirae Asset, etc.'],
+                ['KIDP, FastCampus, UX World, CA Conference, Hyundai Card Culture, Longblack, Herald Design, BrandBiz, etc.']
+            ]
+        };
+
+        let currentLang = 'ko';
+        const koBackup = new Map();
+
+        function setLang(lang) {
+            currentLang = lang;
+            const langBtn = document.getElementById('lang-btn');
+
+            // Toggle elements with data-en attribute
+            document.querySelectorAll('[data-en]').forEach(el => {
+                if (!koBackup.has(el)) {
+                    koBackup.set(el, el.innerHTML);
+                }
+                if (lang === 'en') {
+                    el.innerHTML = el.dataset.en;
+                } else {
+                    el.innerHTML = koBackup.get(el);
+                }
+            });
+
+            // Toggle dictionary-based translations
+            Object.entries(translations).forEach(([selector, items]) => {
+                const els = document.querySelectorAll(selector);
+                els.forEach((el, i) => {
+                    if (i < items.length) {
+                        if (!koBackup.has(el)) {
+                            koBackup.set(el, el.innerHTML);
+                        }
+                        if (lang === 'en') {
+                            el.innerHTML = items[i][0];
+                        } else {
+                            el.innerHTML = koBackup.get(el);
+                        }
+                    }
+                });
+            });
+
+            langBtn.textContent = lang === 'ko' ? 'KO/EN' : 'EN/KO';
+            langBtn.classList.toggle('active', true);
+            localStorage.setItem('sabum-lang', lang);
+        }
+
+        document.getElementById('lang-btn').addEventListener('click', () => {
+            setLang(currentLang === 'ko' ? 'en' : 'ko');
+        });
+
+        const savedLang = localStorage.getItem('sabum-lang');
+        if (savedLang && savedLang !== 'ko') {
+            setTimeout(() => setLang(savedLang), 100);
+        }
+
+        // ═══════════════════════════════════════════
+        //  CRT GLITCH LOOP (random screen distortion)
+        // ═══════════════════════════════════════════
+        (function initCRTGlitch() {
+            const screen = document.querySelector('.screen');
+            if (!screen) return;
+
+            // Create glitch overlay
+            const glitchOverlay = document.createElement('div');
+            glitchOverlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:9990;opacity:0;';
+            document.body.appendChild(glitchOverlay);
+
+            function triggerGlitch() {
+                const intensity = Math.random();
+                const duration = 100 + Math.random() * 200;
+
+                // Scanline displacement
+                screen.style.transition = 'none';
+                const offsetX = (Math.random() - 0.5) * 6;
+                const skewX = (Math.random() - 0.5) * 0.5;
+                screen.style.transform = `translateX(${offsetX}px) skewX(${skewX}deg)`;
+                screen.style.textShadow = `${Math.random() * 3}px 0 #ff0055, ${-Math.random() * 3}px 0 #00ffaa`;
+
+                // Overlay flash
+                if (intensity > 0.6) {
+                    glitchOverlay.style.opacity = '1';
+                    const y = Math.random() * 100;
+                    const h = 2 + Math.random() * 8;
+                    glitchOverlay.style.background = `linear-gradient(transparent ${y}%, rgba(255,255,255,0.03) ${y}%, rgba(255,255,255,0.03) ${y + h}%, transparent ${y + h}%)`;
+                }
+
+                setTimeout(() => {
+                    screen.style.transform = '';
+                    screen.style.textShadow = '';
+                    glitchOverlay.style.opacity = '0';
+                }, duration);
+
+                // Random next glitch: 3-12 seconds
+                const nextDelay = 3000 + Math.random() * 9000;
+                setTimeout(triggerGlitch, nextDelay);
+            }
+
+            // Start after boot
+            setTimeout(triggerGlitch, 5000);
+        })();
+    </script>
+
+</body>
+
+</html>
