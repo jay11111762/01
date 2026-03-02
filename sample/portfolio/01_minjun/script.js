@@ -20,7 +20,47 @@ requestAnimationFrame(raf);
 // Initialize GSAP
 gsap.registerPlugin(ScrollTrigger);
 
-// Hero text is static (no animation)
+// =============================================
+// Kinetic Typography: GSAP Marquee Animation
+// =============================================
+const marqueeLeft = document.querySelectorAll('.marquee-left');
+const marqueeRight = document.querySelectorAll('.marquee-right');
+
+// 왼쪽으로 흐르는 행
+marqueeLeft.forEach(row => {
+    gsap.to(row, {
+        x: '-50%',
+        duration: 20,
+        ease: 'none',
+        repeat: -1,
+    });
+});
+
+// 오른쪽으로 흐르는 행
+marqueeRight.forEach(row => {
+    gsap.fromTo(row,
+        { x: '-50%' },
+        {
+            x: '0%',
+            duration: 25,
+            ease: 'none',
+            repeat: -1,
+        }
+    );
+});
+
+// 스크롤 시 마퀴 속도 변화 (패럴랙스 효과)
+ScrollTrigger.create({
+    trigger: '.hero',
+    start: 'top top',
+    end: 'bottom top',
+    scrub: true,
+    onUpdate: (self) => {
+        const velocity = self.getVelocity() / 1000;
+        gsap.to(marqueeLeft, { timeScale: 1 + Math.abs(velocity) * 0.3, duration: 0.3 });
+        gsap.to(marqueeRight, { timeScale: 1 + Math.abs(velocity) * 0.3, duration: 0.3 });
+    }
+});
 
 // Header fade out on scroll
 gsap.to('header', {
@@ -35,11 +75,12 @@ gsap.to('header', {
     }
 });
 
-// Bento Grid Animation (Scoped by Section)
+// =============================================
+// Scroll Animations: Bento Boxes + Work Cards
+// =============================================
 const sections = document.querySelectorAll('.content');
 
 sections.forEach(section => {
-    // Select both the title and the grid items within this section
     const elements = section.querySelectorAll('.section-title, .bento-box');
 
     gsap.from(elements, {
@@ -55,7 +96,43 @@ sections.forEach(section => {
     });
 });
 
-// Theme Toggle
+// Selected Work Cards: 스크롤 시 슬라이드인
+const workCards = document.querySelectorAll('.work-card');
+workCards.forEach((card, i) => {
+    gsap.from(card, {
+        y: 80,
+        opacity: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+        scrollTrigger: {
+            trigger: card,
+            start: 'top 85%',
+        }
+    });
+});
+
+// =============================================
+// Archive Toggle (접기/펼치기)
+// =============================================
+const archiveToggle = document.getElementById('archiveToggle');
+const archiveList = document.getElementById('archiveList');
+
+if (archiveToggle && archiveList) {
+    archiveToggle.addEventListener('click', () => {
+        archiveToggle.classList.toggle('open');
+        archiveList.classList.toggle('open');
+    });
+
+    // 터치 지원
+    archiveToggle.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        archiveToggle.click();
+    }, { passive: false });
+}
+
+// =============================================
+// Theme Toggle (다크/라이트 전환)
+// =============================================
 const themeToggleBtn = document.querySelector('.theme-toggle');
 const body = document.body;
 
@@ -77,7 +154,7 @@ if (themeToggleBtn) {
 }
 
 // =============================================
-// Particle System — Canvas + Physics (High Performance)
+// Particle System — Canvas + Physics (모바일 최적화 포함)
 // =============================================
 const canvas = document.getElementById('particleCanvas');
 const heroSection = document.querySelector('.hero');
@@ -86,20 +163,23 @@ const heroTexts = document.querySelectorAll('.hero-text');
 if (canvas && heroSection) {
     const ctx = canvas.getContext('2d');
     const dpr = window.devicePixelRatio || 1;
-    const particleCount = 1920;
+
+    // 모바일 최적화: 화면 크기에 따라 파티클 수 조절
+    const isMobile = window.innerWidth < 768;
+    const particleCount = isMobile ? 600 : 1920;
 
     let mouseX = -9999, mouseY = -9999;
-    const repulsionRadius = 180;
+    const repulsionRadius = isMobile ? 120 : 180;
     const repulsionRadiusSq = repulsionRadius * repulsionRadius;
     const repulsionStrength = 0.8;
 
     let heroW = 0, heroH = 0;
     let textColliders = [];
     let circleCx = 0, circleCy = 0;
-    let baseCircleR = 0; // base radius from layout
-    let circleR = 0;     // animated radius (changes every frame)
-    const circlePulseAmp = 0.15; // ±15% of base radius
-    const circlePulseSpeed = 0.0008; // cycle speed (lower = slower)
+    let baseCircleR = 0;
+    let circleR = 0;
+    const circlePulseAmp = 0.15;
+    const circlePulseSpeed = 0.0008;
     let circleTime = 0;
 
     // Particle data (struct-of-arrays for cache performance)
@@ -110,7 +190,6 @@ if (canvas && heroSection) {
     const pSize = new Float32Array(particleCount);
     const pAlpha = new Float32Array(particleCount);
 
-    // Get hero accent color from CSS variable (black in light mode, yellow in dark)
     function getAccentColor() {
         const style = getComputedStyle(document.body);
         return style.getPropertyValue('--hero-accent-color').trim() || '#FEE500';
@@ -126,12 +205,10 @@ if (canvas && heroSection) {
         canvas.style.height = heroH + 'px';
         ctx.scale(dpr, dpr);
 
-        // Circle collider (base size)
         circleCx = heroW / 2;
         circleCy = heroH / 2;
         baseCircleR = heroW * 0.275;
 
-        // Text colliders
         const heroRect = heroSection.getBoundingClientRect();
         textColliders = [];
         heroTexts.forEach(t => {
@@ -145,17 +222,15 @@ if (canvas && heroSection) {
         });
     }
 
-    // Init particles
     function initParticles() {
         const w = heroW || 1400;
         const h = heroH || 800;
         const cx = w / 2;
         const cy = h / 2;
-        const r = w * 0.275; // circle radius
+        const r = w * 0.275;
         const rSq = r * r;
 
         for (let i = 0; i < particleCount; i++) {
-            // Place particles only OUTSIDE the circle
             let x, y;
             do {
                 x = Math.random() * w;
@@ -182,6 +257,7 @@ if (canvas && heroSection) {
     });
     window.addEventListener('load', () => setTimeout(resizeCanvas, 200));
 
+    // 마우스 이벤트
     heroSection.addEventListener('mousemove', (e) => {
         const rect = heroSection.getBoundingClientRect();
         mouseX = e.clientX - rect.left;
@@ -192,7 +268,29 @@ if (canvas && heroSection) {
         mouseY = -9999;
     });
 
-    // Theme observer — update accent color when theme changes
+    // 터치 이벤트 (모바일 대응 — 규칙 준수)
+    heroSection.addEventListener('touchstart', (e) => {
+        if (e.touches.length) {
+            const rect = heroSection.getBoundingClientRect();
+            mouseX = e.touches[0].clientX - rect.left;
+            mouseY = e.touches[0].clientY - rect.top;
+        }
+    }, { passive: true });
+
+    heroSection.addEventListener('touchmove', (e) => {
+        if (e.touches.length) {
+            const rect = heroSection.getBoundingClientRect();
+            mouseX = e.touches[0].clientX - rect.left;
+            mouseY = e.touches[0].clientY - rect.top;
+        }
+    }, { passive: true });
+
+    heroSection.addEventListener('touchend', () => {
+        mouseX = -9999;
+        mouseY = -9999;
+    }, { passive: true });
+
+    // Theme observer
     const themeObserver = new MutationObserver(() => {
         accentColor = getAccentColor();
     });
@@ -205,15 +303,12 @@ if (canvas && heroSection) {
         const pad = 3;
         const tcLen = textColliders.length;
 
-        // Animate circle radius (pulse)
         circleTime += circlePulseSpeed;
         circleR = baseCircleR * (1 + Math.sin(circleTime * Math.PI * 2) * circlePulseAmp);
 
-        // Physics
         for (let i = 0; i < particleCount; i++) {
             let x = px[i], y = py[i], vx = pvx[i], vy = pvy[i];
 
-            // 1) Mouse repulsion (cubic falloff)
             const mdx = x - mouseX;
             const mdy = y - mouseY;
             const mDistSq = mdx * mdx + mdy * mdy;
@@ -226,25 +321,20 @@ if (canvas && heroSection) {
                 vy += mdy * invD * force;
             }
 
-            // 2) Random drift
             vx += (Math.random() - 0.5) * 0.03;
             vy += (Math.random() - 0.5) * 0.03;
 
-            // 3) Integrate
             x += vx;
             y += vy;
 
-            // 4) Damping
             vx *= damping;
             vy *= damping;
 
-            // 5) Boundary
             if (x < 0) { x = 0; vx = Math.abs(vx) * bounce; }
             if (x > heroW) { x = heroW; vx = -Math.abs(vx) * bounce; }
             if (y < 0) { y = 0; vy = Math.abs(vy) * bounce; }
             if (y > heroH) { y = heroH; vy = -Math.abs(vy) * bounce; }
 
-            // 6) Circle solid boundary — keep particles OUTSIDE
             const cdx = x - circleCx;
             const cdy = y - circleCy;
             const cDistSq = cdx * cdx + cdy * cdy;
@@ -254,18 +344,15 @@ if (canvas && heroSection) {
                 const invC = 1 / cDist;
                 const nx = cdx * invC;
                 const ny = cdy * invC;
-                // Reflect velocity outward
                 const dot = vx * nx + vy * ny;
-                if (dot < 0) { // moving inward
+                if (dot < 0) {
                     vx -= 2 * dot * nx * bounce;
                     vy -= 2 * dot * ny * bounce;
                 }
-                // Push particle to just outside the circle
                 x = circleCx + nx * (circleR + 1);
                 y = circleCy + ny * (circleR + 1);
             }
 
-            // 7) Text collision
             for (let j = 0; j < tcLen; j++) {
                 const tc = textColliders[j];
                 if (x > tc.x - pad && x < tc.x + tc.w + pad &&
@@ -285,10 +372,8 @@ if (canvas && heroSection) {
             px[i] = x; py[i] = y; pvx[i] = vx; pvy[i] = vy;
         }
 
-        // Render (single Canvas draw pass)
         ctx.clearRect(0, 0, heroW, heroH);
 
-        // Draw circle ring
         ctx.beginPath();
         ctx.arc(circleCx, circleCy, circleR, 0, Math.PI * 2);
         ctx.strokeStyle = accentColor;
@@ -296,7 +381,6 @@ if (canvas && heroSection) {
         ctx.lineWidth = 1.5;
         ctx.stroke();
 
-        // Draw particles (grouped by alpha for fewer state changes)
         ctx.fillStyle = accentColor;
         for (let i = 0; i < particleCount; i++) {
             ctx.globalAlpha = pAlpha[i];

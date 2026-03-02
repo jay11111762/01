@@ -34,10 +34,19 @@
     <section class="hero">
         <canvas class="particles-canvas" id="particleCanvas"></canvas>
         <div class="hero-text-container">
-            <h1 class="hero-text">PRODUCT</h1>
-            <h1 class="hero-text outline">DESIGNER</h1>
-            <h1 class="hero-text">SYSTEM</h1>
-            <h1 class="hero-text outline">CRAFTER</h1>
+            <!-- 키네틱 타이포: GSAP으로 좌우 교차 이동 -->
+            <div class="marquee-row marquee-left">
+                <h1 class="hero-text">PRODUCT<span class="outline">&nbsp;DESIGNER&nbsp;</span>PRODUCT<span
+                        class="outline">&nbsp;DESIGNER&nbsp;</span></h1>
+            </div>
+            <div class="marquee-row marquee-right">
+                <h1 class="hero-text outline">SYSTEM<span class="filled">&nbsp;CRAFTER&nbsp;</span>SYSTEM<span
+                        class="filled">&nbsp;CRAFTER&nbsp;</span></h1>
+            </div>
+            <div class="marquee-row marquee-left">
+                <h1 class="hero-text">MINJUN<span class="outline">&nbsp;HAN&nbsp;</span>MINJUN<span
+                        class="outline">&nbsp;HAN&nbsp;</span></h1>
+            </div>
         </div>
     </section>
 
@@ -113,175 +122,145 @@
         </div>
     </section>
 
-    <!-- Work Section: Projects -->
+    <!-- Work Section: Selected Projects (이미지 포함 대형 카드) -->
     <section class="content" id="work">
         <h2 class="section-title">SELECTED WORK</h2>
-        <div class="bento-grid work-grid">
 
-            <!-- LINE Design System 3.0 -->
-            <div class="bento-box project-large accent-bg">
-                <div class="project-info">
+        <!-- 주요 프로젝트 4개: 이미지 + 텍스트 대형 카드 -->
+        <div class="selected-works">
+
+            <!-- Project 1: LINE Design System -->
+            <div class="work-card">
+                <div class="work-card-visual">
+                    <img src="../../img/design/poster_bookshop_yellow.jpg" alt="LINE Design System 3.0">
+                </div>
+                <div class="work-card-info">
                     <span class="project-year">2024</span>
-                    <h3>라인 디자인 시스템 3.0</h3>
-                    <p>구축 리드 · 컴포넌트 240개 체계화 · 다크모드 전면 지원</p>
-                </div>
-                <div class="project-result">
-                    <span class="result-num">50%</span>
-                    <span class="result-label">핸드오프 시간 단축</span>
-                </div>
-            </div>
-
-            <!-- LINE Chat UX Redesign -->
-            <div class="bento-box project-medium">
-                <span class="project-year">2024</span>
-                <h3>라인 메신저 채팅 UX 리디자인</h3>
-                <p>일본/태국/대만 3개국 사용성 테스트</p>
-                <div class="project-result">
-                    <span class="result-num">40%</span>
-                    <span class="result-label">메시지 탐색 시간 단축</span>
-                </div>
-            </div>
-
-            <!-- LINE VOOM -->
-            <div class="bento-box project-medium">
-                <span class="project-year">2023</span>
-                <h3>라인 VOOM 크리에이터 스튜디오</h3>
-                <p>영상 편집 도구 UI · 크리에이터 온보딩 플로우</p>
-                <div class="project-result">
-                    <span class="result-num">35%</span>
-                    <span class="result-label">업로드 완료율 향상</span>
+                    <h3>라인 디자인 시스템 3.0 구축 리드</h3>
+                    <p>컴포넌트 240개 체계화, 다크모드 전면 지원. 사내 디자인 시스템 컨퍼런스 기획 및 발표.</p>
+                    <div class="work-card-stats">
+                        <div class="work-stat">
+                            <span class="result-num">50%</span>
+                            <span class="result-label">핸드오프 시간 단축</span>
+                        </div>
+                        <div class="work-stat">
+                            <span class="result-num">240+</span>
+                            <span class="result-label">컴포넌트 구축</span>
+                        </div>
+                    </div>
+                    <div class="work-card-tags">
+                        <span>Design System</span>
+                        <span>2024 Good Design Award</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- LINE AI Assistant -->
-            <div class="bento-box project-small">
-                <span class="project-year">2023</span>
-                <h3>라인 AI 어시스턴트 UI</h3>
-                <p>대화형 AI 인터페이스 · 멀티모달 입출력 UI 패턴</p>
-            </div>
-
-            <!-- LINE Gift -->
-            <div class="bento-box project-medium accent-bg">
-                <span class="project-year">2022</span>
-                <h3>라인 선물하기 글로벌 런칭</h3>
-                <p>일본/태국 현지화 UI 설계</p>
-                <div class="project-result dark-result">
-                    <span class="result-num">22%</span>
-                    <span class="result-label">구매 전환율 향상</span>
+            <!-- Project 2: LINE Chat UX Redesign -->
+            <div class="work-card reverse">
+                <div class="work-card-visual">
+                    <img src="../../img/design/poster_paris.jpg" alt="LINE Chat UX Redesign">
+                </div>
+                <div class="work-card-info">
+                    <span class="project-year">2024</span>
+                    <h3>라인 메신저 채팅 UX 리디자인</h3>
+                    <p>대화방 정보 구조 재설계 및 새로운 인터랙션 패턴 도입. 일본/태국/대만 3개국 사용성 테스트 진행.</p>
+                    <div class="work-card-stats">
+                        <div class="work-stat">
+                            <span class="result-num">40%</span>
+                            <span class="result-label">탐색 시간 단축</span>
+                        </div>
+                    </div>
+                    <div class="work-card-tags">
+                        <span>UX Research</span>
+                        <span>Global</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- LINE Pay -->
-            <div class="bento-box project-small">
-                <span class="project-year">2022</span>
-                <h3>라인 Pay 결제 UX 간소화</h3>
-                <p>결제 플로우 5단계 → 3단계 축소 · 생체 인증 연동</p>
-            </div>
-
-            <!-- 당근마켓 Chat -->
-            <div class="bento-box project-medium">
-                <span class="project-year">2021</span>
-                <h3>당근마켓 채팅 거래 경험 개선</h3>
-                <p>가격 제안/약속 잡기 인터랙션</p>
-                <div class="project-result">
-                    <span class="result-num">18%</span>
-                    <span class="result-label">거래 성사율 향상</span>
+            <!-- Project 3: LINE VOOM -->
+            <div class="work-card">
+                <div class="work-card-visual">
+                    <img src="../../img/design/poster_apostrophe.jpg" alt="LINE VOOM Creator Studio">
+                </div>
+                <div class="work-card-info">
+                    <span class="project-year">2023</span>
+                    <h3>라인 VOOM 크리에이터 스튜디오</h3>
+                    <p>숏폼 영상 편집 도구 UI 설계 및 크리에이터 온보딩 플로우 디자인.</p>
+                    <div class="work-card-stats">
+                        <div class="work-stat">
+                            <span class="result-num">35%</span>
+                            <span class="result-label">업로드 완료율 향상</span>
+                        </div>
+                    </div>
+                    <div class="work-card-tags">
+                        <span>Product Design</span>
+                        <span>iF 2023 Award</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- 당근마켓 Feed -->
-            <div class="bento-box project-small">
-                <span class="project-year">2021</span>
-                <h3>당근마켓 동네생활 피드 리디자인</h3>
-                <p>카드형 피드 UI · 게시글 조회율 25% 증가</p>
-            </div>
-
-            <!-- 당근마켓 Biz Profile -->
-            <div class="bento-box project-medium accent-bg">
-                <span class="project-year">2020</span>
-                <h3>당근마켓 비즈프로필</h3>
-                <p>소상공인 프로필 빌더 UI</p>
-                <div class="project-result dark-result">
-                    <span class="result-num">30%</span>
-                    <span class="result-label">사장님 가입 전환율 향상</span>
+            <!-- Project 4: 당근마켓 종합 -->
+            <div class="work-card reverse">
+                <div class="work-card-visual">
+                    <img src="../../img/design/poster_pharrell.jpg" alt="당근마켓 제품 디자인">
+                </div>
+                <div class="work-card-info">
+                    <span class="project-year">2018–2021</span>
+                    <h3>당근마켓 프로덕트 디자인</h3>
+                    <p>채팅 거래, 동네생활 피드, 비즈프로필, 검색, 앱 전면 리디자인까지. 로컬 커머스의 핵심 사용자 경험을 설계.</p>
+                    <div class="work-card-stats">
+                        <div class="work-stat">
+                            <span class="result-num">18%</span>
+                            <span class="result-label">거래 성사율 ↑</span>
+                        </div>
+                        <div class="work-stat">
+                            <span class="result-num">30%</span>
+                            <span class="result-label">가입 전환율 ↑</span>
+                        </div>
+                    </div>
+                    <div class="work-card-tags">
+                        <span>Interaction</span>
+                        <span>IDEA 2020</span>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- 당근 씨앗 Design System -->
-            <div class="bento-box project-small">
-                <span class="project-year">2020</span>
-                <h3>당근마켓 디자인 시스템 "당근 씨앗"</h3>
-                <p>Figma 컴포넌트 120개 · 디자인 토큰 체계 설계</p>
-            </div>
-
-            <!-- 당근마켓 Search -->
-            <div class="bento-box project-small">
-                <span class="project-year">2019</span>
-                <h3>당근마켓 검색 경험 리디자인</h3>
-                <p>필터 UI · 검색 후 상세 조회율 20% 향상</p>
-            </div>
-
-            <!-- 당근마켓 Full Redesign -->
-            <div class="bento-box project-small">
-                <span class="project-year">2018</span>
-                <h3>당근마켓 앱 전면 리디자인</h3>
-                <p>홈 피드 카드 UI · 하단 네비게이션 · 브랜드 아이덴티티</p>
-            </div>
-
-            <!-- Galaxy S8 AOD -->
-            <div class="bento-box project-medium">
-                <span class="project-year">2017</span>
-                <h3>삼성 갤럭시 S8 AOD UI</h3>
-                <p>시계/알림 위젯 · 저전력 디스플레이 환경 최적화</p>
-            </div>
-
-            <!-- Galaxy Theme Store -->
-            <div class="bento-box project-small">
-                <span class="project-year">2017</span>
-                <h3>삼성 갤럭시 테마스토어 UI 개편</h3>
-                <p>테마 미리보기 및 적용 플로우 개선</p>
-            </div>
-
-            <!-- Galaxy S7 Edge Panel -->
-            <div class="bento-box project-medium">
-                <span class="project-year">2016</span>
-                <h3>삼성 갤럭시 S7 Edge Panel UI</h3>
-                <p>엣지 패널 앱 바로가기 · 한 손 조작 인터랙션 패턴</p>
-            </div>
-
-            <!-- Samsung Pay -->
-            <div class="bento-box project-small">
-                <span class="project-year">2016</span>
-                <h3>삼성페이 카드 등록 UX 개선</h3>
-                <p>OCR 스캔 연동 UI · 에러 핸들링 설계</p>
-            </div>
-
-            <!-- Galaxy S6 Icons -->
-            <div class="bento-box project-small">
-                <span class="project-year">2015</span>
-                <h3>삼성 갤럭시 S6 기본 앱 아이콘</h3>
-                <p>플랫 디자인 전환 · 아이콘 200개 리디자인</p>
-            </div>
-
-            <!-- Studio Joh - Hyundai Card -->
-            <div class="bento-box project-small">
-                <span class="project-year">2014</span>
-                <h3>현대카드 뮤직 라이브러리 공간 그래픽</h3>
-                <p>스튜디오좋 · 사이니지 및 공간 안내 시스템</p>
-            </div>
-
-            <!-- Studio Joh - Innisfree -->
-            <div class="bento-box project-small">
-                <span class="project-year">2014</span>
-                <h3>아모레퍼시픽 이니스프리 패키지</h3>
-                <p>스튜디오좋 · 시즌 한정판 일러스트레이션</p>
-            </div>
-
-            <!-- Studio Joh - Seoul Campaign -->
-            <div class="bento-box project-small">
-                <span class="project-year">2013</span>
-                <h3>서울시 "서울은 꽃이다" 포스터</h3>
-                <p>스튜디오좋 · 타이포그래피 기반 시리즈 4종</p>
+        <!-- 아카이브: 나머지 프로젝트 축소형 리스트 -->
+        <div class="archive-section">
+            <button class="archive-toggle" id="archiveToggle">
+                <span>ALL PROJECTS</span>
+                <span class="archive-arrow">↓</span>
+            </button>
+            <div class="archive-list" id="archiveList">
+                <div class="archive-item"><span class="year">2023</span><span class="title">라인 AI 어시스턴트 UI</span><span
+                        class="desc">대화형 AI 인터페이스 · 멀티모달 UI 패턴</span></div>
+                <div class="archive-item"><span class="year">2022</span><span class="title">라인 선물하기 글로벌 런칭</span><span
+                        class="desc">일본/태국 현지화 · 구매 전환율 22% ↑</span></div>
+                <div class="archive-item"><span class="year">2022</span><span class="title">라인 Pay 결제 UX 간소화</span><span
+                        class="desc">결제 5단계→3단계 · 생체 인증 연동</span></div>
+                <div class="archive-item"><span class="year">2021</span><span class="title">당근마켓 동네생활 피드</span><span
+                        class="desc">카드형 피드 UI · 조회율 25% ↑</span></div>
+                <div class="archive-item"><span class="year">2020</span><span class="title">당근마켓 디자인 시스템 "당근
+                        씨앗"</span><span class="desc">Figma 컴포넌트 120개 · 디자인 토큰 체계</span></div>
+                <div class="archive-item"><span class="year">2019</span><span class="title">당근마켓 검색 경험 리디자인</span><span
+                        class="desc">필터 UI · 상세 조회율 20% ↑</span></div>
+                <div class="archive-item"><span class="year">2017</span><span class="title">삼성 갤럭시 S8 AOD UI</span><span
+                        class="desc">시계/알림 위젯 · 저전력 디스플레이 최적화</span></div>
+                <div class="archive-item"><span class="year">2017</span><span class="title">삼성 갤럭시 테마스토어 UI
+                        개편</span><span class="desc">테마 미리보기 · 적용 플로우 개선</span></div>
+                <div class="archive-item"><span class="year">2016</span><span class="title">삼성 갤럭시 S7 Edge Panel
+                        UI</span><span class="desc">엣지 패널 · 한 손 조작 인터랙션 패턴</span></div>
+                <div class="archive-item"><span class="year">2016</span><span class="title">삼성페이 카드 등록 UX</span><span
+                        class="desc">OCR 스캔 연동 · 에러 핸들링 설계</span></div>
+                <div class="archive-item"><span class="year">2015</span><span class="title">삼성 갤럭시 S6 아이콘
+                        리디자인</span><span class="desc">플랫 디자인 전환 · 아이콘 200개</span></div>
+                <div class="archive-item"><span class="year">2014</span><span class="title">현대카드 뮤직 라이브러리</span><span
+                        class="desc">스튜디오좋 · 공간 그래픽 / 사이니지</span></div>
+                <div class="archive-item"><span class="year">2014</span><span class="title">이니스프리 패키지 디자인</span><span
+                        class="desc">스튜디오좋 · 시즌 한정판 일러스트레이션</span></div>
+                <div class="archive-item"><span class="year">2013</span><span class="title">서울시 "서울은 꽃이다"
+                        포스터</span><span class="desc">스튜디오좋 · 타이포그래피 시리즈 4종</span></div>
             </div>
         </div>
     </section>
